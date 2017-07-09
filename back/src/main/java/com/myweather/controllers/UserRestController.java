@@ -1,7 +1,10 @@
 package com.myweather.controllers;
 
-import com.myweather.models.User;
-import com.myweather.respositories.UserRepository;
+import com.myweather.models.h2db.UserH2;
+import com.myweather.models.mongodb.UserMongo;
+import com.myweather.respositories.jpa.UserJpaRepository;
+import com.myweather.respositories.mongo.UserMongoRepository;
+import com.myweather.shared.ConfigUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +29,16 @@ import java.util.Collection;
 public class UserRestController {
 
    /**
-    * Injects the UserRepository
+    * Injects the UserJpaRepository
     */
    @Autowired
-   private UserRepository repository;
+   private UserJpaRepository jpaRepository;
+
+   /**
+    * Injects the MongoRepository
+    */
+   @Autowired
+   private UserMongoRepository mongoRepository;
 
 
    /**
@@ -38,9 +47,21 @@ public class UserRestController {
     * @return ResponseEntity with all the users and Status OK
     */
    @RequestMapping(method = RequestMethod.GET)
-   public ResponseEntity<Collection<User>> getAllUsers() {
+   public ResponseEntity<Collection> getAllUsers() {
+      ResponseEntity response;
 
-      return new ResponseEntity<>((Collection<User>) repository.findAll(), HttpStatus.OK);
+      if (ConfigUtils.dbType == ConfigUtils.H2_DB) {
+         response = new ResponseEntity<>((Collection<UserH2>) jpaRepository.findAll(), HttpStatus.OK);
+
+      } else if(ConfigUtils.dbType == ConfigUtils.MONGO_DB) {
+         response = new ResponseEntity<>((Collection<UserMongo>) mongoRepository.findAll(), HttpStatus.OK);
+
+      } else {
+         response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+      }
+
+      return response;
 
    }
 
