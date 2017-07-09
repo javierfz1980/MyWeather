@@ -1,0 +1,18 @@
+{
+  "header": {
+    "account": "Account",
+    "searchPlaceHolder": "Location / Board",
+    "emailPlaceHolder": "email",
+    "passwordPlaceHolder": "password",
+    "signInButton": "Sign In",
+    "signUp": "Sign Up",
+    "forgotPassword": "ForgotPassword"
+  },
+
+  "footer": {
+    "aboutTilte": "About Us",
+    "navigationTitle": "Navegation",
+    "socialTitle": "Follow Us",
+    "languageTitle": "Language"
+  }
+}

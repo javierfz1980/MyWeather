@@ -1,0 +1,18 @@
+#loginForm input {
+  margin-bottom: 5px;
+}
+
+#dropDownNav {
+  padding: 0px 15px;
+}
+
+#searchInpurHeader {
+  max-width: 250px;
+  float: left;
+  margin-right: 10px;
+}
+
+.in #formHeader {
+  /* margin-top: -1px; */
+  border-top: none;
+}

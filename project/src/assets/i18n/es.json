@@ -1,0 +1,12 @@
+{
+  "header": {
+    "account": "Cuenta"
+  },
+
+  "footer": {
+    "aboutTilte": "Nosotros",
+    "navigationTitle": "Navegacion",
+    "socialTitle": "Seguirnos",
+    "languageTitle": "Lenguaje"
+  }
+}
