@@ -1,0 +1,14 @@
+# Set Env Vars
+# Maven
+export M2_HOME=/build/toolchain/noarch/apache-maven-3.3.3
+export M2=$M2_HOME/bin
+export MAVEN_OPTS='-Xmx2048m -Xms512m -XX:PermSize=128m -XX:MaxPermSize=512m -Dorg.slf4j.simpleLogger.showThreadName=true -Dorg.slf4j.simpleLogger.showDateTime=true'
+
+# Java
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home
+
+# Mongo
+export MONGO_HOME=/Users/javierfz/Mongodb/mongodb-osx-x86_64-3.4.6
+
+# Path
+export PATH=$M2:$JAVA_HOME/bin:$MONGO_HOME/bin:$PATH
