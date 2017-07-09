@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class MyweatherApplication {
+public class MyWeatherApplication {
 
 	/**
 	 * Data Faker in order to fake somo initial users
@@ -17,7 +17,7 @@ public class MyweatherApplication {
 	private final Faker faker = new Faker();
 
 	public static void main(String[] args) {
-		SpringApplication.run(MyweatherApplication.class, args);
+		SpringApplication.run(MyWeatherApplication.class, args);
 	}
 
 	/**
@@ -37,4 +37,5 @@ public class MyweatherApplication {
 			}
 		};
 	}
+
 }

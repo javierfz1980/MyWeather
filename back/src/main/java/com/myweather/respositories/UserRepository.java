@@ -2,6 +2,7 @@ package com.myweather.respositories;
 
 import com.myweather.models.User;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -18,6 +19,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
     * @param email
     * @return List<User>
     */
-   List<User> findByName(String email);
+   List<User> findByEmail(String email);
 
 }

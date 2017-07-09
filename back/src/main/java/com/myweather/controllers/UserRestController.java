@@ -22,9 +22,6 @@ import java.util.Collection;
  * Annotation to be a REST-endpoint
  */
 @RestController
-/**
- * The specific endpoint resolved by this controller
- */
 @RequestMapping("/users")
 public class UserRestController {
 
