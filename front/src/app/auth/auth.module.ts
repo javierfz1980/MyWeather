@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import {SharedModule} from "../shared/shared.module";
 import {SignUpComponent} from "./sign-up/sign-up.component";
 import {AuthRoutingModule} from "./auth-routing.module";
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
   imports: [
@@ -9,7 +10,8 @@ import {AuthRoutingModule} from "./auth-routing.module";
     AuthRoutingModule
   ],
   declarations: [
-    SignUpComponent
+    SignUpComponent,
+    ForgotPasswordComponent
   ],
   exports: [
     SignUpComponent

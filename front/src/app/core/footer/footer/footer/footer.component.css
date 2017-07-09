@@ -1,0 +1,14 @@
+footer {
+  background: #333;
+  color: #eee;
+  font-size: 11px;
+  padding: 20px;
+}
+
+#copyright a,
+#about a,
+#navigation a,
+#social a,
+#language a {
+  cursor: pointer;
+}

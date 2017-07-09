@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
 import {SignUpComponent} from "./sign-up/sign-up.component";
+import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
 
 const authRoutes: Routes = [
   {path: 'signup', component: SignUpComponent},
-  {path: 'signin', component: SignUpComponent},
-  {path: '**', redirectTo: 'signin'}
+  {path: 'forgotPassword', component: ForgotPasswordComponent},
+  {path: '**', redirectTo: '/'}
 ]
 
 @NgModule({

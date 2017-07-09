@@ -9,7 +9,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">MyWeather</a>
+      <a class="navbar-brand" routerLink="" id="brandImage">MyWeather</a>
     </div>
 
     <div class="collapse navbar-collapse" [collapse]="isCollapsed">
@@ -29,7 +29,7 @@
               <li><input type="text" class="form-control" placeholder="{{ 'header.passwordPlaceHolder' | translate }}"></li>
               <li><button type="submit" class="btn btn-primary btn-sm" style="width: 100%">{{ 'header.signInButton' | translate }}</button> </li>
               <li role="separator" class="divider"></li>
-              <li><a href="#"> {{ 'header.signUp' | translate }} </a> | <a href="#"> {{ 'header.forgotPassword' | translate }} </a> </li>
+              <li><a routerLink="signup"> {{ 'header.signUp' | translate }} </a> | <a routerLink="forgotPassword"> {{ 'header.forgotPassword' | translate }} </a> </li>
             </form>
           </ul>
         </li>
