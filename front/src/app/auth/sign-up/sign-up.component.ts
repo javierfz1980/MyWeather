@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-sign-up',
@@ -6,10 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent implements OnInit {
+  private ages:Number[];
 
-  constructor() { }
+  constructor() {
+    this.ages = Array.from(Array(100),(x,i)=>i);
+  }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  onSubmit(form:NgForm){
+    console.log(form);
   }
 
 }

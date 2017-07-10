@@ -1,12 +1,14 @@
 {
   "header": {
     "account": "Account",
-    "searchPlaceHolder": "Location / Board",
+    "searchPlaceHolder": "Location",
     "emailPlaceHolder": "email",
     "passwordPlaceHolder": "password",
     "signInButton": "Sign In",
     "signUp": "Sign Up",
-    "forgotPassword": "ForgotPassword"
+    "forgotPassword": "ForgotPassword",
+    "forgotSubmit": "Submit",
+    "forgotBack": "Back to Sign In"
   },
 
   "footer": {

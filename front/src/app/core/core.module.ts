@@ -5,6 +5,7 @@ import {FooterComponent} from "./footer/footer/footer/footer.component";
 import {SharedModule} from "../shared/shared.module";
 import {TranslateService} from "@ngx-translate/core";
 import {AppRoutingModule} from "../app-routing.module";
+import {LanguageService} from "../shared/services/language.service";
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import {AppRoutingModule} from "../app-routing.module";
     AppRoutingModule
   ],
   providers: [
-    TranslateService
+    TranslateService,
+    LanguageService
   ],
 })
 export class CoreModule { }

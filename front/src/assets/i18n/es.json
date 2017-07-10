@@ -1,6 +1,7 @@
 {
   "header": {
-    "account": "Cuenta"
+    "account": "Cuenta",
+    "searchPlaceHolder": "Ciudad"
   },
 
   "footer": {

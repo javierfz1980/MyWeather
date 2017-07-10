@@ -17,7 +17,13 @@
   border-top: none;
 }
 
-#loginForm a, #brandImage {
+#loginForm a,
+#brandImage,
+.mousePointer {
   cursor: pointer;
+}
+
+#languageDropdownMenu {
+  min-width: 90px;
 }
 

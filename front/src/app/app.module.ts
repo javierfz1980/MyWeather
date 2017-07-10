@@ -23,7 +23,6 @@ export function HttpLoaderFactory(http: Http) {
   imports: [
     BrowserModule,
     HttpModule,
-    FormsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

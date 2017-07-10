@@ -1,3 +1,58 @@
-<p>
-  sign-up works!
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Please complete the following info in order to create a new account</h4>
+      <hr>
+      <form #form="ngForm" (submit)="onSubmit(form)">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="help-block">Name</label>
+              <input type="text" class="form-control" name="name" ngModel required>
+            </div>
+            <div class="form-group">
+              <label class="help-block">Email</label>
+              <input type="email" class="form-control" name="email" ngModel required email>
+            </div>
+            <div class="form-group">
+              <label class="help-block">Age</label>
+              <select class="form-control" name="age" ngModel required>
+                <option *ngFor="let age of ages">{{ age }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="help-block">Gender</label>
+              <select class="form-control" name="gender" ngModel required>
+                <option>Male</option>
+                <option>Female</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="help-block">&nbsp;</label>
+              <button class="btn btn-primary" type="submit">Reset</button>
+              <button class="btn btn-success">Submit</button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="help-block">Lastname</label>
+              <input type="text" class="form-control" name="lastname" ngModel required>
+            </div>
+            <div class="form-group">
+              <label class="help-block">Password</label>
+              <input type="password" class="form-control" name="password" ngModel required>
+            </div>
+            <div class="form-group">
+              <label class="help-block">Confirm Password</label>
+              <input type="password" class="form-control" name="confpass" ngModel required>
+            </div>
+            <div class="form-group">
+              <label class="help-block">Default Dashboard Name</label>
+              <input type="password" class="form-control" name="dashboard" ngModel required>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
