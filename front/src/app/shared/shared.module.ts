@@ -4,7 +4,8 @@ import {DropDownClickDirective} from "./directives/drop-down-click.directive";
 import {DropDownDirective} from "./directives/drop-down.directive";
 import {TranslateModule} from "@ngx-translate/core";
 import {CollapseDirective} from "ngx-bootstrap";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   imports: [
@@ -21,7 +22,9 @@ import {FormsModule} from "@angular/forms";
     TranslateModule,
     CollapseDirective,
     CommonModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule
   ]
 })
 export class SharedModule { }

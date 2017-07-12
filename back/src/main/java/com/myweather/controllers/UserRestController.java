@@ -5,12 +5,11 @@ import com.myweather.models.mongodb.UserMongo;
 import com.myweather.respositories.jpa.UserJpaRepository;
 import com.myweather.respositories.mongo.UserMongoRepository;
 import com.myweather.shared.ConfigUtils;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
@@ -24,9 +23,18 @@ import java.util.Collection;
 /**
  * Annotation to be a REST-endpoint
  */
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/users")
 public class UserRestController {
+
+   /**
+    * Default responses
+    */
+   private final String ERROR = "Internal server error";
+   private final String NO_DB = "No databas selected";
+   private final String USER_EXISTS = "User already exist";
+   private final String USER_CREATED = "User succesfully created";
 
    /**
     * Injects the UserJpaRepository
@@ -50,16 +58,89 @@ public class UserRestController {
    public ResponseEntity<Collection> getAllUsers() {
       ResponseEntity response;
 
+      // all customers from h2
       if (ConfigUtils.dbType == ConfigUtils.H2_DB) {
-         response = new ResponseEntity<>((Collection<UserH2>) jpaRepository.findAll(), HttpStatus.OK);
+         response = ResponseEntity
+               .status(HttpStatus.OK)
+               .body((Collection<UserH2>) jpaRepository.findAll());
 
+      // all customers from mongo
       } else if(ConfigUtils.dbType == ConfigUtils.MONGO_DB) {
-         response = new ResponseEntity<>((Collection<UserMongo>) mongoRepository.findAll(), HttpStatus.OK);
+         response = ResponseEntity
+               .status(HttpStatus.OK)
+               .body((Collection<UserMongo>) mongoRepository.findAll());
 
+      // no db configured
       } else {
-         response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+         response = ResponseEntity
+               .status(HttpStatus.INTERNAL_SERVER_ERROR)
+               .body(this.NO_DB);
+      }
+
+      return response;
+
+   }
+
+
+   /**
+    * Creates a new User
+    *
+    * @return Status result
+    */
+   @RequestMapping(method = RequestMethod.PUT)
+   public ResponseEntity<Collection> insertNewlUser(@RequestBody UserMongo user) {
+      ResponseEntity response;
+      Boolean inserted = false;
+      UserMongo existingUser;
+
+      if (ConfigUtils.dbType == ConfigUtils.H2_DB) {
+         // Todo
+
+      } else if (ConfigUtils.dbType == ConfigUtils.MONGO_DB) {
+         //existingUser = mongoRepository.findByEmail(user.getEmail());
+         //if (existingUser == null) {
+            try{
+               mongoRepository.insert(user);
+               response = ResponseEntity
+                     .status(HttpStatus.CREATED)
+                     .body(this.USER_CREATED);
+            } catch (Exception exp) {
+               inserted = false;
+               response = ResponseEntity
+                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                     .body(exp.toString());
+            }
+         //}
+
+      // no db configured
+      } else {
+         response = ResponseEntity
+               .status(HttpStatus.INTERNAL_SERVER_ERROR)
+               .body(this.NO_DB);
+      }
+
+      /*
+      // user created
+      if (inserted) {
+         response = ResponseEntity
+               .status(HttpStatus.CREATED)
+               .body(this.USER_CREATED);
+
+      // user not created
+      } else {
+         response = ResponseEntity
+               .status(HttpStatus.INTERNAL_SERVER_ERROR)
+               .body(HttpStatus.INTERNAL_SERVER_ERROR);
 
       }
+      */
+
+      // user already exist
+      /*if (existingUser != null) {
+         response = ResponseEntity
+               .status(HttpStatus.CONFLICT)
+               .body(this.USER_EXISTS);
+      }*/
 
       return response;
 

@@ -6,6 +6,7 @@ import {SharedModule} from "../shared/shared.module";
 import {TranslateService} from "@ngx-translate/core";
 import {AppRoutingModule} from "../app-routing.module";
 import {LanguageService} from "../shared/services/language.service";
+import {HttpService} from "../shared/services/http.service";
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import {LanguageService} from "../shared/services/language.service";
   ],
   providers: [
     TranslateService,
-    LanguageService
+    LanguageService,
+    HttpService
   ],
 })
 export class CoreModule { }

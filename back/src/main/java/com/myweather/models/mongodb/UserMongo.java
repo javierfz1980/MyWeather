@@ -1,7 +1,10 @@
 package com.myweather.models.mongodb;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Collection;
 
 /**
  * Created by javierfz on 7/9/17.
@@ -29,10 +32,12 @@ public class UserMongo {
    private String id;
    private String name;
    private String lastname;
+   @Indexed(unique = true)
    private String email;
    private String password;
    private String gender;
    private int age;
+   private Collection<DashboardMongo> dashboards;
 
    /**
     * Getters and Setters
@@ -66,6 +71,10 @@ public class UserMongo {
       return age;
    }
 
+   public Collection<DashboardMongo> getDashboards() {
+      return dashboards;
+   }
+
    public void setName(String name) {
       this.name = name;
    }
@@ -90,6 +99,10 @@ public class UserMongo {
       this.age = age;
    }
 
+   public void setDashboards(Collection<DashboardMongo> dashboards) {
+      this.dashboards = dashboards;
+   }
+
    /**
     * Constructor.
     *
@@ -106,6 +119,7 @@ public class UserMongo {
    @Override
    public String toString() {
       return "User{" +
+            ", id='" + id + '\'' +
             ", name='" + name + '\'' +
             ", lastname='" + lastname + '\'' +
             ", email='" + email + '\'' +
