@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {User} from "../../shared/models/user";
 import {HttpService} from "../../shared/services/http.service";
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css']
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, OnDestroy {
 
   private ages:Number[];
   private signUpForm: FormGroup;
@@ -18,6 +19,9 @@ export class SignUpComponent implements OnInit {
   private formVisible: boolean = true;
   private accountCreated: boolean;
   private errorCreatingAccount: boolean;
+
+  // subscriptions
+  private putUserSubscription: Subscription;
 
   constructor(private httpService: HttpService) {
 
@@ -44,11 +48,11 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit() {}
 
-  onSubmit(){
+  onSubmit() {
     console.log(this.signUpForm.value);
     this.loadingStatus = true;
 
-    this.httpService.putData('users', this.signUpForm.value).subscribe(
+    this.putUserSubscription = this.httpService.putData('users', this.signUpForm.value).subscribe(
       (response: any) => {
         this.loadingStatus = false;
         this.responseStatus = response.status;
@@ -60,6 +64,7 @@ export class SignUpComponent implements OnInit {
         this.responseStatus = HttpService.STATUS_SERVER_ERROR;
         this.refresh();
         console.log(this.responseStatus);
+        console.log(error);
       }
     );
   }
@@ -71,4 +76,7 @@ export class SignUpComponent implements OnInit {
     this.formVisible = !this.loadingStatus && (!this.responseStatus || this.responseStatus == HttpService.STATUS_SERVER_ERROR);
   }
 
+  ngOnDestroy() {
+    this.putUserSubscription.unsubscribe();
+  }
 }

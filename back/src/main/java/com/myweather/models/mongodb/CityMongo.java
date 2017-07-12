@@ -7,4 +7,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "cities")
 public class CityMongo {
+
+   private String name;
+
+   public String get_name() {
+      return name;
+   }
+
+   public void set_name(String name) {
+      this.name = name;
+   }
 }

@@ -1,10 +1,13 @@
 package com.myweather.models.mongodb;
 
+import org.hibernate.validator.constraints.Email;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by javierfz on 7/9/17.
@@ -33,11 +36,14 @@ public class UserMongo {
    private String name;
    private String lastname;
    @Indexed(unique = true)
+   @Email
    private String email;
    private String password;
    private String gender;
    private int age;
-   private Collection<DashboardMongo> dashboards;
+   private String dashboard;
+   private List<DashboardMongo> dashboards;
+
 
    /**
     * Getters and Setters
@@ -71,9 +77,12 @@ public class UserMongo {
       return age;
    }
 
-   public Collection<DashboardMongo> getDashboards() {
+   public String getDashboard() { return dashboard; }
+
+   public List<DashboardMongo> getDashboards() {
       return dashboards;
    }
+
 
    public void setName(String name) {
       this.name = name;
@@ -99,9 +108,12 @@ public class UserMongo {
       this.age = age;
    }
 
-   public void setDashboards(Collection<DashboardMongo> dashboards) {
+   public void setDashboard(String dashboard) { this.dashboard = dashboard; }
+
+   public void setDashboards(List<DashboardMongo> dashboards) {
       this.dashboards = dashboards;
    }
+
 
    /**
     * Constructor.
@@ -115,6 +127,12 @@ public class UserMongo {
       this.email = email;
       this.password = password;
    }
+
+   public void addDashboard(DashboardMongo dashboard) {
+      if (this.dashboards == null) this.dashboards = new LinkedList<>();
+      this.dashboards.add(dashboard);
+   }
+
 
    @Override
    public String toString() {

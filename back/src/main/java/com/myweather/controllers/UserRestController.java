@@ -1,8 +1,11 @@
 package com.myweather.controllers;
 
 import com.myweather.models.h2db.UserH2;
+import com.myweather.models.mongodb.CityMongo;
+import com.myweather.models.mongodb.DashboardMongo;
 import com.myweather.models.mongodb.UserMongo;
 import com.myweather.respositories.jpa.UserJpaRepository;
+import com.myweather.respositories.mongo.DashboardMongoRepository;
 import com.myweather.respositories.mongo.UserMongoRepository;
 import com.myweather.shared.ConfigUtils;
 import com.sun.org.apache.xpath.internal.operations.Bool;
@@ -11,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collection;
 
 /**
@@ -48,6 +52,11 @@ public class UserRestController {
    @Autowired
    private UserMongoRepository mongoRepository;
 
+   /**
+    * Injects the DashboardMongoRepository
+    */
+   @Autowired
+   private DashboardMongoRepository dashboardMongoRepository;
 
    /**
     * Looks into the repository in order to return all the users
@@ -88,7 +97,7 @@ public class UserRestController {
     * @return Status result
     */
    @RequestMapping(method = RequestMethod.PUT)
-   public ResponseEntity<Collection> insertNewlUser(@RequestBody UserMongo user) {
+   public ResponseEntity<Collection> insertNewlUser(@Valid @RequestBody UserMongo user) {
       ResponseEntity response;
       Boolean inserted = false;
       UserMongo existingUser;
@@ -97,20 +106,25 @@ public class UserRestController {
          // Todo
 
       } else if (ConfigUtils.dbType == ConfigUtils.MONGO_DB) {
-         //existingUser = mongoRepository.findByEmail(user.getEmail());
-         //if (existingUser == null) {
-            try{
-               mongoRepository.insert(user);
-               response = ResponseEntity
-                     .status(HttpStatus.CREATED)
-                     .body(this.USER_CREATED);
-            } catch (Exception exp) {
-               inserted = false;
-               response = ResponseEntity
-                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                     .body(exp.toString());
-            }
-         //}
+         try{
+            // insert dashboard
+            DashboardMongo dashboard = new DashboardMongo(user.getDashboard());
+            dashboardMongoRepository.insert(dashboard);
+            // insert user
+            user.addDashboard(dashboard);
+            mongoRepository.insert(user);
+            // user created
+            response = ResponseEntity
+                  .status(HttpStatus.CREATED)
+                  .body(this.USER_CREATED);
+
+         } catch (Exception exp) {
+            inserted = false;
+            // user not created
+            response = ResponseEntity
+                  .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                  .body(exp.toString());
+         }
 
       // no db configured
       } else {
@@ -118,29 +132,6 @@ public class UserRestController {
                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                .body(this.NO_DB);
       }
-
-      /*
-      // user created
-      if (inserted) {
-         response = ResponseEntity
-               .status(HttpStatus.CREATED)
-               .body(this.USER_CREATED);
-
-      // user not created
-      } else {
-         response = ResponseEntity
-               .status(HttpStatus.INTERNAL_SERVER_ERROR)
-               .body(HttpStatus.INTERNAL_SERVER_ERROR);
-
-      }
-      */
-
-      // user already exist
-      /*if (existingUser != null) {
-         response = ResponseEntity
-               .status(HttpStatus.CONFLICT)
-               .body(this.USER_EXISTS);
-      }*/
 
       return response;
 
