@@ -1,11 +1,10 @@
-package com.myweather.models.mongodb;
+package com.myweather.api.models;
 
 import org.hibernate.validator.constraints.Email;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,7 +20,7 @@ import java.util.List;
  *
  */
 @Document(collection = "users")
-public class UserMongo {
+public class User {
 
    /**
     * Private attributes of User Model
@@ -36,13 +35,12 @@ public class UserMongo {
    private String name;
    private String lastname;
    @Indexed(unique = true)
-   @Email
    private String email;
    private String password;
    private String gender;
    private int age;
    private String dashboard;
-   private List<DashboardMongo> dashboards;
+   private List<Dashboard> dashboards;
 
 
    /**
@@ -79,7 +77,7 @@ public class UserMongo {
 
    public String getDashboard() { return dashboard; }
 
-   public List<DashboardMongo> getDashboards() {
+   public List<Dashboard> getDashboards() {
       return dashboards;
    }
 
@@ -110,7 +108,7 @@ public class UserMongo {
 
    public void setDashboard(String dashboard) { this.dashboard = dashboard; }
 
-   public void setDashboards(List<DashboardMongo> dashboards) {
+   public void setDashboards(List<Dashboard> dashboards) {
       this.dashboards = dashboards;
    }
 
@@ -120,15 +118,15 @@ public class UserMongo {
     *
     * Only name and password are mandatory in order to create a new User.
     */
-   public UserMongo() {
+   public User() {
    }
 
-   public UserMongo(String email, String password) {
+   public User(String email, String password) {
       this.email = email;
       this.password = password;
    }
 
-   public void addDashboard(DashboardMongo dashboard) {
+   public void addDashboard(Dashboard dashboard) {
       if (this.dashboards == null) this.dashboards = new LinkedList<>();
       this.dashboards.add(dashboard);
    }

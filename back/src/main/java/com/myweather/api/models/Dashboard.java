@@ -1,7 +1,6 @@
-package com.myweather.models.mongodb;
+package com.myweather.api.models;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Collection;
@@ -11,12 +10,12 @@ import java.util.Collection;
  * Created by javierfz on 7/11/17.
  */
 @Document(collection = "dashboards")
-public class DashboardMongo {
+public class Dashboard {
 
    @Id
    private String id;
    private String name;
-   private Collection<CityMongo> cities;
+   private Collection<City> cities;
 
    public String getId() {
       return id;
@@ -26,7 +25,7 @@ public class DashboardMongo {
       return name;
    }
 
-   public Collection<CityMongo> getCities() {
+   public Collection<City> getCities() {
       return cities;
    }
 
@@ -38,12 +37,12 @@ public class DashboardMongo {
       this.name = name;
    }
 
-   public void setCities(Collection<CityMongo> cities) {
+   public void setCities(Collection<City> cities) {
       this.cities = cities;
    }
 
    // constructor
-   public DashboardMongo (String name) {
+   public Dashboard(String name) {
       this.name = name;
    }
 

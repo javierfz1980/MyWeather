@@ -1,0 +1,45 @@
+package com.myweather.api.controllers;
+
+import com.myweather.api.models.User;
+import com.myweather.api.services.SessionService;
+import com.myweather.api.services.models.SessionCredentials;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Collection;
+
+/**
+ * Created by javierfz on 7/9/17.
+ *
+ * Controller for endpoint /users
+ *
+ * @RestController -> Annotation to be a REST-endpoint
+ * @RequestMapping("/users") -> resolves /user requests
+ */
+@CrossOrigin(origins = "*")
+@RestController
+@RequestMapping("/session")
+public class SessionController {
+
+   /**
+    * Injects the User Serivce
+    */
+   @Autowired
+   private SessionService sessionService;
+
+
+   @RequestMapping(method = RequestMethod.POST)
+   public ResponseEntity<Collection> authenticate(SessionCredentials sessionCredentials) {
+      ResponseEntity response;
+      response = ResponseEntity
+            .status(HttpStatus.OK)
+            .body((Collection<User>) sessionService.validateCredentials(sessionCredentials));
+
+      return response;
+   }
+}

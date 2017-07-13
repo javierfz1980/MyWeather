@@ -19,6 +19,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   private formVisible: boolean = true;
   private accountCreated: boolean;
   private errorCreatingAccount: boolean;
+  private errorMessage: string = '';
 
   // subscriptions
   private putUserSubscription: Subscription;
@@ -53,24 +54,27 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.loadingStatus = true;
 
     this.putUserSubscription = this.httpService.putData('users', this.signUpForm.value).subscribe(
-      (response: any) => {
+      (response: Response) => {
         this.loadingStatus = false;
-        this.responseStatus = response.status;
+        this.responseStatus = response.status.toString();
         this.refresh();
         console.log(this.responseStatus);
       },
       (error: Error) => {
         this.loadingStatus = false;
-        this.responseStatus = HttpService.STATUS_SERVER_ERROR;
+        this.responseStatus = error['status'];
+        this.errorMessage = error['_body']
         this.refresh();
         console.log(this.responseStatus);
-        console.log(error);
+        console.log(this.errorMessage);
       }
     );
+
+    this.refresh();
   }
 
   private refresh(): void {
-    this.titleVisible = !this.loadingStatus && (!this.responseStatus || this.responseStatus == HttpService.STATUS_SERVER_ERROR);
+    this.titleVisible = (!this.responseStatus || this.responseStatus == HttpService.STATUS_SERVER_ERROR);
     this.accountCreated = !this.loadingStatus && this.responseStatus == HttpService.STATUS_CREATED;
     this.errorCreatingAccount = !this.loadingStatus && this.responseStatus == HttpService.STATUS_SERVER_ERROR;
     this.formVisible = !this.loadingStatus && (!this.responseStatus || this.responseStatus == HttpService.STATUS_SERVER_ERROR);
