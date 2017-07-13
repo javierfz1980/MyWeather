@@ -2,6 +2,7 @@ package com.myweather.api.controllers;
 
 import com.myweather.api.models.User;
 import com.myweather.api.services.SessionService;
+import com.myweather.api.services.UserService;
 import com.myweather.api.services.models.SessionCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ import java.util.Collection;
 public class SessionController {
 
    /**
-    * Injects the User Serivce
+    * Injects the Session Service
     */
    @Autowired
    private SessionService sessionService;
@@ -36,9 +37,13 @@ public class SessionController {
    @RequestMapping(method = RequestMethod.POST)
    public ResponseEntity<Collection> authenticate(SessionCredentials sessionCredentials) {
       ResponseEntity response;
+      User user = sessionService.validateCredentials(sessionCredentials);
+      HttpStatus status = (user.getId() != null) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
+
       response = ResponseEntity
-            .status(HttpStatus.OK)
-            .body((Collection<User>) sessionService.validateCredentials(sessionCredentials));
+            .status(status)
+            .body(user);
+
 
       return response;
    }

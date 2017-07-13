@@ -22,7 +22,7 @@ import java.util.Collection;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/users")
-public class UserRestController {
+public class UserController {
 
 
    /**
@@ -57,16 +57,11 @@ public class UserRestController {
    public ResponseEntity<Collection> insert(@Valid @RequestBody User user) {
       ResponseEntity response;
       CustomResponse customResponse = userService.insert(user);
+      HttpStatus status = (customResponse.getStatus()) ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR;
 
-      if (customResponse.getStatus()) {
-         response = ResponseEntity
-               .status(HttpStatus.CREATED)
-               .body(customResponse.getErrorMessage());
-      } else {
-         response = ResponseEntity
-               .status(HttpStatus.INTERNAL_SERVER_ERROR)
-               .body(customResponse.getErrorMessage());
-      }
+      response = ResponseEntity
+            .status(status)
+            .body(customResponse.getErrorMessage());
 
       return response;
    }

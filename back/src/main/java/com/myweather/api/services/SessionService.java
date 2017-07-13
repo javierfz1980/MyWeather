@@ -1,6 +1,6 @@
 package com.myweather.api.services;
 
-import com.myweather.api.services.models.CustomResponse;
+import com.myweather.api.models.User;
 import com.myweather.api.services.models.SessionCredentials;
 import org.springframework.stereotype.Service;
 
@@ -10,5 +10,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface SessionService {
 
-   CustomResponse validateCredentials(SessionCredentials sessionCredentials);
+   User validateCredentials(SessionCredentials sessionCredentials);
 }

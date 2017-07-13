@@ -18,4 +18,6 @@ public interface UserMongoRepository extends MongoRepository<User, Integer> {
 
    Optional<User> getByEmail(String email);
 
+   Optional<User> getByEmailAndPassword(String email, String password);
+
 }
