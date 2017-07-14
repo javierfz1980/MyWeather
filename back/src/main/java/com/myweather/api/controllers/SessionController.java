@@ -7,11 +7,9 @@ import com.myweather.api.services.models.SessionCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collection;
 
 /**
@@ -35,7 +33,7 @@ public class SessionController {
 
 
    @RequestMapping(method = RequestMethod.POST)
-   public ResponseEntity<Collection> authenticate(SessionCredentials sessionCredentials) {
+   public ResponseEntity<User> authenticate(@Valid @RequestBody SessionCredentials sessionCredentials) {
       ResponseEntity response;
       User user = sessionService.validateCredentials(sessionCredentials);
       HttpStatus status = (user.getId() != null) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;

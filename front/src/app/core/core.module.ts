@@ -7,11 +7,13 @@ import {TranslateService} from "@ngx-translate/core";
 import {AppRoutingModule} from "../app-routing.module";
 import {LanguageService} from "../shared/services/language.service";
 import {HttpService} from "../shared/services/http.service";
+import {AuthModule} from "../auth/auth.module";
 
 @NgModule({
   imports: [
     AppRoutingModule,
-    SharedModule
+    SharedModule,
+    AuthModule
   ],
   declarations: [
     ErrorComponent,
@@ -22,7 +24,8 @@ import {HttpService} from "../shared/services/http.service";
   exports: [
     HeaderComponent,
     FooterComponent,
-    AppRoutingModule
+    AppRoutingModule,
+    AuthModule
   ],
   providers: [
     TranslateService,

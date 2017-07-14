@@ -54,7 +54,7 @@ public class UserController {
     * @return Status result
     */
    @RequestMapping(method = RequestMethod.PUT)
-   public ResponseEntity<Collection> insert(@Valid @RequestBody User user) {
+   public ResponseEntity<String> insert(@Valid @RequestBody User user) {
       ResponseEntity response;
       CustomResponse customResponse = userService.insert(user);
       HttpStatus status = (customResponse.getStatus()) ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR;

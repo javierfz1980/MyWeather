@@ -1,0 +1,18 @@
+#signUpContainer {
+  list-style-type: none;
+  padding: 0px;
+}
+
+#loginSignInForm input,
+#loginSignUpForm input {
+  margin-bottom: 5px;
+}
+
+#dropDownNav {
+  padding: 0px 15px;
+}
+
+#loginSignInForm a,
+#loginSignUpForm a {
+  cursor: pointer;
+}
