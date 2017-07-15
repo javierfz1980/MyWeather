@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-sign-in',
@@ -27,6 +28,10 @@ export class SignInComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  signup(form: NgForm): void {
+    console.log(form.value);
   }
 
 }
