@@ -42,7 +42,6 @@ public class SessionController {
             .status(status)
             .body(user);
 
-
       return response;
    }
 }

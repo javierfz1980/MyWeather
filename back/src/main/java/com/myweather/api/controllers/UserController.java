@@ -61,7 +61,7 @@ public class UserController {
 
       response = ResponseEntity
             .status(status)
-            .body(customResponse.getErrorMessage());
+            .body(customResponse.getMessage());
 
       return response;
    }

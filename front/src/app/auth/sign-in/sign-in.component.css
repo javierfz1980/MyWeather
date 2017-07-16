@@ -1,6 +1,10 @@
-#signUpContainer {
+.signUpContainer {
   list-style-type: none;
   padding: 0px;
+}
+
+.wrongCredentials {
+  color: red;
 }
 
 #loginSignInForm input,

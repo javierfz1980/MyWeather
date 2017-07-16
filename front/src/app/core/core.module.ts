@@ -8,6 +8,8 @@ import {AppRoutingModule} from "../app-routing.module";
 import {LanguageService} from "../shared/services/language.service";
 import {HttpService} from "../shared/services/http.service";
 import {AuthModule} from "../auth/auth.module";
+import {AuthService} from "../auth/services/auth.service";
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   imports: [
@@ -19,7 +21,8 @@ import {AuthModule} from "../auth/auth.module";
     ErrorComponent,
     HeaderComponent,
     FooterComponent,
-    ErrorComponent
+    ErrorComponent,
+    HomeComponent
   ],
   exports: [
     HeaderComponent,
@@ -30,7 +33,8 @@ import {AuthModule} from "../auth/auth.module";
   providers: [
     TranslateService,
     LanguageService,
-    HttpService
+    HttpService,
+    AuthService
   ],
 })
 export class CoreModule { }

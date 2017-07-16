@@ -8,7 +8,10 @@
     "signUp": "Sign Up",
     "forgotPassword": "Forgot Password",
     "forgotSubmit": "Submit",
-    "forgotBack": "Back to Sign In"
+    "forgotBack": "Back to Sign In",
+    "authError": "Wrong credentials",
+    "editAccount": "Edit Info",
+    "signOut": "Sign Out"
   },
 
   "footer": {

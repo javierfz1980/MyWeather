@@ -1,8 +1,9 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h4 *ngIf="titleVisible">Please complete the following info in order to create a new account</h4>
+      <h4 *ngIf="titleVisible">Please complete the following information</h4>
       <h4 *ngIf="accountCreated">Your account was successfully created, please proceed to Sign In!</h4>
+      <h4 *ngIf="accountEdited">Your account was successfully modified !</h4>
       <hr>
       <div *ngIf="loadingStatus" id="preloader"><img src="../../../assets/preloaders/circlePoints.gif"></div>
       <form *ngIf="formVisible" [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
@@ -43,7 +44,7 @@
               <label >Confirm Password</label>
               <input type="password" class="form-control" name="confirmPassword" formControlName="confirmPassword" >
             </div>
-            <div class="form-group">
+            <div *ngIf="!isAuthorized()" class="form-group">
               <label >Default Dashboard Name</label>
               <input type="password" class="form-control" name="dashboard" formControlName="dashboard" >
             </div>
@@ -79,7 +80,7 @@
                 class="btn btn-success"
                 type="submit"
                 [disabled]="signUpForm.invalid || ((signUpForm.get('password').value != signUpForm.get('confirmPassword').value))"
-                >Submit</button>
+                >{{ isAuthorized() ? 'Edit' : 'Submit'}}</button>
             </div>
           </div>
         </div>

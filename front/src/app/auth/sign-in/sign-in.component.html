@@ -1,79 +1,80 @@
-<ul id="signUpContainer">
-<form
-  *ngIf="!isForgot"
-  @FormFadeIn
-  #formSingIn
-  (ngSubmit)="submit(form)"
-  class="navbar-form"
-  id="loginSignInForm">
-  <li>{{ 'header.signInButton' | translate }}</li>
-  <li role="separator" class="divider"></li>
-  <li>
-    <input
-      type="text"
-      class="form-control"
-      id="email"
-      name="email"
-      ngModel
-      required
-      email
-      placeholder="{{ 'header.emailPlaceHolder' | translate }}"
-    >
-  </li>
-  <li>
-    <input
-      type="text"
-      class="form-control"
-      id="password"
-      name="password"
-      ngModel
-      required
-      placeholder="{{ 'header.passwordPlaceHolder' | translate }}"
-    >
-  </li>
-  <li>
-    <button
-      type="submit"
-      class="btn btn-primary btn-sm"
-      style="width: 100%"
-      disabled="form.invalid"
-    >{{ 'header.signInButton' | translate }}
-    </button>
-  </li>
-  <li role="separator" class="divider"></li>
-  <li><a routerLink="signup"> {{ 'header.signUp' | translate }} </a> | <a (click)="isForgot=true"> {{ 'header.forgotPassword' | translate }} </a> </li>
-</form>
-<form
-  @FormFadeIn
-  #formForgot
-  *ngIf="isForgot"
-  class="navbar-form"
-  id="loginSignUpForm"
-  (submit)="submit(formForgot)">
-  <li>{{ 'header.forgotPassword' | translate }}</li>
-  <li role="separator" class="divider"></li>
-  <li>
-    <input
-      type="text"
-      class="form-control"
-      placeholder="{{ 'header.emailPlaceHolder' | translate }}"
-      ngModel
-      name="emailForgot"
-      id="emailForgot"
-      required
-      email
-    >
-  </li>
-  <li>
-    <button
-      type="submit"
-      class="btn btn-primary btn-sm"
-      style="width: 100%"
-      disabled="formForgot.invalid"
-    >{{ 'header.forgotSubmit' | translate }}
-    </button>
-  </li>
-  <li role="separator" class="divider"></li>
-  <li><a (click)="isForgot=false"> {{ 'header.forgotBack' | translate }} </a> </li>
-</form>
+<ul *ngIf="!isForgot" class="signUpContainer">
+  <form
+    @FormFadeIn
+    #formSingIn="ngForm"
+    (ngSubmit)="signin(formSingIn)"
+    class="navbar-form"
+    id="loginSignInForm">
+    <li>{{ 'header.signInButton' | translate }}</li>
+    <li role="separator" class="divider"></li>
+    <li>
+      <input
+        type="text"
+        class="form-control"
+        id="email"
+        name="email"
+        ngModel
+        required
+        email
+        placeholder="{{ 'header.emailPlaceHolder' | translate }}"
+      >
+    </li>
+    <li>
+      <input
+        type="text"
+        class="form-control"
+        id="password"
+        name="password"
+        ngModel
+        required
+        placeholder="{{ 'header.passwordPlaceHolder' | translate }}"
+      >
+    </li>
+    <li>
+      <button
+        type="submit"
+        class="btn btn-primary btn-sm"
+        style="width: 100%"
+        [disabled]="formSingIn.invalid"
+      >{{ 'header.signInButton' | translate }}
+      </button>
+    </li>
+    <li *ngIf="wrongCredentials"><span class="wrongCredentials">{{ 'header.authError' | translate }}</span></li>
+    <li role="separator" class="divider"></li>
+    <li><a routerLink="signup"> {{ 'header.signUp' | translate }} </a> | <a (click)="isForgot=true"> {{ 'header.forgotPassword' | translate }} </a> </li>
+  </form>
+</ul>
+<ul *ngIf="isForgot" class="signUpContainer">
+  <form
+    @FormFadeIn
+    #formForgot
+    class="navbar-form"
+    id="loginSignUpForm"
+    (submit)="submit(formForgot)">
+    <li>{{ 'header.forgotPassword' | translate }}</li>
+    <li role="separator" class="divider"></li>
+    <li>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="{{ 'header.emailPlaceHolder' | translate }}"
+        ngModel
+        name="emailForgot"
+        id="emailForgot"
+        required
+        email
+      >
+    </li>
+    <li>
+      <button
+        type="submit"
+        class="btn btn-primary btn-sm"
+        style="width: 100%"
+        [disabled]="formForgot.invalid"
+      >{{ 'header.forgotSubmit' | translate }}
+      </button>
+    </li>
+    <li role="separator" class="divider"></li>
+    <li><a (click)="isForgot=false"> {{ 'header.forgotBack' | translate }} </a> </li>
+  </form>
 </ul>

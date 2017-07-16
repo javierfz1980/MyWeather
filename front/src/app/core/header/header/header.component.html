@@ -21,9 +21,15 @@
 
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown" dropDown id="dropDownNav">
-          <a class="dropdown-toggle" role="button"><span class="glyphicon glyphicon-user"></span> {{ 'header.account' | translate }} <span class="caret"></span></a>
-          <ul class="dropdown-menu" id="">
-            <li><app-sign-in></app-sign-in></li>
+          <a class="dropdown-toggle" role="button"><span class="glyphicon glyphicon-user">
+            </span> {{ (isAuthorized()) ? (currentUserName()) : ('header.account' | translate) }} <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" id="accountDropdownMenu">
+            <li *ngIf="!isAuthorized()"><app-sign-in></app-sign-in></li>
+            <ng-container *ngIf="isAuthorized()">
+              <li><a class="mousePointer" routerLink="account">{{ 'header.editAccount' | translate }}  <span class="glyphicon glyphicon-edit"></span></a></li>
+              <li><a class="mousePointer" (click)="logout()">{{ 'header.signOut' | translate }}  <span class="glyphicon glyphicon-log-out"></span></a></li>
+            </ng-container>
           </ul>
         </li>
         <li class="dropdown" dropDown>

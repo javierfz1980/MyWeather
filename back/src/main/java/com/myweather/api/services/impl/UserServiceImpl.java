@@ -43,8 +43,7 @@ public class UserServiceImpl implements UserService {
    public CustomResponse insert(User user) {
       CustomResponse CustomResponse = new CustomResponse();
       Boolean status = false;
-      String errorMessage = "";
-
+      String message = "";
 
       try {
          // new default dashboard for the user
@@ -54,27 +53,22 @@ public class UserServiceImpl implements UserService {
          if (this.getByEmail(user.getEmail()).getId() == null) {
             // insert dashboard
             dashboardService.insert(dashboard);
-
             // insert user
             repository.insert(user);
-
             status = true;
-            errorMessage = String.format("User with email %s and id %s successfully inserted on db", user.getEmail(), user.getId());
+            message = String.format("User with email %s and id %s successfully inserted on db", user.getEmail(), user.getId());
 
          } else {
-
-            errorMessage = String.format("User with email %s could not be inserted on db because already exist", user.getEmail());
+            message = String.format("User with email %s could not be inserted on db because already exist", user.getEmail());
          }
 
       } catch (Exception ex) {
-
          logger.error(String.format("User with email %s could not be inserted on db", user.getEmail()), ex.getMessage());
-
       }
 
       CustomResponse.setStatus(status);
-      CustomResponse.setErrorMessage(errorMessage);
-      logger.error(errorMessage);
+      CustomResponse.setMessage(message);
+      logger.error(message);
 
       return CustomResponse;
    }

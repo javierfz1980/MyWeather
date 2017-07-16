@@ -4,6 +4,7 @@ import {SignUpComponent} from "./sign-up/sign-up.component";
 
 const authRoutes: Routes = [
   {path: 'signup', component: SignUpComponent},
+  {path: 'account', component: SignUpComponent},
   {path: '**', redirectTo: '/'}
 ]
 

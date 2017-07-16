@@ -1,8 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {User} from "../../shared/models/user";
+import {User} from "../../shared/models/data/user";
 import {HttpService} from "../../shared/services/http.service";
 import {Subscription} from "rxjs/Subscription";
+import {CustomResponse} from "../../shared/models/http/CustomResponse";
+import {AuthService} from "../services/auth.service";
 
 @Component({
   selector: 'app-sign-up',
@@ -19,20 +21,15 @@ export class SignUpComponent implements OnInit, OnDestroy {
   private formVisible: boolean = true;
   private accountCreated: boolean;
   private errorCreatingAccount: boolean;
+  private accountEdited: boolean;
   private errorMessage: string = '';
 
   // subscriptions
-  private putUserSubscription: Subscription;
+  private signUpSubscription: Subscription;
 
-  constructor(private httpService: HttpService) {
+  constructor(private httpService: HttpService, private authService: AuthService) {
 
-    const user = new User();
-    user.name = 'javier';
-    user.lastname = 'fernandez';
-    user.email = 'javierfz1980@gmail.com';
-    user.password = 'asdasd';
-    user.age = 37;
-    user.gender = ''
+    const user = (this.isAuthorized()) ? this.authService.user : new User();
 
     this.ages = Array.from(Array(100),(x,i)=>i);
     this.signUpForm = new FormGroup({
@@ -40,47 +37,58 @@ export class SignUpComponent implements OnInit, OnDestroy {
       'lastname': new FormControl(user.lastname, Validators.required),
       'email': new FormControl(user.email, [Validators.required, Validators.email]),
       'password': new FormControl(user.password, Validators.required),
-      'confirmPassword': new FormControl('asdasd', Validators.required),
+      'confirmPassword': new FormControl(null, Validators.required),
       'age': new FormControl(user.age, Validators.required),
       'gender': new FormControl(user.gender, Validators.required),
-      'dashboard': new FormControl('asd', Validators.required)
+      'dashboard': new FormControl(user.dashboard, Validators.required)
     });
   }
 
   ngOnInit() {}
 
   onSubmit() {
-    console.log(this.signUpForm.value);
     this.loadingStatus = true;
-
-    this.putUserSubscription = this.httpService.putData('users', this.signUpForm.value).subscribe(
-      (response: Response) => {
-        this.loadingStatus = false;
-        this.responseStatus = response.status.toString();
-        this.refresh();
-        console.log(this.responseStatus);
-      },
-      (error: Error) => {
-        this.loadingStatus = false;
-        this.responseStatus = error['status'];
-        this.errorMessage = error['_body']
-        this.refresh();
-        console.log(this.responseStatus);
-        console.log(this.errorMessage);
-      }
-    );
-
+    //(this.authService.isAuthorized()) ? this.edit() : this.signUp();
+    this.signUp();
     this.refresh();
   }
 
-  private refresh(): void {
-    this.titleVisible = (!this.responseStatus || this.responseStatus == HttpService.STATUS_SERVER_ERROR);
-    this.accountCreated = !this.loadingStatus && this.responseStatus == HttpService.STATUS_CREATED;
-    this.errorCreatingAccount = !this.loadingStatus && this.responseStatus == HttpService.STATUS_SERVER_ERROR;
-    this.formVisible = !this.loadingStatus && (!this.responseStatus || this.responseStatus == HttpService.STATUS_SERVER_ERROR);
+  private edit(): void {
+    console.log('TODO edit user');
   }
 
+  private signUp(): void {
+    const newUser: User = this.signUpForm.value;
+    this.signUpSubscription = this.httpService.requestApi(HttpService.USER_PATH, HttpService.PUT, newUser)
+      .subscribe(
+        (response: CustomResponse) => {
+          this.loadingStatus = false;
+          this.responseStatus = response.status;
+          this.refresh();
+        },
+        (error: CustomResponse) => {
+          this.loadingStatus = false;
+          this.responseStatus = error.status;
+          this.errorMessage = error.message;
+          this.refresh();
+        }
+    );
+  }
+
+
+
+  private refresh(): void {
+    this.titleVisible = (!this.responseStatus || this.responseStatus == HttpService.STATUS_SERVER_ERROR);
+    this.accountCreated = !this.isAuthorized() && !this.loadingStatus && this.responseStatus == HttpService.STATUS_CREATED;
+    this.errorCreatingAccount = !this.loadingStatus && this.responseStatus == HttpService.STATUS_SERVER_ERROR;
+    this.formVisible = !this.loadingStatus && (!this.responseStatus || this.responseStatus == HttpService.STATUS_SERVER_ERROR);
+    this.accountEdited = this.isAuthorized() && !this.loadingStatus && this.responseStatus == HttpService.STATUS_CREATED;;
+  }
+
+  isAuthorized(): boolean {
+    return this.authService.isAuthorized();
+  }
   ngOnDestroy() {
-    this.putUserSubscription.unsubscribe();
+    if(this.signUpSubscription)this.signUpSubscription.unsubscribe();
   }
 }

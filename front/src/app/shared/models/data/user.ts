@@ -1,3 +1,4 @@
+import {Dashboard} from "./dashboard";
 export class User {
 
   private _id: string;
@@ -7,6 +8,8 @@ export class User {
   private _password: string;
   private _gender: string;
   private _age: number;
+  private _dashboard: string;
+  private _dashboards: Dashboard[];
 
   get id(): string {
     return this._id;
@@ -31,8 +34,17 @@ export class User {
   get gender(): string {
     return this._gender;
   }
+
   get age(): number {
     return this._age;
+  }
+
+  get dashboard(): string {
+    return this._dashboard;
+  }
+
+  get dashboards(): Dashboard[] {
+    return this._dashboards;
   }
 
 
@@ -63,5 +75,12 @@ export class User {
     this._age = value;
   }
 
+  set dashboards(value: Dashboard[]) {
+    this._dashboards = value;
+  }
+
+  set dashboard(value: string) {
+    this._dashboard = value;
+  }
 
 }
