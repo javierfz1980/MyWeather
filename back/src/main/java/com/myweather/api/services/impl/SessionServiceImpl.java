@@ -34,9 +34,10 @@ public class SessionServiceImpl implements SessionService {
          user = userRepository
                .getByEmailAndPassword(email, password)
                .orElseThrow(() -> new Exception(String.format("User with email %s and password %s could not be found on db", email, password)));
-         logger.error(String.format("User with email %s and password %s could not be found on db", email, password));
+         logger.info(String.format("User with email %s and password %s found on db", email, password));
       } catch (Exception ex) {
-         user = new User();
+         logger.error(String.format("User with email %s and password %s could not be found on db", email, password));
+         user = null;
       }
 
       return user;

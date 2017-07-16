@@ -36,7 +36,7 @@ public class SessionController {
    public ResponseEntity<User> authenticate(@Valid @RequestBody SessionCredentials sessionCredentials) {
       ResponseEntity response;
       User user = sessionService.validateCredentials(sessionCredentials);
-      HttpStatus status = (user.getId() != null) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
+      HttpStatus status = (user != null) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
 
       response = ResponseEntity
             .status(status)
