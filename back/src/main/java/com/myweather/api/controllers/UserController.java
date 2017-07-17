@@ -51,7 +51,7 @@ public class UserController {
    /**
     * Creates a new User into the repository
     *
-    * @return Status result
+    * @return ResponseEntity with Status result
     */
    @RequestMapping(method = RequestMethod.PUT)
    public ResponseEntity<String> insert(@Valid @RequestBody User user) {
@@ -62,6 +62,25 @@ public class UserController {
       response = ResponseEntity
             .status(status)
             .body(customResponse.getMessage());
+
+      return response;
+   }
+
+
+   /**
+    * Modifies an existing User
+    *
+    * @return ResponseEntity with Status result
+    */
+   @RequestMapping(method = RequestMethod.POST)
+   public ResponseEntity<User> save(@Valid @RequestBody User user) {
+      ResponseEntity response;
+      User updatedUser = userService.save(user);
+      HttpStatus status = (updatedUser != null) ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
+
+      response = ResponseEntity
+            .status(status)
+            .body(updatedUser);
 
       return response;
    }

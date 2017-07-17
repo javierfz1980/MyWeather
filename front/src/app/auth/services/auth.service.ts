@@ -19,9 +19,12 @@ export class AuthService {
     return this._user
   }
 
-
   forgot(): void {
 
+  }
+
+  refresh(user: User): void {
+    this._user = user;
   }
 
   signIn(user: User): void {

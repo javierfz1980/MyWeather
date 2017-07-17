@@ -30,6 +30,9 @@ export class HttpService {
     return source
       .map(
         (response: any) => {
+          console.log("httpservice response: ");
+          console.log(response);
+          console.log("---------------");
           customResponse.data = (expectResponseData) ? response.json() : null;
           customResponse.status = response.status.toString();
           customResponse.message = response['_body'];
@@ -38,6 +41,9 @@ export class HttpService {
       )
       .catch(
         (error: any) => {
+          console.log("httpservice error: ");
+          console.log(error);
+          console.log("---------------");
           customResponse.data = null;
           customResponse.status = error['status'];
           customResponse.message = error['_body'];

@@ -24,6 +24,11 @@ public interface UserService {
    User getByEmail(String email);
 
    /**
+    * Modifies an User from db
+    */
+   User save(User user);
+
+   /**
     * Retreives an User from db
     */
    List<User> getAll();

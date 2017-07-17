@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BoardsComponent implements OnInit {
 
+  private dashbiardTitle: string = "title";
+
   constructor() { }
 
   ngOnInit() {

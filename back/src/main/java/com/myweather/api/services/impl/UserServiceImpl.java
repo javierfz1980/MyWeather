@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     */
    @Override
    public CustomResponse insert(User user) {
-      CustomResponse CustomResponse = new CustomResponse();
+      CustomResponse customResponse = new CustomResponse();
       Boolean status = false;
       String message = "";
 
@@ -66,11 +66,11 @@ public class UserServiceImpl implements UserService {
          logger.error(String.format("User with email %s could not be inserted on db", user.getEmail()), ex.getMessage());
       }
 
-      CustomResponse.setStatus(status);
-      CustomResponse.setMessage(message);
+      customResponse.setStatus(status);
+      customResponse.setMessage(message);
       logger.error(message);
 
-      return CustomResponse;
+      return customResponse;
    }
 
 
@@ -93,6 +93,26 @@ public class UserServiceImpl implements UserService {
          logger.error(String.format("User with email $s not found on db", email));
          return new User();
       }
+   }
+
+
+   /**
+    * Modifies an existing user from the repository.
+    *
+    * @param user
+    * @return
+    */
+   @Override
+   public User save (User user) {
+      String message;
+      Boolean status;
+      try{
+         repository.save(user);
+         logger.info(String.format("User with id %s saved successfully", user.getId()));
+      } catch (Exception ex) {
+         logger.error(String.format("User with id %s could not be saved", user.getId()));
+      }
+      return user;
    }
 
 

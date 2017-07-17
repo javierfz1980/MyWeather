@@ -5,6 +5,7 @@ import {HttpService} from "../../shared/services/http.service";
 import {Subscription} from "rxjs/Subscription";
 import {CustomResponse} from "../../shared/models/http/CustomResponse";
 import {AuthService} from "../services/auth.service";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'app-sign-up',
@@ -25,7 +26,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   private errorMessage: string = '';
 
   // subscriptions
-  private signUpSubscription: Subscription;
+  private subscription: Subscription;
 
   constructor(private httpService: HttpService, private authService: AuthService) {
 
@@ -48,47 +49,49 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.loadingStatus = true;
-    //(this.authService.isAuthorized()) ? this.edit() : this.signUp();
-    this.signUp();
-    this.refresh();
-  }
+    const user: User = this.signUpForm.value;
+    let method: string = HttpService.PUT;
 
-  private edit(): void {
-    console.log('TODO edit user');
-  }
+    if (this.authService.isAuthorized()) {
+      // exisiting user with ID and dashboards
+      method = HttpService.POST;
+      user.id = this.authService.user.id;
+      user.dashboards = this.authService.user.dashboards;
+    }
 
-  private signUp(): void {
-    const newUser: User = this.signUpForm.value;
-    this.signUpSubscription = this.httpService.requestApi(HttpService.USER_PATH, HttpService.PUT, newUser)
+    console.log(user);
+    this.subscription = this.httpService.requestApi(HttpService.USER_PATH, method, user)
       .subscribe(
-        (response: CustomResponse) => {
+        (response: any) => {
+          console.log(response);
           this.loadingStatus = false;
           this.responseStatus = response.status;
+          if (this.isAuthorized()) this.authService.refresh(<User>response.data);
           this.refresh();
         },
         (error: CustomResponse) => {
+          console.log(error);
           this.loadingStatus = false;
           this.responseStatus = error.status;
           this.errorMessage = error.message;
           this.refresh();
         }
-    );
+      );
+    this.refresh();
   }
-
-
 
   private refresh(): void {
     this.titleVisible = (!this.responseStatus || this.responseStatus == HttpService.STATUS_SERVER_ERROR);
     this.accountCreated = !this.isAuthorized() && !this.loadingStatus && this.responseStatus == HttpService.STATUS_CREATED;
     this.errorCreatingAccount = !this.loadingStatus && this.responseStatus == HttpService.STATUS_SERVER_ERROR;
-    this.formVisible = !this.loadingStatus && (!this.responseStatus || this.responseStatus == HttpService.STATUS_SERVER_ERROR);
-    this.accountEdited = this.isAuthorized() && !this.loadingStatus && this.responseStatus == HttpService.STATUS_CREATED;;
+    this.formVisible = !this.loadingStatus && (!this.responseStatus || this.responseStatus == HttpService.STATUS_SERVER_ERROR || (this.responseStatus == HttpService.STATUS_OK && this.isAuthorized()) );
+    this.accountEdited = this.isAuthorized() && !this.loadingStatus && this.responseStatus == HttpService.STATUS_OK;
   }
 
   isAuthorized(): boolean {
     return this.authService.isAuthorized();
   }
   ngOnDestroy() {
-    if(this.signUpSubscription)this.signUpSubscription.unsubscribe();
+    if(this.subscription)this.subscription.unsubscribe();
   }
 }

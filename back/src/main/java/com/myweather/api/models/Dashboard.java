@@ -46,6 +46,8 @@ public class Dashboard {
       this.name = name;
    }
 
+   public Dashboard() {}
+
    @Override
    public String toString() {
       return "Dashboard{" +
