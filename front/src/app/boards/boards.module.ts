@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BoardsComponent } from './boards.component';
-import { LocationsComponent } from './locations/locations.component';
-import { LocationComponent } from './locations/location/location.component';
+import { LocationsComponent } from './weathers/locations.component';
+import { LocationComponent } from './weathers/weather/location.component';
 import { BoardsRouting } from "./boards-routing.module";
 
 @NgModule({

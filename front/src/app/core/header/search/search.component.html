@@ -1,0 +1,30 @@
+<form class="navbar-form navbar-left" id="formHeader">
+  <input
+    id="searchInpurHeader"
+    type="text"
+    class="form-control"
+    [ngClass]="{loading: loading}"
+    placeholder="{{ 'search.searchPlaceHolder' | translate }}"
+    (keyup)="inputSearch($event.target.value)"
+    (blur)="onBlur()"
+    (focus)="onFocus()"
+  >
+  <div *ngIf="!loading && isfocus" class="row results">
+    <div class="col-xs-12">
+      <ul style="padding: 0px" >
+        <li *ngFor="let weather of results" class="list-group-item clearfix mousePointer">
+          <span class="list-group-item-text">{{weather.title | slice:0:50 }}</span>
+
+          <span style="float: right">
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <button
+              class="btn btn-success btn-xs"
+              [disabled]="!isAuthorized()"
+            >Add</button>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</form>
+

@@ -1,7 +1,6 @@
 {
   "header": {
     "account": "Account",
-    "searchPlaceHolder": "Location",
     "emailPlaceHolder": "email",
     "passwordPlaceHolder": "password",
     "signInButton": "Sign In",
@@ -12,6 +11,10 @@
     "authError": "Wrong credentials",
     "editAccount": "Edit Info",
     "signOut": "Sign Out"
+  },
+
+  "search": {
+    "searchPlaceHolder": "Location"
   },
 
   "footer": {

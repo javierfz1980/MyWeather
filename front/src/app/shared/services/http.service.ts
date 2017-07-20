@@ -20,6 +20,7 @@ export class HttpService {
 
   public static readonly USER_PATH: string = "users";
   public static readonly SESSION_PATH: string = "session";
+  public static readonly WEATHER_PATH: string = "weather";
 
   constructor(private http: Http){}
 

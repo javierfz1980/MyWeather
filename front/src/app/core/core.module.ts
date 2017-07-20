@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { ErrorComponent } from './error/error.component';
-import {HeaderComponent} from "./header/header/header.component";
+import {HeaderComponent} from "./header/header.component";
 import {FooterComponent} from "./footer/footer/footer/footer.component";
 import {SharedModule} from "../shared/shared.module";
 import {TranslateService} from "@ngx-translate/core";
@@ -10,6 +10,8 @@ import {HttpService} from "../shared/services/http.service";
 import {AuthModule} from "../auth/auth.module";
 import {AuthService} from "../auth/services/auth.service";
 import { HomeComponent } from './home/home.component';
+import { SearchComponent } from './header/search/search.component';
+import {WeatherService} from "../boards/services/weather.service";
 
 @NgModule({
   imports: [
@@ -22,7 +24,8 @@ import { HomeComponent } from './home/home.component';
     HeaderComponent,
     FooterComponent,
     ErrorComponent,
-    HomeComponent
+    HomeComponent,
+    SearchComponent
   ],
   exports: [
     HeaderComponent,
@@ -34,7 +37,8 @@ import { HomeComponent } from './home/home.component';
     TranslateService,
     LanguageService,
     HttpService,
-    AuthService
+    AuthService,
+    WeatherService
   ],
 })
 export class CoreModule { }

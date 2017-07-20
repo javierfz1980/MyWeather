@@ -14,10 +14,7 @@
 
     <div class="collapse navbar-collapse" [collapse]="isCollapsed">
 
-      <form class="navbar-form navbar-left" id="formHeader">
-        <input id="searchInpurHeader" type="text" class="form-control" placeholder="{{ 'header.searchPlaceHolder' | translate }}">
-        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-      </form>
+      <app-search></app-search>
 
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown" dropDown id="dropDownNav">
@@ -25,7 +22,9 @@
             </span> {{ (isAuthorized()) ? (currentUserName()) : ('header.account' | translate) }} <span class="caret"></span>
           </a>
           <ul class="dropdown-menu" id="accountDropdownMenu">
-            <li *ngIf="!isAuthorized()"><app-sign-in></app-sign-in></li>
+            <li *ngIf="!isAuthorized()">
+              <app-sign-in></app-sign-in>
+            </li>
             <ng-container *ngIf="isAuthorized()">
               <li><a class="mousePointer" routerLink="account">{{ 'header.editAccount' | translate }}  <span class="glyphicon glyphicon-edit"></span></a></li>
               <li><a class="mousePointer" (click)="logout()">{{ 'header.signOut' | translate }}  <span class="glyphicon glyphicon-log-out"></span></a></li>

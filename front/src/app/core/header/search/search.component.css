@@ -1,0 +1,17 @@
+.loading {
+  background-color: #ffffff;
+  background-image: url("../../../../assets/preloaders/circle-crop.gif");
+  background-size: 30px 25px;
+  background-position:right center;
+  background-repeat: no-repeat;
+}
+
+.results {
+  position: absolute;
+  max-width: 750px;
+  z-index: 99;
+}
+
+.mousePointer {
+  cursor: pointer;
+}
