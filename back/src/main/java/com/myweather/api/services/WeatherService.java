@@ -15,4 +15,5 @@ import java.util.List;
 public interface WeatherService {
 
    List<Weather> getWeatherByTitleLike(String input);
+
 }
