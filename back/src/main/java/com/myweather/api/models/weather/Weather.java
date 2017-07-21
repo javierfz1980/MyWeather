@@ -3,12 +3,15 @@ package com.myweather.api.models.weather;
 import com.myweather.api.models.weather.data.Condition;
 import com.myweather.api.models.weather.data.Forecast;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 /**
  * Created by javierfz on 7/20/17.
  */
+@Document(collection = "weathers")
 public class Weather {
 
    /**
@@ -16,7 +19,7 @@ public class Weather {
     */
    @Id
    private String id;
-   private Long woeid;
+   private String woeid;
    private String title;
    private String link;
    private String pubDate;
@@ -30,7 +33,7 @@ public class Weather {
       return id;
    }
 
-   public Long getWoeid() {
+   public String getWoeid() {
       return woeid;
    }
 
@@ -62,7 +65,7 @@ public class Weather {
       this.id = id;
    }
 
-   public void setWoeid(Long woeid) {
+   public void setWoeid(String woeid) {
       this.woeid = woeid;
    }
 

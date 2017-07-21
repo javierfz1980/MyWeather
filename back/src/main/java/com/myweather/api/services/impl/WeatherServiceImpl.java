@@ -12,10 +12,12 @@ import com.myweather.utils.Reflection;
 import com.myweather.yahoo.YahooRequester;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Created by javierfz on 7/19/17.
@@ -34,6 +36,21 @@ public class WeatherServiceImpl implements WeatherService {
    private WeahterMongoRepository repository;
 
 
+   /*public Collection<Weather> findByName(String like) {
+      try{
+         Query query = new Query();
+         query.addCriteria(Criteria.where("title").regex(toLikeRegex(like)));
+         return repository.find(query, Weather.class);
+      } catch(PatternSyntaxException e) {
+         return Collections.emptyList();
+      }
+   }
+
+   private String toLikeRegex(String source) {
+      return source.replaceAll("\\*", ".*");
+   }*/
+
+
    /**
     * Service try to look on internal Weather repository 1st. If there is no matches locally, the fetch weathers from Yahoo.
     *
@@ -41,27 +58,27 @@ public class WeatherServiceImpl implements WeatherService {
     * @return
     */
    @Override
-   public LinkedList<Weather> getWeatherMatches(String input) {
-      LinkedList<Weather> weather;
+   public List<Weather> getWeatherByTitleLike(String input) {
 
-      try {
+      List<Weather> weather = repository.findByTitleLike(input);
 
-         weather = repository
-               .findByTitleLike(input)
-               .orElseThrow(() -> new Exception(String.format("string doesn't match local db for input: %s . Fetching from Yahoo.", input)));
+      if (weather.size()>0) {
          logger.info(String.format("there are string matches on local db for input: %s", input));
 
-      } catch (Exception ex) {
-
+      } else {
          logger.info(String.format("string doesn't match local db for input: %s . Fetching from Yahoo.", input));
 
          try {
+            //TODO implement Yahoo query builder in order te allow different querys
             YahooRequester yahoo = new YahooRequester();
             JsonObject requestResult = yahoo.query(input);
 
             if(requestResult != null) {
                weather = createWeather(requestResult);
                logger.info(String.format("there are string matches on Yahoo db for input %s ", input));
+               repository.save(weather);
+               logger.info(String.format("Yahoo results saved on local db"));
+
             } else {
                weather = null;
                logger.info(String.format("there are no string matches on Yahoo db for input %s ", input));
@@ -72,9 +89,9 @@ public class WeatherServiceImpl implements WeatherService {
             weather = null;
             logger.info(String.format("There was an error fetching data from Yahoo"));
          }
-
       }
-      if(weather == null) weather = new LinkedList<>();
+
+      if(weather==null)weather = new ArrayList<>();
       return weather;
    }
 
@@ -90,11 +107,13 @@ public class WeatherServiceImpl implements WeatherService {
       JsonArray results = object.getAsJsonObject("query").getAsJsonObject("results").getAsJsonArray("channel");
       for(int i=0; i<results.size(); i++){
          JsonObject item = results.get(i).getAsJsonObject().getAsJsonObject("item");
+         String woeid = this.extractWoeidFromLink(item.get("link").getAsString());
          Weather weather = new Weather();
+         weather.setId(woeid);
          weather.setTitle(item.get("title").getAsString());
          weather.setPubDate(item.get("pubDate").getAsString());
          weather.setLink(item.get("link").getAsString());
-         weather.setWoeid(this.extractWoeidFromLink(item.get("link").getAsString()));
+         weather.setWoeid(woeid);
          weather.setCondition(this.createCondition(item.getAsJsonObject("condition")));
          weather.setForecast(this.createForecasts(item));
 
@@ -137,10 +156,10 @@ public class WeatherServiceImpl implements WeatherService {
     * @param link
     * @return
     */
-   private Long extractWoeidFromLink(String link) {
+   private String extractWoeidFromLink(String link) {
       String[] parts = link.split("-");
       String id = parts[1].substring(0, parts[1].length()-1);
-      return Long.parseLong(id);
+      return id;
    }
 
    /**

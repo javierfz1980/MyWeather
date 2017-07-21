@@ -35,8 +35,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   inputSearch(str: string): void{
-    this.loading = true;
-    this.searchStr.next(str);
+    if(str && str != '' && str != undefined) {
+      this.loading = true;
+      this.searchStr.next(str);
+    }
   }
 
   onBlur(): void{

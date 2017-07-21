@@ -11,8 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Collection;
-import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by javierfz on 7/19/17.
@@ -33,9 +32,9 @@ public class WeatherController {
     * @return
     */
    @RequestMapping(method = RequestMethod.POST)
-   public ResponseEntity<Weather> getWeatherForInput(@Valid @RequestBody String input) {
+   public ResponseEntity<Weather> getWeatherByTitleLike(@Valid @RequestBody String input) {
       ResponseEntity response;
-      LinkedList<Weather> weather = weatherService.getWeatherMatches(input);
+      List<Weather> weather = weatherService.getWeatherByTitleLike(input);
       response = ResponseEntity
             .status(HttpStatus.OK)
             .body(weather);

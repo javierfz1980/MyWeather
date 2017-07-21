@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by javierfz on 7/19/17.
@@ -13,5 +14,5 @@ import java.util.LinkedList;
 @Service
 public interface WeatherService {
 
-   LinkedList<Weather> getWeatherMatches(String input);
+   List<Weather> getWeatherByTitleLike(String input);
 }
