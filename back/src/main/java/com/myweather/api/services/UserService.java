@@ -1,6 +1,7 @@
 package com.myweather.api.services;
 
 import com.myweather.api.models.User;
+import com.myweather.api.models.weather.Weather;
 import com.myweather.api.services.models.CustomResponse;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +27,19 @@ public interface UserService {
    /**
     * Modifies an User from db
     */
-   User save(User user);
+   User update(User user);
 
    /**
     * Retreives an User from db
     */
    List<User> getAll();
+
+   /**
+    *
+    * @param weather
+    * @param userId
+    * @param dashboardId
+    * @return
+    */
+   //CustomResponse addWeatherToDashboard(Weather weather, String userId, String dashboardId);
 }

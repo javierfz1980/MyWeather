@@ -50,17 +50,19 @@ export class SignUpComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.loadingStatus = true;
     const user: User = this.signUpForm.value;
-    let method: string = HttpService.PUT;
+    let method: string = HttpService.POST;
+    let url: string = HttpService.USER_PATH;
 
     if (this.authService.isAuthorized()) {
       // exisiting user with ID and dashboards
-      method = HttpService.POST;
+      method = HttpService.PUT;
       user.id = this.authService.user.id;
       user.dashboards = this.authService.user.dashboards;
+      url += "/"+this.authService.user.id;
     }
 
     console.log(user);
-    this.subscription = this.httpService.requestApi(HttpService.USER_PATH, method, user)
+    this.subscription = this.httpService.requestApi(url, method, user)
       .subscribe(
         (response: any) => {
           console.log(response);

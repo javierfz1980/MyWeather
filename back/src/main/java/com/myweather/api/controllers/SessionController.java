@@ -32,6 +32,11 @@ public class SessionController {
    private SessionService sessionService;
 
 
+   /**
+    *
+    * @param sessionCredentials
+    * @return
+    */
    @RequestMapping(method = RequestMethod.POST)
    public ResponseEntity<User> authenticate(@Valid @RequestBody SessionCredentials sessionCredentials) {
       ResponseEntity response;

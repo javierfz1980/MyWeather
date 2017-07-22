@@ -3,7 +3,6 @@ package com.myweather.api.services.impl;
 import com.myweather.api.models.Dashboard;
 import com.myweather.api.models.User;
 import com.myweather.api.repositories.mongo.UserMongoRepository;
-import com.myweather.api.services.DashboardService;
 import com.myweather.api.services.UserService;
 import com.myweather.api.services.models.CustomResponse;
 import org.slf4j.Logger;
@@ -11,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,12 +27,6 @@ public class UserServiceImpl implements UserService {
    @Autowired
    private UserMongoRepository repository;
 
-   /**
-    * Injects the DashboardService
-    */
-   @Autowired
-   private DashboardService dashboardService;
-
 
    /**
     * Inserts a new User into the repository
@@ -46,14 +40,12 @@ public class UserServiceImpl implements UserService {
       String message = "";
 
       try {
-         // new default dashboard for the user
-         Dashboard dashboard = new Dashboard(user.getDashboard());
-         user.addDashboard(dashboard);
-
          if (this.getByEmail(user.getEmail()).getId() == null) {
-            // insert dashboard
-            dashboardService.insert(dashboard);
-            // insert user
+            // new default dashboard for the user
+            Dashboard dashboard = new Dashboard();
+            dashboard.setName(user.getDashboard());
+            dashboard.setWeathers(new ArrayList<>());
+            user.addDashboard(dashboard);
             repository.insert(user);
             status = true;
             message = String.format("User with email %s and id %s successfully inserted on db", user.getEmail(), user.getId());
@@ -103,7 +95,7 @@ public class UserServiceImpl implements UserService {
     * @return
     */
    @Override
-   public User save (User user) {
+   public User update(User user) {
       String message;
       Boolean status;
       try{
@@ -125,4 +117,20 @@ public class UserServiceImpl implements UserService {
    public List<User> getAll() {
       return repository.findAll();
    }
+
+
+   /**
+    *
+    * @param weather
+    * @param userId
+    * @param dashboardId
+    * @return
+    */
+   /*
+   public CustomResponse addWeatherToDashboard(Weather weather, String userId, String dashboardId) {
+      CustomResponse customResponse = new CustomResponse();
+      repository.
+      return customResponse;
+   }
+   */
 }

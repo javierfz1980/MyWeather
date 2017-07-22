@@ -21,7 +21,7 @@ import java.net.URI;
 public class YahooRequester {
 
    private final String URL = "https://query.yahooapis.com/v1/public/yql";
-   private final String QUERY_STR = "select item from weather.forecast where woeid in (select woeid from geo.places where text=\"%s\")";
+   private final String QUERY_STR = "select item, location from weather.forecast where woeid in (select woeid from geo.places where text=\"*%s*\")";
    private final String QUERY = "q";
    private final String FORMAT = "format";
    private final String FORMAT_VAL = "json";

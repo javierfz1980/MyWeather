@@ -1,16 +1,16 @@
-import {City} from "./city";
+import {Weather} from "./weather";
 
 export class Dashboard {
 
   private _id: number;
   private _name: string;
-  private _cities: City[];
+  private _weathers: Weather[];
 
   set id(value: number) {
     this._id = value;
   }
-  set cities(value: City[]) {
-    this._cities = value;
+  set weathers(value: Weather[]) {
+    this._weathers = value;
   }
 
   set name(value: string) {
@@ -20,8 +20,8 @@ export class Dashboard {
   get id(): number {
     return this._id;
   }
-  get cities(): City[] {
-    return this._cities;
+  get weathers(): Weather[] {
+    return this._weathers;
   }
 
   get name(): string {

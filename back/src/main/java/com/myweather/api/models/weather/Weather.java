@@ -21,6 +21,7 @@ public class Weather {
    private String id;
    private String woeid;
    private String title;
+   private String description;
    private String link;
    private String pubDate;
    private Condition condition;
@@ -41,6 +42,8 @@ public class Weather {
       return title;
    }
 
+   public String getDescription() { return description; }
+
    public String getLink() {
       return link;
    }
@@ -57,7 +60,6 @@ public class Weather {
       return forecast;
    }
 
-
    /**
     * Setters
     */
@@ -72,6 +74,8 @@ public class Weather {
    public void setTitle(String title) {
       this.title = title;
    }
+
+   public void setDescription(String description) { this.description = description; }
 
    public void setLink(String link) {
       this.link = link;
@@ -101,6 +105,7 @@ public class Weather {
             ", id='" + id + '\'' +
             ", woeid='" + woeid + '\'' +
             ", title='" + title + '\'' +
+            ", description='" + description + '\'' +
             ", link='" + link + '\'' +
             ", pubDate='" + pubDate + '\'' +
             ", condition='" + condition + '\'' +

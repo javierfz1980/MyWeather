@@ -26,17 +26,16 @@ export class HttpService {
 
   requestApi(url: string, method: string, data: any): Observable<CustomResponse> {
     const source: Observable<CustomResponse> = this.getSource(url, method, data);
-    const customResponse: CustomResponse = new CustomResponse();
-    const expectResponseData: boolean = method != HttpService.PUT && method != HttpService.DELETE;
+    const expectResponseData: boolean = method != HttpService.POST && method != HttpService.DELETE;
+    let customResponse: CustomResponse = new CustomResponse();
+
     return source
       .map(
         (response: any) => {
           console.log("httpservice response: ");
           console.log(response);
           console.log("---------------");
-          customResponse.data = (expectResponseData) ? response.json() : null;
-          customResponse.status = response.status.toString();
-          customResponse.message = response['_body'];
+          customResponse = this.buildCustomResponse(response);
           return customResponse;
         },
       )
@@ -45,9 +44,7 @@ export class HttpService {
           console.log("httpservice error: ");
           console.log(error);
           console.log("---------------");
-          customResponse.data = null;
-          customResponse.status = error['status'];
-          customResponse.message = error['_body'];
+          customResponse = this.buildCustomResponse(error);
           return Observable.throw(customResponse);
         }
       );
@@ -72,6 +69,19 @@ export class HttpService {
         break;
     }
     return source;
+  }
+
+  private buildCustomResponse(response: any): CustomResponse{
+    const customResponse: CustomResponse = new CustomResponse();
+    try {
+      customResponse.data = response.json();
+    } catch (error) {
+      customResponse.data = null;
+    }
+    customResponse.status = response.status.toString();
+    customResponse.message = response['_body'];
+
+    return customResponse;
   }
 
 }

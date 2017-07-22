@@ -1,21 +1,25 @@
 package com.myweather.api.models;
 
+import com.myweather.api.models.weather.Weather;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Collection;
+import java.util.List;
 
 
 /**
  * Created by javierfz on 7/11/17.
  */
-@Document(collection = "dashboards")
+//@Document(collection = "dashboards")
 public class Dashboard {
 
-   @Id
+   //@Id
    private String id;
    private String name;
-   private Collection<City> cities;
+   //@DBRef
+   private List<Weather> weathers;
 
    public String getId() {
       return id;
@@ -25,8 +29,8 @@ public class Dashboard {
       return name;
    }
 
-   public Collection<City> getCities() {
-      return cities;
+   public List<Weather> getWeathers() {
+      return weathers;
    }
 
    public void setId(String id) {
@@ -37,8 +41,8 @@ public class Dashboard {
       this.name = name;
    }
 
-   public void setCities(Collection<City> cities) {
-      this.cities = cities;
+   public void setWeathers(List<Weather> weathers) {
+      this.weathers = weathers;
    }
 
    // constructor
@@ -53,7 +57,7 @@ public class Dashboard {
       return "Dashboard{" +
             ", id='" + id + '\'' +
             ", name='" + name + '\'' +
-            ", cities='" + cities + '\'' +
+            ", cities='" + weathers + '\'' +
             '}';
    }
 }

@@ -3,10 +3,11 @@ import {Condition} from "./weatherData/condition";
 
 export class Weather {
 
-  private _id: string
-  private _woeid: string
-  private _title: string
-  private _link: string
+  private _id: string;
+  private _woeid: string;
+  private _title: string;
+  private _description: string;
+  private _link: string;
   private _pubDate: string;
   private _condition: Condition;
   private _forecast: Forecast[];
@@ -21,6 +22,10 @@ export class Weather {
 
   get title(): string {
     return this._title;
+  }
+
+  get description(): string {
+    return this._description;
   }
 
   get link(): string {
@@ -48,6 +53,10 @@ export class Weather {
 
   set title(value: string) {
     this._title = value;
+  }
+
+  set description(value: string) {
+    this._description = value;
   }
 
   set link(value: string) {

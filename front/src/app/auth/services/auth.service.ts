@@ -30,11 +30,17 @@ export class AuthService {
   signIn(user: User): void {
     this._user = user;
     this.router.navigate([AppRoutes.boards]);
+    console.log("User logged in:");
+    console.log(this.user);
+    console.log("----------------");
   }
 
   signOut(): void {
     this._user = null;
     this.router.navigate(['']);
+    console.log("User logged out:");
+    console.log(this.user);
+    console.log("----------------");
   }
 
 

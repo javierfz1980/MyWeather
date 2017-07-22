@@ -1,6 +1,7 @@
 package com.myweather.api.controllers;
 
 import com.myweather.api.models.User;
+import com.myweather.api.models.weather.Weather;
 import com.myweather.api.services.UserService;
 import com.myweather.api.services.models.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class UserController {
     *
     * @return ResponseEntity with Status result
     */
-   @RequestMapping(method = RequestMethod.PUT)
+   @RequestMapping(method = RequestMethod.POST)
    public ResponseEntity<String> insert(@Valid @RequestBody User user) {
       ResponseEntity response;
       CustomResponse customResponse = userService.insert(user);
@@ -72,10 +73,10 @@ public class UserController {
     *
     * @return ResponseEntity with Status result
     */
-   @RequestMapping(method = RequestMethod.POST)
+   @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
    public ResponseEntity<User> save(@Valid @RequestBody User user) {
       ResponseEntity response;
-      User updatedUser = userService.save(user);
+      User updatedUser = userService.update(user);
       HttpStatus status = (updatedUser != null) ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
 
       response = ResponseEntity
@@ -84,6 +85,39 @@ public class UserController {
 
       return response;
    }
+
+
+   /**
+    * Adds a Weather to an User Dashboard
+    *
+    * @return ResponseEntity with Status result
+    */
+
+   @RequestMapping(method = RequestMethod.POST, value = "/{userId}/dashboards/{dashboardIs}")
+   public ResponseEntity<User> insertWeather(@Valid @RequestBody User user) {
+      return this.save(user);
+   }
+
+
+   /**
+    * Adds a Weather to an User Dashboard
+    *
+    * @return ResponseEntity with Status result
+    */
+   /*
+   @RequestMapping(method = RequestMethod.POST, value = "/{userId}/dashboards/{dashboardIs}")
+   public ResponseEntity<CustomResponse> insertWeather(@Valid @RequestBody Weather weather, @PathVariable String userId, @PathVariable String dashboardIs) {
+      ResponseEntity response;
+      CustomResponse customResponse = userService.addWeatherToDashboard(weather, userId, dashboardIs);
+      HttpStatus status = (customResponse.getStatus()) ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
+
+      response = ResponseEntity
+            .status(status)
+            .body(customResponse.getMessage());
+
+      return response;
+   }
+   */
 
    /*
    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
