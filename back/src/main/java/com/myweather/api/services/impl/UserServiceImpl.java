@@ -3,6 +3,7 @@ package com.myweather.api.services.impl;
 import com.myweather.api.models.Dashboard;
 import com.myweather.api.models.User;
 import com.myweather.api.repositories.mongo.UserMongoRepository;
+import com.myweather.api.services.DashboardService;
 import com.myweather.api.services.UserService;
 import com.myweather.api.services.models.CustomResponse;
 import org.slf4j.Logger;
@@ -20,6 +21,13 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
    private final Logger logger =  LoggerFactory.getLogger(UserServiceImpl.class);
+
+   /**
+    * Injects the DashboardService
+    */
+   @Autowired
+   private DashboardService dashboardService;
+
 
    /**
     * Injects the UserRepository
@@ -43,8 +51,9 @@ public class UserServiceImpl implements UserService {
          if (this.getByEmail(user.getEmail()).getId() == null) {
             // new default dashboard for the user
             Dashboard dashboard = new Dashboard();
-            dashboard.setName(user.getDashboard());
+            dashboard.setName(user.getDefaultDashboardName());
             dashboard.setWeathers(new ArrayList<>());
+            dashboardService.insert(dashboard);
             user.addDashboard(dashboard);
             repository.insert(user);
             status = true;
@@ -82,7 +91,7 @@ public class UserServiceImpl implements UserService {
          logger.info(String.format("User with email %s found on db", email));
          return user;
       } catch (Exception ex) {
-         logger.error(String.format("User with email $s not found on db", email));
+         logger.error(String.format("User with email %s not found on db", email));
          return new User();
       }
    }

@@ -8,7 +8,7 @@ export class User {
   private _password: string;
   private _gender: string;
   private _age: number;
-  private _dashboard: string;
+  private _defaultDashboardName: string;
   private _dashboards: Dashboard[];
 
   get id(): string {
@@ -39,8 +39,8 @@ export class User {
     return this._age;
   }
 
-  get dashboard(): string {
-    return this._dashboard;
+  get defaultDashboardName(): string {
+    return this._defaultDashboardName;
   }
 
   get dashboards(): Dashboard[] {
@@ -79,8 +79,8 @@ export class User {
     this._dashboards = value;
   }
 
-  set dashboard(value: string) {
-    this._dashboard = value;
+  set defaultDashboardName(value: string) {
+    this._defaultDashboardName = value;
   }
 
 }

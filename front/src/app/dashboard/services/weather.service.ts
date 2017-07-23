@@ -13,10 +13,10 @@ export class WeatherService {
   search(searchStr: Observable<string>) {
     return searchStr.debounceTime(400)
       .distinctUntilChanged()
-      .switchMap(input => this.searchOnApi(input));
+      .switchMap(input => this.searchWeatherOnServer(input));
   }
 
-  searchOnApi(term): Observable<any> {
+  private searchWeatherOnServer(term): Observable<any> {
     console.log("searchOnApi");
     return this.httpService.requestApi(HttpService.WEATHER_PATH, HttpService.POST, term);
   }

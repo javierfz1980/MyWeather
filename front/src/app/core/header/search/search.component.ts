@@ -1,9 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {WeatherService} from "../../../boards/services/weather.service";
+import {WeatherService} from "../../../dashboard/services/weather.service";
 import {Weather} from "../../../shared/models/data/weather";
 import {Observable, Subject, Subscription} from "rxjs";
 import {CustomResponse} from "../../../shared/models/http/CustomResponse";
 import {AuthService} from "../../../auth/services/auth.service";
+import {DashboardService} from "../../../dashboard/services/dashboard.service";
 
 @Component({
   selector: 'app-search',
@@ -18,7 +19,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   private searchStr = new Subject<string>();
   private results: Weather[];
 
-  constructor(private weatherService: WeatherService, private authService: AuthService) { }
+  constructor(private weatherService: WeatherService,
+              private authService: AuthService,
+              private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
    this.subscription = this.weatherService.search(this.searchStr)
@@ -49,14 +52,22 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.isfocus = true;
   }
 
-  isAuthorized(): boolean{
-    return this.authService.isAuthorized();
-  }
-
   ngOnDestroy(): void {
     if(this.subscription) this.subscription.unsubscribe();
   }
 
+
+  private isAuthorized(): boolean{
+    return this.authService.isAuthorized();
+  }
+
+  private addToDashboard(weather: Weather): void{
+    this.dashboardService.addWeather(weather);
+  }
+
+  private weatherIsOnCurrentDashboard(weather: Weather): boolean{
+    return this.dashboardService.weatherIsOnCurrentDashboard(weather);
+  }
 
 
 }

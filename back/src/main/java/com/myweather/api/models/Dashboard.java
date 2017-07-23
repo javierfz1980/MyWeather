@@ -12,13 +12,13 @@ import java.util.List;
 /**
  * Created by javierfz on 7/11/17.
  */
-//@Document(collection = "dashboards")
+@Document(collection = "dashboards")
 public class Dashboard {
 
-   //@Id
+   @Id
    private String id;
    private String name;
-   //@DBRef
+   @DBRef
    private List<Weather> weathers;
 
    public String getId() {

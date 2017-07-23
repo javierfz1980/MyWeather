@@ -1,22 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BoardsComponent } from './boards.component';
+import { DashboardComponent } from './dahsboard.component';
 import { LocationsComponent } from './weathers/locations.component';
 import { LocationComponent } from './weathers/weather/location.component';
-import { BoardsRouting } from "./boards-routing.module";
+import { DashboardRouting} from "./dashboard-routing.module";
 
 @NgModule({
   imports: [
     CommonModule,
-    BoardsRouting
+    DashboardRouting
   ],
   declarations: [
-    BoardsComponent,
+    DashboardComponent,
     LocationsComponent,
     LocationComponent
   ],
   exports: [
-    BoardsComponent
+    DashboardComponent
   ]
 })
-export class BoardsModule { }
+export class DashboardModule { }

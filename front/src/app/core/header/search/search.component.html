@@ -9,7 +9,7 @@
     (blur)="onBlur()"
     (focus)="onFocus()"
   >
-  <div *ngIf="!loading && isfocus" class="row results">
+  <div *ngIf="!loading" class="row results">
     <div class="col-xs-12">
       <ul style="padding: 0px" >
         <li *ngFor="let weather of results" class="list-group-item clearfix mousePointer">
@@ -18,9 +18,16 @@
           <span style="float: right">
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <button
+              *ngIf="!weatherIsOnCurrentDashboard(weather)"
               class="btn btn-success btn-xs"
+              (click)="addToDashboard(weather)"
               [disabled]="!isAuthorized()"
             >Add</button>
+            <button
+              *ngIf="weatherIsOnCurrentDashboard(weather)"
+              class="btn btn-danger btn-xs"
+              [disabled]="!isAuthorized()"
+            >Remove</button>
           </span>
         </li>
       </ul>

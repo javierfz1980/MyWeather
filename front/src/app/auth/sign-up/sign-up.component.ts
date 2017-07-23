@@ -41,7 +41,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
       'confirmPassword': new FormControl(null, Validators.required),
       'age': new FormControl(user.age, Validators.required),
       'gender': new FormControl(user.gender, Validators.required),
-      'dashboard': new FormControl(user.dashboard, Validators.required)
+      'defaultDashboardName': new FormControl(user.defaultDashboardName, Validators.required)
     });
   }
 

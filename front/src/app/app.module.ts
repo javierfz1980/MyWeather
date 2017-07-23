@@ -1,10 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import {Http, HttpModule} from '@angular/http';
 
 import { AppComponent } from './app.component';
-import {BoardsModule} from "./boards/boards.module";
+import {DashboardModule} from "./dashboard/dashboard.module";
 import {CoreModule} from "./core/core.module";
 import {AuthModule} from "./auth/auth.module";
 import {TranslateLoader, TranslateModule, TranslateService} from "@ngx-translate/core";
@@ -31,7 +30,7 @@ export function HttpLoaderFactory(http: Http) {
       }
     }),
     SharedModule,
-    BoardsModule,
+    DashboardModule,
     AuthModule,
     CoreModule
   ],

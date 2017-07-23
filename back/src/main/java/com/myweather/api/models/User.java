@@ -1,8 +1,8 @@
 package com.myweather.api.models;
 
-import org.hibernate.validator.constraints.Email;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.LinkedList;
@@ -39,7 +39,8 @@ public class User {
    private String password;
    private String gender;
    private int age;
-   private String dashboard;
+   private String defaultDashboardName;
+   @DBRef
    private List<Dashboard> dashboards;
 
 
@@ -75,7 +76,7 @@ public class User {
       return age;
    }
 
-   public String getDashboard() { return dashboard; }
+   public String getDefaultDashboardName() { return defaultDashboardName; }
 
    public List<Dashboard> getDashboards() {
       return dashboards;
@@ -106,7 +107,7 @@ public class User {
       this.age = age;
    }
 
-   public void setDashboard(String dashboard) { this.dashboard = dashboard; }
+   public void setDefaultDashboardName(String defaultDashboardName) { this.defaultDashboardName = defaultDashboardName; }
 
    public void setDashboards(List<Dashboard> dashboards) {
       this.dashboards = dashboards;

@@ -11,7 +11,8 @@ import {AuthModule} from "../auth/auth.module";
 import {AuthService} from "../auth/services/auth.service";
 import { HomeComponent } from './home/home.component';
 import { SearchComponent } from './header/search/search.component';
-import {WeatherService} from "../boards/services/weather.service";
+import {WeatherService} from "../dashboard/services/weather.service";
+import {DashboardService} from "../dashboard/services/dashboard.service";
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import {WeatherService} from "../boards/services/weather.service";
     LanguageService,
     HttpService,
     AuthService,
-    WeatherService
+    WeatherService,
+    DashboardService
   ],
 })
 export class CoreModule { }
