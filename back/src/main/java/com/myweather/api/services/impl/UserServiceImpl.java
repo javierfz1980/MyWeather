@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService {
             Dashboard dashboard = new Dashboard();
             dashboard.setName(user.getDefaultDashboardName());
             dashboard.setWeathers(new ArrayList<>());
+            // inserts the dashboard in order to get the ID
             dashboardService.insert(dashboard);
             user.addDashboard(dashboard);
             repository.insert(user);
@@ -105,8 +106,6 @@ public class UserServiceImpl implements UserService {
     */
    @Override
    public User update(User user) {
-      String message;
-      Boolean status;
       try{
          repository.save(user);
          logger.info(String.format("User with id %s saved successfully", user.getId()));
@@ -117,29 +116,4 @@ public class UserServiceImpl implements UserService {
    }
 
 
-   /**
-    * Retrieves all the users from the repository
-    *
-    * @return
-    */
-   @Override
-   public List<User> getAll() {
-      return repository.findAll();
-   }
-
-
-   /**
-    *
-    * @param weather
-    * @param userId
-    * @param dashboardId
-    * @return
-    */
-   /*
-   public CustomResponse addWeatherToDashboard(Weather weather, String userId, String dashboardId) {
-      CustomResponse customResponse = new CustomResponse();
-      repository.
-      return customResponse;
-   }
-   */
 }

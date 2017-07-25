@@ -35,7 +35,7 @@ public class WeatherServiceImpl implements WeatherService {
     * @return
     */
    @Override
-   public List<Weather> getWeatherByTitleLike(String input) {
+   public List<Weather> getWeather(String input) {
 
       List<Weather> weatherList = this.searchOnMongo(input);
 
@@ -56,7 +56,7 @@ public class WeatherServiceImpl implements WeatherService {
     * @return
     */
    private List<Weather> searchOnMongo(String input) {
-      return repository.findByTitleNoCaseSensitive(input);
+      return repository.getWeather(input);
    }
 
    /**

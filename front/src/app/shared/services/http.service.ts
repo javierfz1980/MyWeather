@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {Headers, Http, Response} from "@angular/http";
 import {CustomResponse} from "../models/http/CustomResponse";
+import {AuthService} from "../../auth/services/auth.service";
 
 @Injectable()
 export class HttpService {
@@ -20,13 +21,15 @@ export class HttpService {
 
   public static readonly USER_PATH: string = "users";
   public static readonly SESSION_PATH: string = "session";
-  public static readonly WEATHER_PATH: string = "weather";
+  public static readonly WEATHER_PATH: string = "weathers";
+  public static readonly DASHBOARD_PATH: string = "dashboards";
 
-  constructor(private http: Http){}
 
-  requestApi(url: string, method: string, data: any): Observable<CustomResponse> {
-    const source: Observable<CustomResponse> = this.getSource(url, method, data);
-    const expectResponseData: boolean = method != HttpService.POST && method != HttpService.DELETE;
+  constructor(private http: Http, private authService: AuthService){}
+
+
+  requestApi(url: string, method: string, data: any, headers?:Headers): Observable<CustomResponse> {
+    const source: Observable<CustomResponse> = this.getSource(url, method, data, headers);
     let customResponse: CustomResponse = new CustomResponse();
 
     return source
@@ -51,15 +54,15 @@ export class HttpService {
 
   }
 
-  private getSource(url: string, method: string, data: any): Observable<any> {
-    const headers: Headers = new Headers({'Content-Type': 'application/json'});
+  private getSource(url: string, method: string, data: any, headers?:Headers): Observable<any> {
+    const defaultHeaders: Headers = (headers != null ) ? headers : this.creatDefaultHeaders(); // new Headers({'Content-Type': 'application/json'});
     let source: Observable<any>;
     switch (method) {
       case HttpService.POST:
-        source = this.http.post(this.path + url, data, {headers: headers})
+        source = this.http.post(this.path + url, data, {headers: defaultHeaders})
         break;
       case HttpService.PUT:
-        source = this.http.put(this.path + url, data, {headers: headers});
+        source = this.http.put(this.path + url, data, {headers: defaultHeaders});
         break;
       case HttpService.GET:
 
@@ -82,6 +85,18 @@ export class HttpService {
     customResponse.message = response['_body'];
 
     return customResponse;
+  }
+
+  private creatDefaultHeaders(): Headers {
+    const headers: Headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    // if user is logged in...
+    if (this.authService.isAuthorized()) {
+      const username: string = this.authService.user.email;
+      const password: string = this.authService.user.password;
+      headers.append("Authorization", "Basic " + btoa(username + ":" + password));
+    }
+    return headers;
   }
 
 }

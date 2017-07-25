@@ -25,7 +25,7 @@ public class SessionServiceImpl implements SessionService {
    private UserMongoRepository userRepository;
 
    @Override
-   public User validateCredentials(SessionCredentials sessionCredentials) {
+   public User authenticate(SessionCredentials sessionCredentials) {
       String email = sessionCredentials.getEmail();
       String password = sessionCredentials.getPassword();
       User user;

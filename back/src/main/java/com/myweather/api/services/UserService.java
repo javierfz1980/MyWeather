@@ -29,17 +29,4 @@ public interface UserService {
     */
    User update(User user);
 
-   /**
-    * Retreives an User from db
-    */
-   List<User> getAll();
-
-   /**
-    *
-    * @param weather
-    * @param userId
-    * @param dashboardId
-    * @return
-    */
-   //CustomResponse addWeatherToDashboard(Weather weather, String userId, String dashboardId);
 }

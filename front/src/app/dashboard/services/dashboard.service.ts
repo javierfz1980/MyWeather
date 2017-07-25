@@ -17,21 +17,39 @@ export class DashboardService {
   constructor(private authService: AuthService, private httpService: HttpService) {}
 
   addWeather(weather: Weather): void{
+    if(this.authService.isAuthorized() && !this.weatherIsOnCurrentDashboard(weather)) {
+      this.currentDashboard.weathers.push(weather);
+      this.saveData();
+    }
+  }
+
+  removeWeather(weather: Weather): void{
     if(this.authService.isAuthorized()) {
       this.mapLocasl();
-      let set = new Set(this.currentDashboard.weathers);
-      if(!set.has(weather)){
-        this.currentDashboard.weathers.push(weather);
-        this.saveData();
-      }
+      this.currentDashboard.weathers.forEach(function(weatherOnDashboard, index, dashboards) {
+        if (weatherOnDashboard.id == weather.id) {
+          dashboards.splice(index, 1);
+          return;
+        }
+      });
+      this.saveData();
     }
   }
 
   weatherIsOnCurrentDashboard(weather: Weather): boolean{
     if(this.authService.isAuthorized()) {
       this.mapLocasl();
-      let set = new Set(this.currentDashboard.weathers);
-      return set.has(weather);
+      for(let weatherOnDashboard of this.currentDashboard.weathers) {
+        if (weatherOnDashboard.id == weather.id) return true;
+      }
+    }
+    return false;
+  }
+
+  getWeathersFromCurrentDashboard(): Weather[]{
+    if (this.authService.isAuthorized()) {
+      this.mapLocasl();
+      return this.currentDashboard.weathers;
     }
   }
 
@@ -43,10 +61,9 @@ export class DashboardService {
   }
 
   private saveData(): void{
-    const user: User = this.authService.user;
     const method: string = HttpService.PUT;
-    const url: string = HttpService.USER_PATH + "/"+this.authService.user.id;
-    this.subscription = this.httpService.requestApi(url, method, user)
+    const url: string = HttpService.DASHBOARD_PATH + "/"+this.currentDashboard.id;
+    this.subscription = this.httpService.requestApi(url, method, this.currentDashboard)
       .subscribe(
         (response: any) => {
           console.log("response add weather:");

@@ -6,13 +6,14 @@
     [ngClass]="{loading: loading}"
     placeholder="{{ 'search.searchPlaceHolder' | translate }}"
     (keyup)="inputSearch($event.target.value)"
-    (blur)="onBlur()"
-    (focus)="onFocus()"
+    (focus)="openSubMenu()"
+    (blur)="closeSubMenu()"
+    #input
   >
-  <div *ngIf="!loading" class="row results">
+  <div *ngIf="!loading && isfocus" class="row results" (mouseover)="mouseOver()" (mouseout)="mouseOut()">
     <div class="col-xs-12">
       <ul style="padding: 0px" >
-        <li *ngFor="let weather of results" class="list-group-item clearfix mousePointer">
+        <li *ngFor="let weather of results" class="list-group-item clearfix mousePointer" >
           <span class="list-group-item-text">{{weather.title | slice:0:50 }}</span>
 
           <span style="float: right">
@@ -25,6 +26,7 @@
             >Add</button>
             <button
               *ngIf="weatherIsOnCurrentDashboard(weather)"
+              (click)="removeFromDashboard(weather)"
               class="btn btn-danger btn-xs"
               [disabled]="!isAuthorized()"
             >Remove</button>

@@ -14,6 +14,6 @@ import java.util.List;
 @Service
 public interface WeatherService {
 
-   List<Weather> getWeatherByTitleLike(String input);
+   List<Weather> getWeather(String input);
 
 }

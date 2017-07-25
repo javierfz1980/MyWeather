@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.MapKey;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ public class Weather {
     */
    @Id
    private String id;
+   @Indexed(unique = true)
    private String woeid;
    private String title;
    private String description;

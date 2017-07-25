@@ -3,6 +3,7 @@ package com.myweather.api.services;
 
 import com.myweather.api.models.Dashboard;
 import com.myweather.api.models.User;
+import com.myweather.api.services.models.CustomResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,18 +16,16 @@ public interface DashboardService {
 
    /**
     * Insert a new Dashboard into db
-    * @param dsb
+    * @param dashboard
     */
-   void insert(Dashboard dsb);
+   void insert(Dashboard dashboard);
 
    /**
-    * Retreives an Dashboard from db
+    *
+    * @param dashboard
+    * @return
     */
-   Dashboard getByName(String name);
+   Dashboard update(Dashboard dashboard);
 
-   /**
-    * Retreives an User from db
-    */
-   List<User> getAll();
 
 }

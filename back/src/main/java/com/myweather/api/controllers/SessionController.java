@@ -22,7 +22,7 @@ import java.util.Collection;
  */
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/session")
+@RequestMapping("${http.sessionPath}")
 public class SessionController {
 
    /**
@@ -33,6 +33,7 @@ public class SessionController {
 
 
    /**
+    * Login authentication
     *
     * @param sessionCredentials
     * @return
@@ -40,7 +41,7 @@ public class SessionController {
    @RequestMapping(method = RequestMethod.POST)
    public ResponseEntity<User> authenticate(@Valid @RequestBody SessionCredentials sessionCredentials) {
       ResponseEntity response;
-      User user = sessionService.validateCredentials(sessionCredentials);
+      User user = sessionService.authenticate(sessionCredentials);
       HttpStatus status = (user != null) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
 
       response = ResponseEntity

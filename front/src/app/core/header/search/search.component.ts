@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {WeatherService} from "../../../dashboard/services/weather.service";
 import {Weather} from "../../../shared/models/data/weather";
 import {Observable, Subject, Subscription} from "rxjs";
@@ -13,8 +13,10 @@ import {DashboardService} from "../../../dashboard/services/dashboard.service";
 })
 export class SearchComponent implements OnInit, OnDestroy {
 
+  @ViewChild('input') input: ElementRef;
   private loading: boolean;
   private isfocus: boolean = false;
+  private menuIsOpen: boolean = false;
   private subscription: Subscription;
   private searchStr = new Subject<string>();
   private results: Weather[];
@@ -44,12 +46,28 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  onBlur(): void{
-    this.isfocus = false;
+  closeSubMenu(): void{
+    setTimeout(
+      () => {
+        if(this.isfocus && !this.menuIsOpen) {
+          this.input.nativeElement.blur();
+          this.isfocus = false;
+        }
+      }, 50
+    );
   }
 
-  onFocus(): void{
+  openSubMenu(): void{
     this.isfocus = true;
+  }
+
+  mouseOver() :void{
+    this.menuIsOpen = true;
+  }
+
+  mouseOut() :void{
+    this.menuIsOpen = false;
+    this.closeSubMenu();
   }
 
   ngOnDestroy(): void {
@@ -63,6 +81,10 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private addToDashboard(weather: Weather): void{
     this.dashboardService.addWeather(weather);
+  }
+
+  private removeFromDashboard(weather: Weather): void{
+    this.dashboardService.removeWeather(weather);
   }
 
   private weatherIsOnCurrentDashboard(weather: Weather): boolean{

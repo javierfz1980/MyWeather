@@ -1,14 +1,12 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChildren} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
-import {FormControl, NgForm} from "@angular/forms";
+import {NgForm} from "@angular/forms";
 import {SessionCredentials} from "../models/sessionCredentials";
 import {AuthService} from "../services/auth.service";
 import {HttpService} from "../../shared/services/http.service";
-import {Router} from "@angular/router";
-import {AppRoutes} from "../../shared/models/navigation/routing/app-routes";
 import {CustomResponse} from "../../shared/models/http/CustomResponse";
-import {NgFor} from "@angular/common";
 import {Subscription} from "rxjs/Subscription";
+import {Headers} from "@angular/http";
 
 @Component({
   selector: 'app-sign-in',
@@ -44,7 +42,7 @@ export class SignInComponent implements OnInit, OnDestroy {
 
   signin(form: NgForm): void {
     const sessionCredentials: SessionCredentials = form.value;
-    this.signInSubscription = this.httpService.requestApi(HttpService.SESSION_PATH, HttpService.POST, sessionCredentials)
+    this.signInSubscription = this.httpService.requestApi(HttpService.SESSION_PATH, HttpService.POST, sessionCredentials, this.createHeaders(sessionCredentials))
       .subscribe(
         (response: CustomResponse) => {
           if (response.status == HttpService.STATUS_OK) {
@@ -60,6 +58,13 @@ export class SignInComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.signInSubscription) this.signInSubscription.unsubscribe();
+  }
+
+  private createHeaders(data: SessionCredentials): Headers{
+    const headers: Headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append("Authorization", "Basic " + btoa(data.email + ":" + data.password));
+    return headers;
   }
 
 }

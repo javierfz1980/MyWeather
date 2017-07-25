@@ -9,7 +9,7 @@ export class AuthService {
 
   private _user: User;
 
-  constructor(private httpService: HttpService, private router: Router){}
+  constructor(private router: Router){}
 
   isAuthorized(): boolean{
     return this._user != null;

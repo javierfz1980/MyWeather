@@ -18,7 +18,7 @@ import java.util.List;
  */
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/weather")
+@RequestMapping("${http.weathersPath}")
 public class WeatherController {
 
    /**
@@ -28,13 +28,14 @@ public class WeatherController {
    private WeatherService weatherService;
 
    /**
+    * Fetches weathers from db or yahoo
     *
     * @return
     */
    @RequestMapping(method = RequestMethod.POST)
-   public ResponseEntity<Weather> getWeatherByTitleLike(@Valid @RequestBody String input) {
+   public ResponseEntity<Weather> getWeather(@Valid @RequestBody String input) {
       ResponseEntity response;
-      List<Weather> weather = weatherService.getWeatherByTitleLike(input);
+      List<Weather> weather = weatherService.getWeather(input);
       response = ResponseEntity
             .status(HttpStatus.OK)
             .body(weather);
