@@ -1,14 +1,15 @@
 <form class="navbar-form navbar-left" id="formHeader">
   <input
+    #input
     id="searchInpurHeader"
     type="text"
     class="form-control"
-    [ngClass]="{loading: loading}"
+    autocomplete="off"
     placeholder="{{ 'search.searchPlaceHolder' | translate }}"
     (keyup)="inputSearch($event.target.value)"
     (focus)="openSubMenu()"
     (blur)="closeSubMenu()"
-    #input
+    [ngClass]="{loading: loading}"
   >
   <div *ngIf="!loading && isfocus" class="row results" (mouseover)="mouseOver()" (mouseout)="mouseOut()">
     <div class="col-xs-12">

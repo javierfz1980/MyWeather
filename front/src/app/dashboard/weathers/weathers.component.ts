@@ -8,7 +8,7 @@ import {AuthService} from "../../auth/services/auth.service";
   templateUrl: './weathers.component.html',
   styleUrls: ['./weathers.component.css']
 })
-export class LocationsComponent implements OnInit {
+export class WeathersComponent implements OnInit {
 
   constructor(private authService: AuthService, private dashboardService: DashboardService) { }
 

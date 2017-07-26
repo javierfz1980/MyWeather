@@ -8,11 +8,12 @@
     <li>{{ 'header.signInButton' | translate }}</li>
     <li role="separator" class="divider"></li>
     <li>
+      <!--autocomplete="off"-->
       <input
-        type="text"
-        class="form-control"
-        id="email"
-        name="email"
+      type="text"
+      class="form-control"
+      id="email"
+      name="email"
         ngModel
         required
         email
@@ -21,7 +22,7 @@
     </li>
     <li>
       <input
-        type="text"
+        type="password"
         class="form-control"
         id="password"
         name="password"

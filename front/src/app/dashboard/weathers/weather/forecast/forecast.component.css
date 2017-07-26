@@ -1,0 +1,16 @@
+.forecast-date {
+  font-weight: bold;
+  text-align: center;
+}
+
+.forecast-high,
+.forecast-low,
+.forecast-condition-text {
+  text-align: center;
+  font-weight: 100;
+}
+
+.hr-line {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
