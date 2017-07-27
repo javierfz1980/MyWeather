@@ -1,4 +1,4 @@
-package com.myweather.yahoo;
+package com.myweather.api.utils.yahoo;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -18,22 +18,31 @@ import java.net.URI;
 /**
  * Created by javierfz on 7/19/17.
  */
-public class YahooRequester {
+public class YahooWeatherClient {
 
-   private final String URL = "https://query.yahooapis.com/v1/public/yql";
-   private final String QUERY_STR = "select item, location from weather.forecast where woeid in (select woeid from geo.places where text=\"*%s*\")";
+   public static final String URL = "https://query.yahooapis.com/v1/public/yql";
+   public static final String QUERY_STR = "select item, location " +
+                                          "from weather.forecast " +
+                                          "where woeid in " +
+                                          "(select woeid from geo.places where text=\"*%s*\")";
+   public static final String BULK_QUERY_STR = "select item, location " +
+                                                "from weather.forecast " +
+                                                "where woeid in " +
+                                                "(%s)";
    private final String QUERY = "q";
    private final String FORMAT = "format";
    private final String FORMAT_VAL = "json";
 
-   private final org.slf4j.Logger logger =  LoggerFactory.getLogger(YahooRequester.class);
+   private final org.slf4j.Logger logger =  LoggerFactory.getLogger(YahooWeatherClient.class);
 
-   public YahooRequester() {
-
-   }
-
-   public JsonObject query(String city) {
-      URI uri = createUri(city);
+   /**
+    * Triggers a query
+    *
+    * @param query
+    * @return
+    */
+   public JsonObject query(String query) {
+      URI uri = createUri(query);
       try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
          HttpGet request = new HttpGet(uri);
          HttpResponse result = httpClient.execute(request);
@@ -57,15 +66,18 @@ public class YahooRequester {
       }
    }
 
-   private URI createUri(String city) {
+   /**
+    *
+    * @param query
+    * @return
+    */
+   private URI createUri(String query) {
       try {
-
          URIBuilder uri = new URIBuilder(URL);
-         String finalQuery = String.format(QUERY_STR, city);
-         uri.addParameter(QUERY, finalQuery);
+         uri.addParameter(QUERY, query);
          uri.addParameter(FORMAT, FORMAT_VAL);
 
-         logger.info(String.format("New URI created: %s", finalQuery));
+         logger.info(String.format("New URI created: %s", query));
          return uri.build();
 
       } catch (Exception ex) {

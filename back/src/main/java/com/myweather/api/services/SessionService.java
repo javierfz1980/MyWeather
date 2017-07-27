@@ -1,7 +1,7 @@
 package com.myweather.api.services;
 
 import com.myweather.api.models.User;
-import com.myweather.api.services.models.SessionCredentials;
+import com.myweather.api.models.helpers.SessionCredentials;
 import org.springframework.stereotype.Service;
 
 /**

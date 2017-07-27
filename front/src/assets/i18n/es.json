@@ -4,6 +4,10 @@
     "searchPlaceHolder": "Ciudad"
   },
 
+  "search": {
+    "searchPlaceHolder": "Lugares"
+  },
+
   "footer": {
     "aboutTilte": "Nosotros",
     "navigationTitle": "Navegacion",

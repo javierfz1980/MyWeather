@@ -1,12 +1,11 @@
-package com.myweather.api.models.weather;
+package com.myweather.api.models;
 
-import com.myweather.api.models.weather.data.Condition;
-import com.myweather.api.models.weather.data.Forecast;
+import com.myweather.api.models.weatherData.Condition;
+import com.myweather.api.models.weatherData.Forecast;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.MapKey;
 import java.util.List;
 
 /**
@@ -114,5 +113,4 @@ public class Weather {
             ", forecast='" + forecast +
             '}';
    }
-
 }

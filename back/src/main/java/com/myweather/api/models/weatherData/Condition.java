@@ -1,4 +1,4 @@
-package com.myweather.api.models.weather.data;
+package com.myweather.api.models.weatherData;
 
 /**
  * Created by javierfz on 7/20/17.

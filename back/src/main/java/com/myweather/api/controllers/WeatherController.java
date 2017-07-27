@@ -1,9 +1,6 @@
 package com.myweather.api.controllers;
 
-import com.google.gson.JsonObject;
-import com.myweather.api.models.User;
-import com.myweather.api.models.weather.Weather;
-import com.myweather.api.services.UserService;
+import com.myweather.api.models.Weather;
 import com.myweather.api.services.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,8 +24,9 @@ public class WeatherController {
    @Autowired
    private WeatherService weatherService;
 
+
    /**
-    * Fetches weathers from db or yahoo
+    * Fetches all weathers from db or yahoo
     *
     * @return
     */

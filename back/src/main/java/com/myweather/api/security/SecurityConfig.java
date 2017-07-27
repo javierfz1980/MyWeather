@@ -32,6 +32,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  *
  * In implementation everyone has the USER role, but we might want to have additional roles...
  */
+
 @Configuration
 class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 
@@ -76,6 +77,7 @@ class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
  *
  * Created by javierfz on 7/13/17.
  */
+
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -85,9 +87,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    @Value("${http.sessionPath}")
    private String sessionPath;
 
-   @Value("${http.dashboardsPath}")
-   private String dashboardsPath;
-
    @Value("${http.weathersPath}")
    private String weathersPath;
 
@@ -96,25 +95,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       http
             .csrf().disable()
             .authorizeRequests()
+            //
             // users
             .antMatchers(HttpMethod.GET, this.usersPath + "/**").authenticated()
-            //.antMatchers(HttpMethod.POST, this.usersPath + "/**").authenticated()
+            .antMatchers(HttpMethod.POST, this.usersPath + "/{userId}/dashboards/{dashboardId}/weathers" ).authenticated()
+            .antMatchers(HttpMethod.POST, this.usersPath + "/{userId}/dashboards" ).authenticated()
             .antMatchers(HttpMethod.PUT, this.usersPath + "/**").authenticated()
-            // dashboards
-            .antMatchers(HttpMethod.GET, this.dashboardsPath + "/**").authenticated()
-            .antMatchers(HttpMethod.POST, this.dashboardsPath + "/**").authenticated()
-            .antMatchers(HttpMethod.PUT, this.dashboardsPath + "/**").authenticated()
+            .antMatchers(HttpMethod.DELETE, this.usersPath + "/**").authenticated()
+            //
             // weathers
             .antMatchers(HttpMethod.GET, this.weathersPath + "/**").authenticated()
             //.antMatchers(HttpMethod.POST, this.weathersPath + "/**").authenticated()
             .antMatchers(HttpMethod.PUT, this.weathersPath + "/**").authenticated()
+            .antMatchers(HttpMethod.DELETE, this.weathersPath + "/**").authenticated()
+            //
             // session
             .antMatchers(HttpMethod.GET, this.sessionPath + "/**").authenticated()
             .antMatchers(HttpMethod.POST, this.sessionPath + "/**").authenticated()
             .antMatchers(HttpMethod.PUT, this.sessionPath + "/**").authenticated()
+            .antMatchers(HttpMethod.DELETE, this.sessionPath + "/**").authenticated()
+            //
             // all the rest...
             .anyRequest().permitAll()
-            //.anyRequest().authenticated()
+            //
             .and()
             .httpBasic().and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

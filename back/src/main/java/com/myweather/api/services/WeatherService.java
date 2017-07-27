@@ -1,11 +1,8 @@
 package com.myweather.api.services;
 
-import com.google.gson.JsonObject;
-import com.myweather.api.models.weather.Weather;
+import com.myweather.api.models.Weather;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 /**

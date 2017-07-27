@@ -1,11 +1,8 @@
 package com.myweather.api.services;
 
 import com.myweather.api.models.User;
-import com.myweather.api.models.weather.Weather;
-import com.myweather.api.services.models.CustomResponse;
+import com.myweather.api.models.helpers.CustomResponse;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Created by javierfz on 7/13/17.
@@ -23,6 +20,11 @@ public interface UserService {
     * Retreives an User from db
     */
    User getByEmail(String email);
+
+   /**
+    * Retreives an User from db
+    */
+   User getById(String id);
 
    /**
     * Modifies an User from db

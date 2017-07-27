@@ -2,15 +2,13 @@ package com.myweather.api.controllers;
 
 import com.myweather.api.models.User;
 import com.myweather.api.services.SessionService;
-import com.myweather.api.services.UserService;
-import com.myweather.api.services.models.SessionCredentials;
+import com.myweather.api.models.helpers.SessionCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Collection;
 
 /**
  * Created by javierfz on 7/9/17.
@@ -50,4 +48,18 @@ public class SessionController {
 
       return response;
    }
+
+   /**
+    * Logut authentication
+    *
+    * @param sessionCredentials
+    * @return
+    * TODO ....
+    */
+   /*
+   @RequestMapping(method = RequestMethod.POST)
+   public ResponseEntity<User> authenticate(@Valid @RequestBody SessionCredentials sessionCredentials) {
+
+   }
+   */
 }

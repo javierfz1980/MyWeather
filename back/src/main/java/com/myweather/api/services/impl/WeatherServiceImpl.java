@@ -1,11 +1,11 @@
 package com.myweather.api.services.impl;
 
 import com.google.gson.JsonObject;
-import com.myweather.api.models.weather.Weather;
-import com.myweather.api.repositories.mongo.WeahterMongoRepository;
+import com.myweather.api.models.Weather;
+import com.myweather.api.repositories.mongo.WeatherMongoRepository;
 import com.myweather.api.services.WeatherService;
-import com.myweather.api.services.utils.WeatherServiceUtils;
-import com.myweather.yahoo.YahooRequester;
+import com.myweather.api.utils.yahoo.YahooWeatherUtils;
+import com.myweather.api.utils.yahoo.YahooWeatherClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +25,11 @@ public class WeatherServiceImpl implements WeatherService {
     * Injects the UserRepository
     */
    @Autowired
-   private WeahterMongoRepository repository;
+   private WeatherMongoRepository repository;
 
 
    /**
-    * Service try to look on internal Weather repository 1st. If there is no matches locally, the fetch weathers from Yahoo.
+    * Tries to look on internal Weather repository 1st. If there is no matches locally, the fetch weathers from Yahoo.
     *
     * @param input
     * @return
@@ -50,6 +50,8 @@ public class WeatherServiceImpl implements WeatherService {
       return weatherList;
    }
 
+
+
    /**
     *
     * @param input
@@ -69,11 +71,12 @@ public class WeatherServiceImpl implements WeatherService {
 
       try {
          //TODO implement Yahoo query builder in order te allow different querys
-         YahooRequester yahoo = new YahooRequester();
-         JsonObject requestResult = yahoo.query(input);
+         YahooWeatherClient yahoo = new YahooWeatherClient();
+         String query = String.format(YahooWeatherClient.QUERY_STR, input);
+         JsonObject requestResult = yahoo.query(query);
 
          if(requestResult != null) {
-            weatherList = WeatherServiceUtils.createWeather(requestResult);
+            weatherList = YahooWeatherUtils.createWeather(requestResult);
             logger.info(String.format("there are string matches on Yahoo db for input %s ", input));
             repository.save(weatherList);
             logger.info(String.format("Yahoo results saved on local db"));
@@ -86,7 +89,7 @@ public class WeatherServiceImpl implements WeatherService {
       } catch (Exception exeption) {
 
          weatherList = null;
-         logger.info(String.format("There was an error fetching data from Yahoo"));
+         logger.info(String.format("There was an error fetching weatherData from Yahoo"));
       }
 
       return weatherList;

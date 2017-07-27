@@ -1,4 +1,4 @@
-package com.myweather.api.services.models;
+package com.myweather.api.models.helpers;
 
 /**
  * Created by javierfz on 7/13/17.

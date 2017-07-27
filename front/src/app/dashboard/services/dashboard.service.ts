@@ -17,28 +17,53 @@ export class DashboardService {
   constructor(private authService: AuthService, private httpService: HttpService) {}
 
   addWeather(weather: Weather): void{
-    if(this.authService.isAuthorized() && !this.weatherIsOnCurrentDashboard(weather)) {
-      this.currentDashboard.weathers.push(weather);
-      this.saveData();
-    }
+    const method: string = HttpService.POST;
+    const url: string = HttpService.USER_PATH + "/" + this.user.id + "/dashboards/" + this.currentDashboard.id + "/weathers";
+    this.subscription = this.httpService.requestApi(url, method, weather)
+      .subscribe(
+        (response: CustomResponse) => {
+          console.log("response add weather:");
+          console.log(response);
+          // adds current weather to local data
+          this.currentDashboard.weathers.push(response.data);
+        },
+        (error: CustomResponse) => {
+          console.log("response error add weather:");
+          console.log(error);
+        }
+      );
   }
 
   removeWeather(weather: Weather): void{
     if(this.authService.isAuthorized()) {
-      this.mapLocasl();
-      this.currentDashboard.weathers.forEach(function(weatherOnDashboard, index, dashboards) {
-        if (weatherOnDashboard.id == weather.id) {
-          dashboards.splice(index, 1);
-          return;
-        }
-      });
-      this.saveData();
+      const method: string = HttpService.DELETE;
+      const url: string = HttpService.USER_PATH + "/" + this.user.id + "/dashboards/" + this.currentDashboard.id + "/weathers/" + weather.id;
+      this.subscription = this.httpService.requestApi(url, method)
+        .subscribe(
+          (response: CustomResponse) => {
+            console.log("response add weather:");
+            console.log(response);
+            // removes current weather from local data
+            this.mapLocals();
+            this.currentDashboard.weathers.forEach( function(weatherOnDashboard, index, currentDashboard) {
+              if (weatherOnDashboard.id == response.data['id']) {
+                currentDashboard.splice(index, 1);
+                return;
+              }
+            });
+
+          },
+          (error: CustomResponse) => {
+            console.log("response error add weather:");
+            console.log(error);
+          }
+        );
     }
   }
 
   weatherIsOnCurrentDashboard(weather: Weather): boolean{
     if(this.authService.isAuthorized()) {
-      this.mapLocasl();
+      this.mapLocals();
       for(let weatherOnDashboard of this.currentDashboard.weathers) {
         if (weatherOnDashboard.id == weather.id) return true;
       }
@@ -48,21 +73,23 @@ export class DashboardService {
 
   getWeathersFromCurrentDashboard(): Weather[]{
     if (this.authService.isAuthorized()) {
-      this.mapLocasl();
+      this.mapLocals();
       return this.currentDashboard.weathers;
     }
   }
 
-  private mapLocasl() :void{
+  private mapLocals() :void{
     if(this.authService.isAuthorized()) {
       this.user = this.authService.user;
       this.currentDashboard = this.user.dashboards[0];
     }
   }
 
-  private saveData(): void{
+  /*
+  private updateDashboardOnDB(): void{
+    ///{userId}/dashboards/{dashboardId}
     const method: string = HttpService.PUT;
-    const url: string = HttpService.DASHBOARD_PATH + "/"+this.currentDashboard.id;
+    const url: string = HttpService.USER_PATH + "/" + this.user.id + "/dashboards/" + this.currentDashboard.id;
     this.subscription = this.httpService.requestApi(url, method, this.currentDashboard)
       .subscribe(
         (response: any) => {
@@ -75,4 +102,5 @@ export class DashboardService {
         }
       );
   }
+  */
 }

@@ -8,6 +8,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  */
 public interface DashboardMongoRepository extends MongoRepository<Dashboard, Integer> {
 
-   Dashboard getByName(String name);
+   Dashboard getById(String id);
 
 }

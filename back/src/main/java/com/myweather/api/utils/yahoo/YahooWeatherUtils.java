@@ -1,18 +1,20 @@
-package com.myweather.api.services.utils;
+package com.myweather.api.utils.yahoo;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.myweather.api.models.weather.Weather;
-import com.myweather.api.models.weather.data.Condition;
-import com.myweather.api.models.weather.data.Forecast;
-import com.myweather.utils.Reflection;
+import com.myweather.api.models.Weather;
+import com.myweather.api.models.weatherData.Condition;
+import com.myweather.api.models.weatherData.Forecast;
+import com.myweather.api.utils.Reflection;
 
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by vmware on 7/21/17.
  */
-public class WeatherServiceUtils {
+public class YahooWeatherUtils {
 
    /**
     * Create a Weather Model for each result of the query
@@ -28,7 +30,7 @@ public class WeatherServiceUtils {
          JsonObject item = results.get(i).getAsJsonObject().getAsJsonObject("item");
          JsonObject location = results.get(i).getAsJsonObject().getAsJsonObject("location");
 
-         String woeid = WeatherServiceUtils.extractWoeidFromLink(item.get("link").getAsString());
+         String woeid = YahooWeatherUtils.extractWoeidFromLink(item.get("link").getAsString());
 
          Weather weather = new Weather();
          weather.setId(woeid);
@@ -38,13 +40,32 @@ public class WeatherServiceUtils {
          weather.setPubDate(item.get("pubDate").getAsString());
          weather.setLink(item.get("link").getAsString());
          weather.setWoeid(woeid);
-         weather.setCondition(WeatherServiceUtils.createCondition(item.getAsJsonObject("condition")));
-         weather.setForecast(WeatherServiceUtils.createForecasts(item));
+         weather.setCondition(YahooWeatherUtils.createCondition(item.getAsJsonObject("condition")));
+         weather.setForecast(YahooWeatherUtils.createForecasts(item));
 
          weatherList.add(weather);
       }
 
       return weatherList;
+   }
+
+   /**
+    * Returns all weathers from db as comma separated values
+    *
+    * @return
+    */
+   public static String getAllWeathersAsCommaSeparated(List<Weather> weatherList){
+      String res = "";
+      try {
+         Iterator<Weather> it = weatherList.iterator();
+         while (it.hasNext()) {
+            Weather weatherIt = it.next();
+            res += weatherIt.getWoeid() + ", ";
+         }
+      } catch (Exception ex) {
+      }
+
+      return res.substring(0, res.length()-2);
    }
 
    /**
@@ -88,5 +109,6 @@ public class WeatherServiceUtils {
       String id = parts[1].substring(0, parts[1].length()-1);
       return id;
    }
+
 
 }

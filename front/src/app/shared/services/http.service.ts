@@ -22,13 +22,12 @@ export class HttpService {
   public static readonly USER_PATH: string = "users";
   public static readonly SESSION_PATH: string = "session";
   public static readonly WEATHER_PATH: string = "weathers";
-  public static readonly DASHBOARD_PATH: string = "dashboards";
 
 
   constructor(private http: Http, private authService: AuthService){}
 
 
-  requestApi(url: string, method: string, data: any, headers?:Headers): Observable<CustomResponse> {
+  requestApi(url: string, method: string, data?: any, headers?:Headers): Observable<CustomResponse> {
     const source: Observable<CustomResponse> = this.getSource(url, method, data, headers);
     let customResponse: CustomResponse = new CustomResponse();
 
@@ -56,6 +55,12 @@ export class HttpService {
 
   private getSource(url: string, method: string, data: any, headers?:Headers): Observable<any> {
     const defaultHeaders: Headers = (headers != null ) ? headers : this.creatDefaultHeaders(); // new Headers({'Content-Type': 'application/json'});
+
+    console.log(url);
+    console.log(method);
+    console.log(data);
+    console.log(defaultHeaders);
+
     let source: Observable<any>;
     switch (method) {
       case HttpService.POST:
@@ -65,10 +70,9 @@ export class HttpService {
         source = this.http.put(this.path + url, data, {headers: defaultHeaders});
         break;
       case HttpService.GET:
-
         break;
       case HttpService.DELETE:
-
+        source = this.http.delete(this.path + url, {headers: defaultHeaders});
         break;
     }
     return source;

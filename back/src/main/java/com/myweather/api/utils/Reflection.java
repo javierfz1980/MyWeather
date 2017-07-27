@@ -1,4 +1,4 @@
-package com.myweather.utils;
+package com.myweather.api.utils;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
