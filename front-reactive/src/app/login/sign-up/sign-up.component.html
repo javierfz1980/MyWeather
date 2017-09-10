@@ -1,0 +1,90 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h4 *ngIf="internalState.titleVisible">Please complete the following information</h4>
+      <h4 *ngIf="internalState.accountCreated">Your account was successfully created, please proceed to Sign In!</h4>
+      <h4 *ngIf="internalState.accountEdited">Your account was successfully modified !</h4>
+      <hr>
+      <div *ngIf="internalState.isLoading" id="preloader"><img src="../../../assets/preloaders/circlePoints.gif"></div>
+      <form *ngIf="internalState.formVisible" [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label >Name</label>
+              <input type="text" class="form-control" name="name" formControlName="name" >
+            </div>
+            <div class="form-group">
+              <label >Email</label>
+              <input type="email" class="form-control" name="email" formControlName="email" email >
+            </div>
+            <div class="form-group">
+              <label >Age</label>
+              <select class="form-control" name="age" formControlName="age" >
+                <option *ngFor="let age of ages()">{{ age }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label >Gender</label>
+              <select class="form-control" name="gender" formControlName="gender" >
+                <option>Male</option>
+                <option>Female</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label >Lastname</label>
+              <input type="text" class="form-control" name="lastname" formControlName="lastname" >
+            </div>
+            <div class="form-group">
+              <label >Password</label>
+              <input type="password" class="form-control" name="password" formControlName="password" >
+            </div>
+            <div class="form-group">
+              <label >Confirm Password</label>
+              <input type="password" class="form-control" name="confirmPassword" formControlName="confirmPassword" >
+            </div>
+            <div *ngIf="!isAuthorized()" class="form-group">
+              <label >Default Dashboard Name</label>
+              <input type="password" class="form-control" name="defaultDashboardName" formControlName="defaultDashboardName" >
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="signUpForm.invalid && signUpForm.touched">
+          <div class="col-md-12">
+            <div class="help-block">
+              <h5>* Please complete all fields</h5>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="(signUpForm.get('password').value != signUpForm.get('confirmPassword').value)">
+          <div class="col-md-12">
+            <div class="help-block">
+              <h5>* Password doesn't match</h5>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="internalState.errorCreatingAccount">
+          <div class="col-md-12">
+            <div class="help-block">
+              <h5>{{internalState.errorMessage}}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <br>
+              <button class="btn btn-primary" type="reset">Reset</button>
+              <button
+                class="btn btn-success"
+                type="submit"
+                [disabled]="signUpForm.invalid || ((signUpForm.get('password').value != signUpForm.get('confirmPassword').value))"
+                >{{ isAuthorized() ? 'Edit' : 'Submit'}}</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

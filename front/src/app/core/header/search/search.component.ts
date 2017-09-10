@@ -18,7 +18,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   private isfocus: boolean = false;
   private menuIsOpen: boolean = false;
   private subscription: Subscription;
-  private searchStr = new Subject<string>();
+  private searchStrSubject = new Subject<string>();
   private results: Weather[];
 
   constructor(private weatherService: WeatherService,
@@ -26,7 +26,7 @@ export class SearchComponent implements OnInit, OnDestroy {
               private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
-   this.subscription = this.weatherService.search(this.searchStr)
+   this.subscription = this.weatherService.search(this.searchStrSubject)
       .subscribe(
         (results: CustomResponse) => {
           this.results = results.data;
@@ -42,7 +42,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   inputSearch(str: string): void{
     if(str && str != '' && str != undefined) {
       this.loading = true;
-      this.searchStr.next(str);
+      this.searchStrSubject.next(str);
     }
   }
 

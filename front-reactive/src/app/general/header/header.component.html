@@ -1,0 +1,60 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" (click)="isCollapsed = !isCollapsed">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" routerLink="" id="brandImage">MyWeather</a>
+    </div>
+
+    <div class="collapse navbar-collapse" [collapse]="isCollapsed">
+
+      <app-search></app-search>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown" dropDown>
+          <a class="dropdown-toggle" role="button"><span class="glyphicon glyphicon-flag"></span></a>
+          <ul class="dropdown-menu" id="languageDropdownMenu">
+            <li ><a class="mousePointer" (click)="changeLang('en')">English</a></li>
+            <li ><a class="mousePointer"  (click)="changeLang('es')">Español</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <app-sign-in-wrapper></app-sign-in-wrapper>
+
+      <app-user-panel></app-user-panel>
+
+      <!--<ul class="nav navbar-nav navbar-right">
+        <li class="dropdown" dropDown id="dropDownNav">
+          <a class="dropdown-toggle" role="button"><span class="glyphicon glyphicon-user">
+            </span> {{ (isAuthorized()) ? (currentUserName()) : ('header.account' | translate) }} <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" id="accountDropdownMenu">
+            <li *ngIf="!isAuthorized()">
+              <app-sign-in></app-sign-in>
+            </li>
+            <ng-container *ngIf="isAuthorized()">
+              <li><a class="mousePointer" routerLink="account">{{ 'header.editAccount' | translate }}  <span class="glyphicon glyphicon-edit"></span></a></li>
+              <li><a class="mousePointer" (click)="logout()">{{ 'header.signOut' | translate }}  <span class="glyphicon glyphicon-log-out"></span></a></li>
+            </ng-container>
+          </ul>
+        </li>
+        <li class="dropdown" dropDown>
+          <a class="dropdown-toggle" role="button"><span class="glyphicon glyphicon-flag"></span></a>
+          <ul class="dropdown-menu" id="languageDropdownMenu">
+            <li ><a class="mousePointer" (click)="changeLang('en')">English</a></li>
+            <li ><a class="mousePointer"  (click)="changeLang('es')">Español</a></li>
+          </ul>
+        </li>
+      </ul>-->
+
+    </div><!-- /.navbar-collapse -->
+
+  </div><!-- /.container-fluid -->
+</nav>

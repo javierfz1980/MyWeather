@@ -1,0 +1,22 @@
+<ul class="nav navbar-nav navbar-right">
+  <li class="dropdown" dropDown id="dropDownNav">
+    <a class="dropdown-toggle" role="button">
+      <ng-container *ngIf="!isLoggedIn">
+        <span class="glyphicon glyphicon-user"></span>
+        {{ 'header.account' | translate }}
+        <span *ngIf="!isLoggedIn" class="caret"></span>
+      </ng-container>
+      <a (click)="signout()" *ngIf="isLoggedIn">{{ 'header.signOut' | translate }}</a>
+    </a>
+    <ul *ngIf="!isLoggedIn" class="dropdown-menu" id="accountDropdownMenu">
+      <li>
+        <ul @FormFadeIn *ngIf="!isForgot" class="signInWrapper">
+          <app-sign-in (siginEvent)="signin($event)" (switchForgotEvent)="switchForgot()" [wrongCredentials]="wrongCredentials"></app-sign-in>
+        </ul>
+        <ul  @FormFadeIn *ngIf="isForgot" class="signInWrapper">
+          <app-forgot (switchForgotEvent)="switchForgot()"></app-forgot>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>

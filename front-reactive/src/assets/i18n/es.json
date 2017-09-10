@@ -1,0 +1,17 @@
+{
+  "header": {
+    "account": "Cuenta",
+    "searchPlaceHolder": "Ciudad"
+  },
+
+  "search": {
+    "searchPlaceHolder": "Lugares"
+  },
+
+  "footer": {
+    "aboutTilte": "Nosotros",
+    "navigationTitle": "Navegacion",
+    "socialTitle": "Seguirnos",
+    "languageTitle": "Lenguaje"
+  }
+}

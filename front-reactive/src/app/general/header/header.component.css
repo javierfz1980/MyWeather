@@ -1,0 +1,21 @@
+#searchInpurHeader {
+  max-width: 250px;
+  float: left;
+  margin-right: 10px;
+}
+
+.in #formHeader {
+  /* margin-top: -1px; */
+  border-top: none;
+}
+
+#brandImage,
+.mousePointer {
+  cursor: pointer;
+}
+
+#languageDropdownMenu,
+#accountDropdownMenu {
+  min-width: 90px;
+}
+

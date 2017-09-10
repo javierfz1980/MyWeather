@@ -1,0 +1,44 @@
+<form
+  #formSingIn="ngForm"
+  (ngSubmit)="signin(formSingIn)"
+  class="navbar-form"
+  id="loginSignInForm">
+  <li>{{ 'header.signInButton' | translate }}</li>
+  <li role="separator" class="divider"></li>
+  <li>
+    <!--autocomplete="off"-->
+    <input
+      type="text"
+      class="form-control"
+      id="email"
+      name="email"
+      ngModel
+      required
+      email
+      placeholder="{{ 'header.emailPlaceHolder' | translate }}"
+    >
+  </li>
+  <li>
+    <input
+      type="password"
+      class="form-control"
+      id="password"
+      name="password"
+      ngModel
+      required
+      placeholder="{{ 'header.passwordPlaceHolder' | translate }}"
+    >
+  </li>
+  <li>
+    <button
+      type="submit"
+      class="btn btn-primary btn-sm"
+      style="width: 100%"
+      [disabled]="formSingIn.invalid"
+    >{{ 'header.signInButton' | translate }}
+    </button>
+  </li>
+  <li *ngIf="wrongCredentials"><span class="wrongCredentials">{{ 'header.authError' | translate }}</span></li>
+  <li role="separator" class="divider"></li>
+  <li><a routerLink="signup"> {{ 'header.signUp' | translate }} </a> | <a (click)="switchForgot()"> {{ 'header.forgotPassword' | translate }} </a> </li>
+</form>

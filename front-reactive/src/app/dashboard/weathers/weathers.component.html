@@ -1,0 +1,5 @@
+<div class="row">
+  <div class="col-md-12">
+      <app-weather *ngFor="let weather of currentDashboard.weathers" [weather]="weather" (removeWeatherEvent)="removeWeatherById($event)"></app-weather>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+.signUpContainer {
+  list-style-type: none;
+  padding: 0px;
+}
+
+.wrongCredentials {
+  color: red;
+}
+
+#loginSignInForm input {
+  margin-bottom: 5px;
+}
+
+#dropDownNav {
+  padding: 0px 15px;
+}
+
+#loginSignInForm a{
+  cursor: pointer;
+}
+
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}

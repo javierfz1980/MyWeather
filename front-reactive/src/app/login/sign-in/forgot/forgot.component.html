@@ -1,0 +1,31 @@
+<form
+  #formForgot
+  class="navbar-form"
+  id="forgotForm"
+  (submit)="submit(formForgot)">
+  <li>{{ 'header.forgotPassword' | translate }}</li>
+  <li role="separator" class="divider"></li>
+  <li>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="{{ 'header.emailPlaceHolder' | translate }}"
+      ngModel
+      name="emailForgot"
+      id="emailForgot"
+      required
+      email
+    >
+  </li>
+  <li>
+    <button
+      type="submit"
+      class="btn btn-primary btn-sm"
+      style="width: 100%"
+      [disabled]="formForgot.invalid"
+    >{{ 'header.forgotSubmit' | translate }}
+    </button>
+  </li>
+  <li role="separator" class="divider"></li>
+  <li><a (click)="switchForgot()"> {{ 'header.forgotBack' | translate }} </a> </li>
+</form>

@@ -19,6 +19,9 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
 /**
@@ -93,6 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    @Override
    protected void configure(HttpSecurity http) throws Exception {
       http
+            .cors().and()
             .csrf().disable()
             .authorizeRequests()
             //
@@ -122,5 +126,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .httpBasic().and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
    }
+
+   /*@Bean
+   CorsConfigurationSource corsConfigurationSource() {
+      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+      source.registerCorsConfiguration("*//**", new CorsConfiguration().applyPermitDefaultValues());
+      return source;
+   }*/
 
 }

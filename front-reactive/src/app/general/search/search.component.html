@@ -1,0 +1,38 @@
+<form class="navbar-form navbar-left" id="formHeader">
+  <input
+    #input
+    id="searchInpurHeader"
+    type="text"
+    class="form-control"
+    autocomplete="off"
+    placeholder="{{ 'search.searchPlaceHolder' | translate }}"
+    (focus)="openSubMenu()"
+    (blur)="closeSubMenu()"
+    [ngClass]="{loading: isLoading}"
+  >
+  <div *ngIf="isFocus && !isLoading" class="row results" (mouseover)="mouseOver()" (mouseout)="mouseOut()">
+    <div class="col-xs-12">
+      <ul style="padding: 0px" >
+        <li *ngFor="let weather of searchResults" class="list-group-item clearfix mousePointer">
+          <span class="list-group-item-text">{{weather.title | slice:0:50 }}</span>
+
+          <span *ngIf="isAuthorized$ | async as isAuthorized" style="float: right">
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <button
+              *ngIf="!weatherIsOnCurrentDashboard(weather)"
+              class="btn btn-success btn-xs"
+              (click)="addToDashboard(weather)"
+              [disabled]="!isAuthorized"
+            >Add</button>
+            <button
+              *ngIf="weatherIsOnCurrentDashboard(weather)"
+              (click)="removeFromDashboard(weather)"
+              class="btn btn-danger btn-xs"
+              [disabled]="!isAuthorized"
+            >Remove</button>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,26 @@
+{
+  "header": {
+    "account": "Account",
+    "emailPlaceHolder": "email",
+    "passwordPlaceHolder": "password",
+    "signInButton": "Sign In",
+    "signUp": "Sign Up",
+    "forgotPassword": "Forgot Password",
+    "forgotSubmit": "Submit",
+    "forgotBack": "Back to Sign In",
+    "authError": "Wrong credentials",
+    "editAccount": "Edit Info",
+    "signOut": "Sign Out"
+  },
+
+  "search": {
+    "searchPlaceHolder": "Location"
+  },
+
+  "footer": {
+    "aboutTilte": "About Us",
+    "navigationTitle": "Navegation",
+    "socialTitle": "Follow Us",
+    "languageTitle": "Language"
+  }
+}
