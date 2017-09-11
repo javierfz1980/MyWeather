@@ -37,17 +37,17 @@ export class HttpService {
     return source
       .map(
         (response: any) => {
-          console.debug("- httpservice response: ", response);
+          console.debug("-> httpservice response: ", response);
           customResponse = this.buildCustomResponse(response);
-          console.debug("- httpservice response customResponse: ", customResponse);
+          console.debug("-> httpservice response customResponse: ", customResponse);
           return customResponse;
         },
       )
       .catch(
         (error: any) => {
-          console.debug("- httpservice error: ", error);
+          console.debug("-> httpservice error: ", error);
           customResponse = this.buildCustomResponse(error);
-          console.debug("- httpservice error customResponse: ", customResponse);
+          console.debug("-> httpservice error customResponse: ", customResponse);
           return Observable.throw(customResponse);
         }
       );
@@ -57,10 +57,7 @@ export class HttpService {
   private getSource(url: string, method: string, data: any, headers?:Headers): Observable<any> {
     const defaultHeaders: Headers = (headers != null ) ? headers : this.creatDefaultHeaders(); // new Headers({'Content-Type': 'application/json'});
 
-    /*console.debug("- url: ",url);
-    console.debug("- method: ",method);
-    console.debug("- data: ",data);
-    console.debug("- headers: ",defaultHeaders);*/
+    console.debug("-> httpservice request: ", {url: url, method: method, data: data, headers: defaultHeaders});
 
     let source: Observable<any>;
     switch (method) {
