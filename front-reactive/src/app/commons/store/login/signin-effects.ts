@@ -13,6 +13,7 @@ import {Headers} from '@angular/http';
 import {CreateUserAction, DeleteUserAction} from '../user/user-actions';
 import {User} from '../../models/data/user';
 import {LoadDashboardsSucceed} from '../dashboards/dashboards-actions';
+import {StartPollingAction, StopPollingAction} from '../polling/polling-actions';
 
 @Injectable()
 export class SigningEffects {
@@ -33,7 +34,8 @@ export class SigningEffects {
         const actions: Action[] = [
           new SigninSucceededAction(response),
           new CreateUserAction(user),
-          new LoadDashboardsSucceed(user.dashboards)
+          new LoadDashboardsSucceed(user.dashboards),
+          new StartPollingAction()
         ]
         return Observable.of(...actions);
       })
@@ -43,13 +45,11 @@ export class SigningEffects {
   @Effect()
   private signoutAction$: Observable<Action> = this.actions$
     .ofType(SigninActions.SIGNOUT_REQUESTED)
-    /*.switchMap(() => {
-      return Observable.of(new SignoutSucceededAction())
-    })*/
     .switchMap((action: SignoutRequestedAction) => {
       const actions: Action[] = [
         new SignoutSucceededAction(),
-        new DeleteUserAction()
+        new DeleteUserAction(),
+        new StopPollingAction()
       ];
       return Observable.of(...actions);
     });

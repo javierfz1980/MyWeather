@@ -6,11 +6,19 @@ import com.myweather.api.models.Weather;
 import com.myweather.api.models.helpers.CustomResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by javierfz on 7/13/17.
  */
 @Service
 public interface DashboardService {
+
+   /**
+    * fetchs all Dashboards from an User form the db
+    * @param userId
+    */
+   List<Dashboard> getDashboards(String userId);
 
    /**
     * Insert a new Dashboard into db
@@ -30,7 +38,6 @@ public interface DashboardService {
     * @return
     */
    Dashboard update(Dashboard dashboard);
-
 
    /**
     *

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by javierfz on 7/13/17.
@@ -40,6 +41,24 @@ public class DashboardServiceImpl implements DashboardService {
     */
    @Autowired
    WeatherMongoRepository weatherRepository;
+
+   /**
+    *
+    * @param userId
+    * @return
+    */
+   public List<Dashboard> getDashboards(String userId) {
+      List<Dashboard> dashboards;
+      try {
+         User user = userRepository.getById(userId);
+         dashboards = user.getDashboards();
+         logger.info(String.format("Dashboards retrieved for user %s", userId));
+      } catch (Exception ex) {
+         logger.info(String.format("Dashboards for user %s could not be retrieved", userId));
+         dashboards = null;
+      }
+      return dashboards;
+   }
 
    /**
     *

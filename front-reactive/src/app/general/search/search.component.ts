@@ -18,29 +18,32 @@ import {AuthService} from '../../commons/services/auth.service';
 })
 export class SearchComponent implements OnInit, OnDestroy {
 
-  @ViewChild('input')
-  input: ElementRef;
+  @ViewChild('inputSearch')
+  inputSearch: ElementRef;
 
-  private isFocus: boolean = false;
-  private keepMenuOpen: boolean = false;
+  @ViewChild('container')
+  container: ElementRef;
+
+  private showSubMenu: boolean = false;
   private isLoading: boolean;
-  private subscriptions: Subscription[] = [];
   private searchResults: Weather[] = [];
   private isAuthorized$: Observable<boolean>;
+  private subscriptions: Subscription[] = [];
 
   constructor(private store$: Store<ApplicationState>,
               private httpService: HttpService,
               private authService: AuthService){}
 
   ngOnInit() {
-    this.subscriptions.push(this.search());
+    this.subscriptions.push(this.searchSubscription());
+    this.subscriptions.push(...this.submenuSubscription());
     this.isAuthorized$ = this.authService.isAuthorized$();
   }
 
-  private search(): Subscription {
+  private searchSubscription(): Subscription {
     return Observable
-      .fromEvent(this.input.nativeElement, "keyup")
-      .debounceTime(100)
+      .fromEvent(this.inputSearch.nativeElement, "keyup")
+      .debounceTime(500)
       .map((event: KeyboardEvent) => event.target['value'])
       .distinctUntilChanged()
       .switchMap((str) => {
@@ -49,32 +52,54 @@ export class SearchComponent implements OnInit, OnDestroy {
           .requestApi(HttpService.WEATHER_PATH, HttpService.POST, str)
           .map((response: CustomResponse) => {
             this.isLoading = false;
-            this.searchResults = response.data
+            this.searchResults = response.data;
+            console.log("0000000000")
           })
       })
       .catch((error: CustomResponse) => Observable.of(error))
       .subscribe();
   }
 
-  weatherIsOnCurrentDashboard(weather: Weather): boolean {
+  private submenuSubscription(): Subscription[] {
+    return [
+    Observable.fromEvent(this.container.nativeElement, 'click')
+      .subscribe(() => this.showSubMenu = true)
+    ,
+    Observable.fromEvent(this.container.nativeElement, 'mouseleave')
+      .subscribe(() => {
+        this.inputSearch.nativeElement.blur();
+        this.showSubMenu = false;
+      })
+    ]
+  }
+
+  showResults(): boolean {
+    return this.showSubMenu && !this.isLoading;
+  }
+
+  weatherIsOnCurrentDashboard(weather: Weather, event): boolean {
+    console.log("11111111", event,  this.searchResults);
     let res: boolean = false;
-    this.subscriptions.push(
+    //this.subscriptions.push(
       this.store$
         .select('dashboards')
-        .map(state => {
-          return state.dashboards[state.currentDashboard].weathers
-            .filter(stateWeather => stateWeather.id === weather.id)
-            .map(weather => res = weather.id.length > 0)
+        .take(1)
+        .flatMap(state => state.dashboards[state.currentDashboard].weathers)
+        .filter(stateWeather => stateWeather.id === weather.id)
+        .do(data => {
+          console.log("22222222", data)
         })
-        .subscribe()
-    );
+        .subscribe(() => res = true)
+        .unsubscribe();
+    //);
+    console.log("---------------------------");
     return res;
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  trackByWeatherId(index, item: Weather): string {
+    console.log("trackby:", index);
+    return item.id;
   }
-
 
   // add / remove
 
@@ -82,34 +107,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new RemoveWeatherRequested(weather.id));
   }
 
-  addToDashboard(weather: Weather) {
+  addToDashboard(weather?: Weather) {
     this.store$.dispatch(new AddWeatherRequested(weather));
   }
 
-
-  // Show / Hide menu helpers...
-
-  closeSubMenu(): void{
-    setTimeout(() => {
-        if(this.isFocus && !this.keepMenuOpen) {
-          this.input.nativeElement.blur();
-          this.isFocus = false;
-        }
-      }, 50
-    );
-  }
-
-  openSubMenu() {
-    this.isFocus = true;
-  }
-
-  mouseOver() {
-    this.keepMenuOpen = true;
-  }
-
-  mouseOut() {
-    this.keepMenuOpen = false;
-    this.closeSubMenu();
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
 }

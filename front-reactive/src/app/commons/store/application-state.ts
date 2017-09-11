@@ -4,6 +4,7 @@ import {ModuleWithProviders} from '@angular/core';
 import {userReducer, UserState} from './user/user-state';
 import {dashboardsReducer, DashboardsState} from './dashboards/dashboards-state';
 import {SignupState, signupReducer} from './signup/signup-state';
+import {pollingReducer, PollingState} from './polling/polling-state';
 
 /*
 export interface ApplicationState {
@@ -32,14 +33,16 @@ export interface ApplicationState {
   signin: SigninState,
   user: UserState,
   dashboards: DashboardsState,
-  signup: SignupState
+  signup: SignupState,
+  pollingState: PollingState
 }
 
 export const ApplicationStatesReducers: {[key: string]: ActionReducer<any>} = {
   signin: signinReducer,
   user: userReducer,
   dashboards: dashboardsReducer,
-  signup: signupReducer
+  signup: signupReducer,
+  polling: pollingReducer
 };
 
 export const applicationStateImports: ModuleWithProviders[] = [StoreModule.forRoot(ApplicationStatesReducers)];

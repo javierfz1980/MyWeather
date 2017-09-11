@@ -30,7 +30,12 @@ export class WeathersComponent implements OnInit, OnDestroy {
   }
 
   private refreshInternalState(state: DashboardsState) {
+    console.log("dashboards received on weather component");
     this.currentDashboard = state.dashboards[state.currentDashboard];
+  }
+
+  trackByWeatherId(index: number, weather: Weather): string {
+    return weather.id;
   }
 
   removeWeatherById(weatherId: string) {

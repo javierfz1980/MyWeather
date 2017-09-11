@@ -14,7 +14,8 @@ export const DashboardActions = {
   REMOVE_WEATHER_FAILED: 'Remove Weather Failed',
   ADD_WEATHER_REQUEST: 'Add Weather Request',
   ADD_WEATHER_SUCCEED: 'Add Weather Succeed',
-  ADD_WEATHER_FAILED: 'Add Weather Failed'
+  ADD_WEATHER_FAILED: 'Add Weather Failed',
+  REFRESH_DASHBOARDS: 'Refresh Dashboards'
 }
 
 export class LoadDashboardsRequested implements Action {
@@ -64,7 +65,10 @@ export class AddWeatherSucceed implements Action {
 
 export class AddWeatherFailed implements Action {
   type: string = DashboardActions.ADD_WEATHER_FAILED;
+  constructor(public payload?: CustomResponse) {}
+}
 
-  constructor(public payload?: CustomResponse) {
-  }
+export class RefreshDashboards implements Action {
+  type: string = DashboardActions.REFRESH_DASHBOARDS;
+  constructor(public payload?: Dashboard[]){}
 }

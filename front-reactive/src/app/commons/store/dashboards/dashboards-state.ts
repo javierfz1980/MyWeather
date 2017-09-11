@@ -1,6 +1,9 @@
 import {Dashboard} from '../../models/data/dashboard';
 import {Action} from '@ngrx/store';
-import {AddWeatherSucceed, DashboardActions, RemoveWeatherSucceed} from './dashboards-actions';
+import {
+  AddWeatherSucceed, DashboardActions, RefreshDashboards,
+  RemoveWeatherSucceed
+} from './dashboards-actions';
 import {Weather} from '../../models/data/weather';
 
 export interface DashboardsState {
@@ -67,7 +70,17 @@ export function dashboardsReducer (state: DashboardsState = INITIAL_DASHBOARDS,
     }
     case DashboardActions.ADD_WEATHER_SUCCEED: {
       newState.isLoading = false;
-      newState.dashboards[newState.currentDashboard].weathers.push((<AddWeatherSucceed>action).payload.data)
+      const dashboards: Dashboard[] = newState.dashboards.map(dashboard => Object.assign({},dashboard));
+      const weathers: Weather[] = newState.dashboards[newState.currentDashboard].weathers.map(weather => Object.assign({},weather));
+      weathers.push((<AddWeatherSucceed>action).payload.data);
+      dashboards[newState.currentDashboard].weathers = weathers;
+      newState.dashboards = dashboards;
+      //newState.dashboards[newState.currentDashboard].weathers.push((<AddWeatherSucceed>action).payload.data)
+      return newState;
+    }
+    case DashboardActions.REFRESH_DASHBOARDS: {
+      console.log("dashboards refreshed", (<RefreshDashboards>action).payload);
+      newState.dashboards = (<RefreshDashboards>action).payload;
       return newState;
     }
     default: {

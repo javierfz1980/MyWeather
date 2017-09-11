@@ -33,7 +33,7 @@ public class PollingServiceImpl implements PollingService {
    /**
     * Starts polling
     */
-   @Scheduled(fixedDelay = (1 * 60 * 1000))
+   @Scheduled(fixedDelay = (5 * 60 * 1000))
    public void startPolling() {
       logger.info(String.format("weather polling: started, interval: %s", (10 * 60 * 1000)));
       try {

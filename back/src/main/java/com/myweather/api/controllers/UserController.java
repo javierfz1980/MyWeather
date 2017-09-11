@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by javierfz on 7/9/17.
@@ -83,6 +84,24 @@ public class UserController {
 
 
    // USER DASHBOARDS ////////////////////////////////////////////////////////////////////
+
+   /**
+    * Retireves all dashboard for an User
+    *
+    * @return ResponseEntity with Status result
+    */
+   @RequestMapping(method = RequestMethod.GET, value = "/{userId}/dashboards")
+   public ResponseEntity<Dashboard> getDashboard(@PathVariable String userId) {
+      ResponseEntity response;
+      List<Dashboard> dashboards = dashboardService.getDashboards(userId);
+      HttpStatus status = (dashboards != null) ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
+
+      response = ResponseEntity
+              .status(status)
+              .body(dashboards);
+
+      return response;
+   }
 
    /**
     * Creates a dashboard for an User

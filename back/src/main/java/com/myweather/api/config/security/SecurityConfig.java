@@ -99,9 +99,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             // users
             .antMatchers(HttpMethod.GET, this.usersPath + "/**").authenticated()
             .antMatchers(HttpMethod.POST, this.usersPath + "/{userId}/dashboards/{dashboardId}/weathers" ).authenticated()
-            .antMatchers(HttpMethod.POST, this.usersPath + "/{userId}/dashboards" ).authenticated()
+            .antMatchers(HttpMethod.POST, this.usersPath + "/{userId}/dashboards").authenticated()
             .antMatchers(HttpMethod.PUT, this.usersPath + "/**").authenticated()
             .antMatchers(HttpMethod.DELETE, this.usersPath + "/**").authenticated()
+            .antMatchers(HttpMethod.GET, this.usersPath + "/{userId}/dashboards").authenticated()
             //
             // weathers
             .antMatchers(HttpMethod.GET, this.weathersPath + "/**").authenticated()

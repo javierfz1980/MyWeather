@@ -57,10 +57,10 @@ export class HttpService {
   private getSource(url: string, method: string, data: any, headers?:Headers): Observable<any> {
     const defaultHeaders: Headers = (headers != null ) ? headers : this.creatDefaultHeaders(); // new Headers({'Content-Type': 'application/json'});
 
-    console.debug("- url: ",url);
+    /*console.debug("- url: ",url);
     console.debug("- method: ",method);
     console.debug("- data: ",data);
-    console.debug("- headers: ",defaultHeaders);
+    console.debug("- headers: ",defaultHeaders);*/
 
     let source: Observable<any>;
     switch (method) {
@@ -71,6 +71,7 @@ export class HttpService {
         source = this.http.put(this.path + url, data, {headers: defaultHeaders});
         break;
       case HttpService.GET:
+        source = this.http.get(this.path + url, {headers: defaultHeaders});
         break;
       case HttpService.DELETE:
         source = this.http.delete(this.path + url, {headers: defaultHeaders});
