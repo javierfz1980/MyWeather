@@ -5,6 +5,7 @@ import {UserEffects} from './user/user-effects';
 import {DashboardsEffects} from './dashboards/dashboards-effects';
 import {SignupEffects} from './signup/signup-effects';
 import {PollingEffect} from './polling/polling-effects';
+import {SearchEffects} from './search/search-effects';
 
 export const applicationEffectImports: ModuleWithProviders[] = [
   EffectsModule.forRoot([
@@ -12,6 +13,7 @@ export const applicationEffectImports: ModuleWithProviders[] = [
     UserEffects,
     DashboardsEffects,
     SignupEffects,
-    PollingEffect
+    PollingEffect,
+    SearchEffects
   ])
 ];

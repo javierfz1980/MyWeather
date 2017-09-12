@@ -5,6 +5,7 @@ import {userReducer, UserState} from './user/user-state';
 import {dashboardsReducer, DashboardsState} from './dashboards/dashboards-state';
 import {SignupState, signupReducer} from './signup/signup-state';
 import {pollingReducer, PollingState} from './polling/polling-state';
+import {searchReducer, SearchState} from './search/search-state';
 
 /*
 export interface ApplicationState {
@@ -34,7 +35,8 @@ export interface ApplicationState {
   user: UserState,
   dashboards: DashboardsState,
   signup: SignupState,
-  pollingState: PollingState
+  pollingState: PollingState,
+  search: SearchState
 }
 
 export const ApplicationStatesReducers: {[key: string]: ActionReducer<any>} = {
@@ -42,7 +44,8 @@ export const ApplicationStatesReducers: {[key: string]: ActionReducer<any>} = {
   user: userReducer,
   dashboards: dashboardsReducer,
   signup: signupReducer,
-  polling: pollingReducer
+  polling: pollingReducer,
+  search: searchReducer
 };
 
 export const applicationStateImports: ModuleWithProviders[] = [StoreModule.forRoot(ApplicationStatesReducers)];

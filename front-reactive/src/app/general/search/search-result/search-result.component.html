@@ -1,0 +1,8 @@
+<span *ngIf="isAuthorized | async">
+  <button *ngIf="isInCurrentStore$ | async; else notInCurrentStore" (click)="removeFromDashboard(weather)" class="btn btn-danger btn-xs" >Remove</button>
+  <ng-template #notInCurrentStore><button (click)="addToDashboard(weather)" class="btn btn-success btn-xs" >Add</button></ng-template>
+  &nbsp;&nbsp;|&nbsp;&nbsp;
+</span>
+<span class="list-group-item-text">
+  {{weather.title | slice:0:50 }}
+</span>

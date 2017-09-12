@@ -10,8 +10,23 @@
   position: absolute;
   max-width: 850px;
   z-index: 99;
+  padding: 0px;
+  border: 1px solid #ddd;
+  border-top-left-radius: 4px!important;
+  border-top-right-radius: 4px!important;
+}
+
+.result-row {
+  margin:0px;
+  border: none;
+  border-bottom: 1px solid #ddd;
 }
 
 .mousePointer {
   cursor: pointer;
+}
+
+.search-result-item {
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
 }
