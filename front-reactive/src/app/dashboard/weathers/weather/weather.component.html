@@ -1,37 +1,117 @@
 <a [@weatherContainer]="stateOver" id="location_row" class="list-group-item list-group-item-action" (mouseover)="onMouseOver()" (mouseout)="onMouseOut()"><!-- active -->
+
   <div class="row">
-    <div class="col-md-1">
+
+    <div class="col-sm-12">
+
       <div class="row">
-        <div class="col-md-12 condition-text">
+       <!-- <div class="col-sm-1">
+          &lt;!&ndash;<div class="row">
+            <div class="col-sm-12 condition-text">
+              <div><span style="font-weight: bold">{{ weather.forecast[0]['date'] }}</span></div>
+            </div>
+          </div>&ndash;&gt;
+          <div class="row">
+            <div class="col-sm-12">
+              <span class="temperature">{{ weather.condition.temp }}</span>
+            </div>
+          </div>
+          &lt;!&ndash;<div class="row">
+            <div class="col-sm-12">
+              <div class="condition">{{ weather.condition.text }}</div>
+            </div>
+          </div>&ndash;&gt;
+        </div>-->
+        <div class="col-sm-11">
+          <span style="font-weight: bold">{{ weather.forecast[0]['date'] }}</span> | <span style="font-weight: bold">{{ weather.condition.text }}</span>
+          <h3 class="list-group-item-heading">{{ weather.title }}</h3>
+          <div class="list-group-item-text">{{ weather.description }}</div>
+        </div>
+        <div class="col-sm-1">
+          <button class="btn btn-danger btn-xs" style="float: right" (click)="removeWeather()">x</button>
+        </div>
+      </div>
+
+      <hr class="titleSpacer">
+
+      <div class="row">
+        <!--<div class="col-sm-2">
+          <div class="row">
+            <div class="col-sm-12 condition-text">
+              <div><span style="font-weight: bold">{{ weather.forecast[0]['date'] }}</span></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="temperature">{{ weather.condition.temp }}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="condition">{{ weather.condition.text }}</div>
+            </div>
+          </div>
+        </div>-->
+        <div class="col-sm-2 col-xs-6">
+          <span class="temperature">{{ weather.condition.temp }}</span>
+        </div>
+
+        <div class="col-sm-1 forecast-container hidden-xs"  *ngFor="let forecast of weather.forecast">
+          <app-forecast [forecast]="forecast"></app-forecast>
+        </div>
+
+        <div class=" forecast-container col-xs-6 visible-xs">
+          <app-forecast [forecast]="weather.forecast[1]"></app-forecast>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</a>
+
+
+<!--
+<a [@weatherContainer]="stateOver" id="location_row" class="list-group-item list-group-item-action" (mouseover)="onMouseOver()" (mouseout)="onMouseOut()">&lt;!&ndash; active &ndash;&gt;
+  <div class="row">
+
+    &lt;!&ndash; left col &ndash;&gt;
+    <div class="col-sm-1">
+      <div class="row">
+        <div class="col-sm-12 condition-text">
           <div><span style="font-weight: bold">{{ weather.forecast[0]['date'] }}</span><br>{{ weather.condition.text }}</div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <div class="temperature">{{ weather.condition.temp }}</div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <div class="high">High: {{ weather.forecast[0]['high'] }}</div>
           <hr class="highLowSpacer">
           <div class="low">Low: {{ weather.forecast[0]['low'] }}</div>
         </div>
       </div>
     </div>
-    <div class="col-md-11">
+
+    &lt;!&ndash; right col &ndash;&gt;
+    <div class="col-sm-11">
       <div class="row">
-        <div class="col-md-11">
+        <div class="col-sm-11">
           <h3 class="list-group-item-heading">{{ weather.title }}</h3>
           <div class="list-group-item-text">{{ weather.description }}</div>
         </div>
-        <div class="col-md-1">
+        <div class="col-sm-1">
           <button class="btn btn-danger btn-xs" style="float: right" (click)="removeWeather()">x</button>
         </div>
       </div>
       <hr class="titleSpacer">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <ul class="list-inline">
             <li class="forecast-container" *ngFor="let forecast of weather.forecast">
               <app-forecast [forecast]="forecast"></app-forecast>
@@ -42,3 +122,4 @@
     </div>
   </div>
 </a>
+-->

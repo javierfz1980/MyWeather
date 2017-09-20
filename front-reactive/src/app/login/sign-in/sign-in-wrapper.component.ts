@@ -47,10 +47,10 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
     this.subscription = this.store$
       .select('signin')
       .skip(1)
-      .subscribe((state: SigninState) => this.refresInternalState(state))
+      .subscribe((state: SigninState) => this.refreshInternalState(state))
   }
 
-  refresInternalState(state: SigninState) {
+  refreshInternalState(state: SigninState) {
     console.log('signin state:',state);
     let signinSucceed: boolean = !this.isLoggedIn && state.isLoggedIn;
     let signoutSucced: boolean = this.isLoggedIn && !state.isLoggedIn;
