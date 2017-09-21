@@ -3,10 +3,10 @@
   {{ forecast.date }}
   </div>
   <div class="forecast-high">
-    High: {{ forecast.high }}
+    High: {{ forecast.high | tempConverter : unitTo }}<span class="tempIcon">&deg;</span>
   </div>
   <div class="forecast-low">
-    Low: {{ forecast.low }}
+    Low: {{ forecast.low | tempConverter : unitTo }}<span class="tempIcon">&deg;</span>
   </div>
   <div class="forecast-condition-text">
     {{ forecast.text }}

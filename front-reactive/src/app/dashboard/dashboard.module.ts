@@ -6,6 +6,7 @@ import { DashboardRouting} from "./dashboard-routing.module";
 import { ForecastComponent } from './weathers/weather/forecast/forecast.component';
 import { WeatherComponent} from "./weathers/weather/weather.component";
 import {ResponsiveModule} from 'ng2-responsive';
+import {TemperatureConverterPipe} from '../commons/pipes/temperature-converter.pipe';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import {ResponsiveModule} from 'ng2-responsive';
     DashboardComponent,
     WeathersComponent,
     WeatherComponent,
-    ForecastComponent
+    ForecastComponent,
+    TemperatureConverterPipe
   ],
   exports: [
     DashboardComponent

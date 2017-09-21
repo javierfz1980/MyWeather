@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Weather} from "../../../commons/models/data/weather";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {units} from '../../../commons/pipes/temperature-converter.pipe';
 
 @Component({
   selector: 'app-weather',
@@ -35,6 +36,7 @@ export class WeatherComponent implements OnInit {
   @Output()
   removeWeatherEvent: EventEmitter<string> = new EventEmitter<string>();
 
+  private unitTo: string = units.celsius;
   private stateOver: string = 'mouseOut';
 
   constructor() { }
