@@ -19,3 +19,32 @@
   min-width: 90px;
 }
 
+.collapsedIcons {
+  float: right;
+  padding-right: 30px;
+}
+
+:host /deep/ .navbar-header .dropdown-menu {
+  position: fixed;
+  width: 100%;
+  top: 58px;
+  background-color: #f8f8f8;
+  padding: 5px 20px;
+  min-height: 70px;
+}
+
+:host /deep/ .navbar-header .dropdown-menu form,
+:host /deep/ .collapse form {
+  border: none!important;
+}
+
+:host /deep/ .collapse .nav {
+  padding: 0px 10px;
+  margin: 0px;
+}
+
+:host /deep/ .nav a {
+  background-color: #f8f8f8!important;
+}
+
+

@@ -1,9 +1,8 @@
-<ul *ngIf="isLoggedIn()" class="nav navbar-nav navbar-right">
+<ul *ngIf="isLoggedIn" class="nav navbar-nav navbar-right">
   <li class="dropdown" dropDown id="dropDownNav">
     <a class="dropdown-toggle" role="button">
       <span class="glyphicon glyphicon-user"></span>
-      <!--{{ (isLoggedIn()) ? (currentUserName()) : ('header.account' | translate) }}-->
-      {{user.name}}
+      {{ (showLabelIcon) ? (user.name) : '' }}
       <span class="caret"></span>
     </a>
     <ul class="dropdown-menu" id="accountDropdownMenu">

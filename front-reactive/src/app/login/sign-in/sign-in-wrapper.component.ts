@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {SessionCredentials} from "../models/sessionCredentials";
 import {Subscription} from "rxjs/Subscription";
@@ -12,6 +12,7 @@ import {ApplicationState} from '../../commons/store/application-state';
 import {AppRoutes} from '../../commons/models/navigation/routing/app-routes';
 import {Router} from '@angular/router';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {AuthService} from '../../commons/services/auth.service';
 
 @Component({
   selector: 'app-sign-in-wrapper',
@@ -33,6 +34,9 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 })
 export class SignInWrapperComponent implements OnInit, OnDestroy {
 
+  @Input()
+  showLabelIcon: boolean = true;
+
   isForgot: boolean = false;
   isLoggedIn: boolean = false;
   wrongCredentials: boolean = false;
@@ -40,10 +44,13 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(private store$: Store<ApplicationState>,
-              private router: Router) { }
+              private router: Router,
+              private authService: AuthService) {
+  }
 
 
   ngOnInit() {
+    this.isLoggedIn = this.authService.isAuthorized();
     this.subscription = this.store$
       .select('signin')
       .skip(1)

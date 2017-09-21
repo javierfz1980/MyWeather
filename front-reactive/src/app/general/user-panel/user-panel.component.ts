@@ -1,9 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {ApplicationState} from '../../commons/store/application-state';
 import {UserState} from '../../commons/store/user/user-state';
 import {User} from '../../commons/models/data/user';
 import {Subscription} from 'rxjs/Subscription';
+import {AuthService} from '../../commons/services/auth.service';
 
 @Component({
   selector: 'app-user-panel',
@@ -12,25 +13,33 @@ import {Subscription} from 'rxjs/Subscription';
 })
 export class UserPanelComponent implements OnInit, OnDestroy {
 
+  @Input()
+  showLabelIcon: boolean = true;
+
+  isLoggedIn: boolean = false;
   user: User;
   private subscription: Subscription;
 
-  constructor(private store$: Store<ApplicationState>) { }
+  constructor(private store$: Store<ApplicationState>,
+              private authService: AuthService) { }
 
   ngOnInit() {
+    this.checkInitialState();
     this.subscription = this.store$
       .select('user')
       .skip(1)
       .do((state: UserState) => console.log("do: ",state)) // debug
-      .subscribe((state: UserState) => this.refresInternalState(state));
+      .subscribe((state: UserState) => this.refreshInternalState(state));
   }
 
-  refresInternalState(state: UserState) {
+  refreshInternalState(state: UserState) {
     this.user = state.user;
+    this.isLoggedIn = state.user !== undefined;
   }
 
-  isLoggedIn(): boolean {
-    return this.user !== undefined;
+  checkInitialState() {
+    this.isLoggedIn = this.authService.isAuthorized();
+    if(this.isLoggedIn) this.user = this.authService.getCurrentUser();
   }
 
   // destroy

@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {ApplicationState} from '../store/application-state';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs/Observable';
+import {User} from '../models/data/user';
 
 @Injectable()
 export class AuthService {
@@ -21,6 +22,19 @@ export class AuthService {
       .subscribe(res => isAuth = res)
       .unsubscribe();
     return isAuth;
+  }
+
+  getCurrentUser() {
+    if(this.isAuthorized()) {
+      let user: User;
+      this.store$
+        .select('user')
+        .take(1)
+        .map(state => state.user)
+        .subscribe(currentUser => user = currentUser)
+        .unsubscribe();
+      return user;
+    }
   }
 
 }

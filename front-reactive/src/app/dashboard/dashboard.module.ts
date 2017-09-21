@@ -5,11 +5,13 @@ import { WeathersComponent} from './weathers/weathers.component';
 import { DashboardRouting} from "./dashboard-routing.module";
 import { ForecastComponent } from './weathers/weather/forecast/forecast.component';
 import { WeatherComponent} from "./weathers/weather/weather.component";
+import {ResponsiveModule} from 'ng2-responsive';
 
 @NgModule({
   imports: [
     CommonModule,
-    DashboardRouting
+    DashboardRouting,
+    ResponsiveModule
   ],
   declarations: [
     DashboardComponent,

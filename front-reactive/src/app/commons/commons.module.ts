@@ -10,10 +10,12 @@ import {AuthGuard} from './guards/auth.guard';
 import {LanguageService} from './services/language.service';
 import {HttpService} from './services/http.service';
 import {AuthService} from './services/auth.service';
+import {ResponsiveModule} from 'ng2-responsive';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    ResponsiveModule
   ],
   declarations: [
     DropDownClickDirective,
@@ -28,7 +30,8 @@ import {AuthService} from './services/auth.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ResponsiveModule
   ],
   providers: [
     AuthGuard,

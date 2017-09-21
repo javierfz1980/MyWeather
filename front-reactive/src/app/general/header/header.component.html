@@ -1,62 +1,31 @@
 <nav class="navbar navbar-default">
+
   <div class="container-fluid">
 
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" (click)="isCollapsed = !isCollapsed">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
       <a class="navbar-brand" routerLink="" id="brandImage">MyWeather</a>
+      <button type="button" class="navbar-toggle collapsed navbar-right" (click)="isCollapsed = !isCollapsed">
+        <span class="glyphicon glyphicon-search"></span>
+        <!--<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>-->
+      </button>
+      <div *xs class="collapsedIcons"><app-sign-in-wrapper [showLabelIcon]="false"></app-sign-in-wrapper></div>
+      <div *xs class="collapsedIcons"><app-user-panel [showLabelIcon]="false"></app-user-panel></div>
+      <div *xs class="collapsedIcons"><app-language></app-language></div>
     </div>
 
-    <div class="collapse navbar-collapse" [collapse]="isCollapsed">
 
+    <div *hideItBootstrap="['xs']"><app-language></app-language></div>
 
-    <app-searching></app-searching>
+    <div *hideItBootstrap="['xs']"><app-sign-in-wrapper></app-sign-in-wrapper></div>
 
-      <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown" dropDown>
-          <a class="dropdown-toggle" role="button"><span class="glyphicon glyphicon-flag"></span></a>
-          <ul class="dropdown-menu" id="languageDropdownMenu">
-            <li ><a class="mousePointer" (click)="changeLang('en')">English</a></li>
-            <li ><a class="mousePointer"  (click)="changeLang('es')">Español</a></li>
-          </ul>
-        </li>
-      </ul>
+    <div *hideItBootstrap="['xs']"><app-user-panel></app-user-panel></div>
 
-      <app-sign-in-wrapper></app-sign-in-wrapper>
-
-      <app-user-panel></app-user-panel>
-
-
-      <!--<ul class="nav navbar-nav navbar-right">
-        <li class="dropdown" dropDown id="dropDownNav">
-          <a class="dropdown-toggle" role="button"><span class="glyphicon glyphicon-user">
-            </span> {{ (isAuthorized()) ? (currentUserName()) : ('header.account' | translate) }} <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu" id="accountDropdownMenu">
-            <li *ngIf="!isAuthorized()">
-              <app-sign-in></app-sign-in>
-            </li>
-            <ng-container *ngIf="isAuthorized()">
-              <li><a class="mousePointer" routerLink="account">{{ 'header.editAccount' | translate }}  <span class="glyphicon glyphicon-edit"></span></a></li>
-              <li><a class="mousePointer" (click)="logout()">{{ 'header.signOut' | translate }}  <span class="glyphicon glyphicon-log-out"></span></a></li>
-            </ng-container>
-          </ul>
-        </li>
-        <li class="dropdown" dropDown>
-          <a class="dropdown-toggle" role="button"><span class="glyphicon glyphicon-flag"></span></a>
-          <ul class="dropdown-menu" id="languageDropdownMenu">
-            <li ><a class="mousePointer" (click)="changeLang('en')">English</a></li>
-            <li ><a class="mousePointer"  (click)="changeLang('es')">Español</a></li>
-          </ul>
-        </li>
-      </ul>-->
-
-    </div><!-- /.navbar-collapse -->
+    <div class="collapse navbar-collapse" [collapse]="isCollapsed"><app-searching></app-searching></div>
 
   </div><!-- /.container-fluid -->
+
 </nav>

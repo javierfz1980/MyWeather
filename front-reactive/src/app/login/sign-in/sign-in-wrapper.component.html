@@ -3,10 +3,13 @@
     <a class="dropdown-toggle" role="button">
       <ng-container *ngIf="!isLoggedIn">
         <span class="glyphicon glyphicon-user"></span>
-        {{ 'header.account' | translate }}
+        {{ (showLabelIcon) ? ('header.account' | translate) : '' }}
         <span *ngIf="!isLoggedIn" class="caret"></span>
       </ng-container>
-      <a (click)="signout()" *ngIf="isLoggedIn">{{ 'header.signOut' | translate }}</a>
+      <a (click)="signout()" *ngIf="isLoggedIn" id="signOutLink">
+        <span class="glyphicon glyphicon-log-out"></span>
+        {{ (showLabelIcon) ? ('header.signOut' | translate) : '' }}
+      </a>
     </a>
     <ul *ngIf="!isLoggedIn" class="dropdown-menu" id="accountDropdownMenu">
       <li>

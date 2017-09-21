@@ -9,6 +9,7 @@ import {HomeComponent} from './home/home.component';
 import {UserPanelComponent} from './user-panel/user-panel.component';
 import {SearchingComponent} from './search/searching.component';
 import {SearchResult} from './search/search-result/search-result.component';
+import {LanguageComponent} from './language/language.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import {SearchResult} from './search/search-result/search-result.component';
     HomeComponent,
     SearchingComponent,
     SearchResult,
-    UserPanelComponent
+    UserPanelComponent,
+    LanguageComponent
   ],
   exports: [
     HeaderComponent,
