@@ -45,7 +45,6 @@
   font-size: 50px;
   line-height: 70px;
   vertical-align: top;
-  margin-left: -10px;
 }
 
 .forecast-container {
@@ -53,4 +52,8 @@
   padding-left: 5px;
   min-height: 100px;
   padding-top: 10px;
+}
+
+.temperatureContainer {
+  text-align: center;
 }
