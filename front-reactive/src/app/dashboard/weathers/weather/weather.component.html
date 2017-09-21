@@ -30,8 +30,10 @@
           <span class="temperature">{{ weather.condition.temp | tempConverter : unitTo}}</span><span class="tempIcon">&deg;</span>
         </div>
 
-        <div class="col-sm-1 forecast-container" *ngFor="let forecast of weather.forecast">
-          <app-forecast *hideItBootstrap="['xs']"  [forecast]="forecast"></app-forecast>
+        <div *hideItBootstrap="['xs']">
+          <div class="col-sm-1 forecast-container" *ngFor="let forecast of weather.forecast">
+            <app-forecast [forecast]="forecast"></app-forecast>
+          </div>
         </div>
 
         <div *xs class=" forecast-container col-xs-6">
