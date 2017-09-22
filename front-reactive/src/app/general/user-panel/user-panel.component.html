@@ -5,7 +5,7 @@
       {{ (showLabelIcon) ? (user.name) : '' }}
       <span class="caret"></span>
     </a>
-    <ul class="dropdown-menu" id="accountDropdownMenu">
+    <ul *ngIf="showDropDown" class="dropdown-menu" id="accountDropdownMenu">
       <li><a class="mousePointer" routerLink="account">{{ 'header.editAccount' | translate }}  <span class="glyphicon glyphicon-edit"></span></a></li>
     </ul>
   </li>

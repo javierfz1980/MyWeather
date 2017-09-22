@@ -21,7 +21,7 @@
 
 .collapsedIcons {
   float: right;
-  padding-right: 30px;
+  padding-right: 20px;
 }
 
 :host /deep/ .navbar-header .dropdown-menu {
@@ -36,6 +36,10 @@
 :host /deep/ .navbar-header .dropdown-menu form,
 :host /deep/ .collapse form {
   border: none!important;
+}
+
+:host /deep/ .navbar-header .dropdown-menu {
+  border-bottom: 1px solid #e7e7e7;
 }
 
 :host /deep/ .collapse .nav {

@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {SessionCredentials} from "../models/sessionCredentials";
 import {Subscription} from "rxjs/Subscription";
@@ -37,6 +37,7 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
   @Input()
   showLabelIcon: boolean = true;
 
+  showDropDown: boolean = true;
   isForgot: boolean = false;
   isLoggedIn: boolean = false;
   wrongCredentials: boolean = false;
@@ -50,6 +51,7 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    this.autoHideDropDownOnMobiles();
     this.isLoggedIn = this.authService.isAuthorized();
     this.subscription = this.store$
       .select('signin')
@@ -80,6 +82,13 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
 
   switchForgot() {
     this.store$.dispatch(new SigninForgotSwitchAction());
+  }
+
+  // TODO: Improve/change this behavior.
+  @HostListener('window:scroll', ['$event'])
+  autoHideDropDownOnMobiles(event?) {
+    this.showDropDown = (window.pageYOffset === 0 && window.screen.width < 768) ||
+      (window.screen.width >= 768);
   }
 
 
