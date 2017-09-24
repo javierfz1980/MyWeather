@@ -32,7 +32,7 @@ export const INITIAL_SIGNIN_STATE: SigninState = {
  * @constructor
  */
 export function signinReducer(state: SigninState = INITIAL_SIGNIN_STATE,
-                               action: Action): SigninState {
+                              action: Action): SigninState {
 
   //copiamos el estado actual para devolver una copia y no mutarlo
   const newState: SigninState = Object.assign({}, state);

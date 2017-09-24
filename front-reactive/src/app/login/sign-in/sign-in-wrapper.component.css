@@ -3,8 +3,6 @@
   padding: 0px;
 }
 
-
-
 .dropdown-menu-mobile {
   position: fixed!important;
   width: 100%!important;
@@ -12,14 +10,9 @@
   background-color: #f8f8f8!important;
   padding: 5px 20px!important;
   min-height: 70px!important;
-}
-
-.dropdown-menu-mobile form,
-.dropdown-menu-mobile .collapse form {
-  border: none!important;
-}
-
-.dropdown-menu-mobile {
   border-bottom: 1px solid #e7e7e7!important;
 }
 
+.signOutLink {
+  background: none!important;
+}

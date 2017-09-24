@@ -1,5 +1,4 @@
-import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
-import {NgForm} from "@angular/forms";
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SessionCredentials} from "../models/sessionCredentials";
 import {Subscription} from "rxjs/Subscription";
 import {Store} from '@ngrx/store';
@@ -12,7 +11,7 @@ import {ApplicationState} from '../../commons/store/application-state';
 import {AppRoutes} from '../../commons/models/navigation/routing/app-routes';
 import {Router} from '@angular/router';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {AuthService} from '../../commons/services/auth.service';
+import {DeviceState} from '../../commons/store/device/device-state';
 
 @Component({
   selector: 'app-sign-in-wrapper',
@@ -37,12 +36,16 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
   @Input()
   showLabelIcon: boolean = true;
 
-  isMobile: boolean = false;
+  @ViewChild('dropDownMenu')
+  dropDownMenu: ElementRef;
+
+  showMenu: boolean = true;
+  isMobile: boolean;
   isForgot: boolean = false;
   isLoggedIn: boolean = false;
   wrongCredentials: boolean = false;
   isLoading: boolean = false;
-  private subscription: Subscription;
+  private subscriptions: Subscription[] = [];
 
   constructor(private store$: Store<ApplicationState>,
               private router: Router) {
@@ -50,10 +53,19 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.subscription = this.store$
-      .select('signin')
-      .skip(1)
-      .subscribe((state: SigninState) => this.refreshInternalState(state))
+    this.subscriptions.push(
+      this.store$
+        .select('device')
+        .filter(deviceState => deviceState.isMobile !== undefined)
+        .subscribe(deviceState => this.refreshMobileLayout(deviceState))
+    );
+
+    this.subscriptions.push(
+      this.store$
+        .select('signin')
+        .skip(1)
+        .subscribe((state: SigninState) => this.refreshInternalState(state))
+    )
   }
 
   refreshInternalState(state: SigninState) {
@@ -66,6 +78,13 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
     this.isLoading = state.isBusy;
     if(signinSucceed) this.router.navigate([AppRoutes.boards]);
     if(signoutSucced) this.router.navigate([AppRoutes.home]);
+  }
+
+  refreshMobileLayout(state: DeviceState) {
+    this.isMobile = state.isMobile;
+    this.showMenu = true;
+    const isOpened: boolean = this.dropDownMenu && this.dropDownMenu.nativeElement.classList.contains('open');
+    if (isOpened && this.isMobile) this.showMenu = state.vScrollPosition === 0;
   }
 
   // actions
@@ -81,17 +100,8 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new SigninForgotSwitchAction());
   }
 
-  // TODO: Improve/change this behavior.
-  @HostListener('window:scroll', ['$event'])
-  autoHideDropDownOnMobiles(event?) {
-    /*this.showDropDown = (window.pageYOffset === 0 && window.screen.width < 768) ||
-      (window.screen.width >= 768);*/
-  }
-
-
   // destroy
   ngOnDestroy(): void {
-    if (this.subscription) this.subscription.unsubscribe();
   }
 
 }

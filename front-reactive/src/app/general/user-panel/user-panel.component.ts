@@ -1,10 +1,11 @@
-import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {ApplicationState} from '../../commons/store/application-state';
 import {UserState} from '../../commons/store/user/user-state';
 import {User} from '../../commons/models/data/user';
 import {Subscription} from 'rxjs/Subscription';
 import {AuthService} from '../../commons/services/auth.service';
+import {DeviceState} from '../../commons/store/device/device-state';
 
 @Component({
   selector: 'app-user-panel',
@@ -16,20 +17,33 @@ export class UserPanelComponent implements OnInit, OnDestroy {
   @Input()
   showLabelIcon: boolean = true;
 
-  isMobile: boolean = false;
+  @ViewChild('dropDownMenu')
+  dropDownMenu: ElementRef;
+
+  showMenu: boolean = true;
+  isMobile: boolean;
   isLoggedIn: boolean = false;
   user: User;
-  private subscription: Subscription;
+  private subscriptions: Subscription[] = [];
 
-  constructor(private store$: Store<ApplicationState>,
-              private authService: AuthService) { }
+  constructor(private store$: Store<ApplicationState>) {
+  }
 
   ngOnInit() {
-    this.subscription = this.store$
-      .select('user')
-      .skip(1)
-      .do((state: UserState) => console.log("do: ",state)) // debug
-      .subscribe((state: UserState) => this.refreshInternalState(state));
+    this.subscriptions.push(
+      this.store$
+        .select('device')
+        .filter(deviceState => deviceState.isMobile !== undefined)
+        .subscribe(deviceState => this.refreshMobileLayout(deviceState))
+    );
+
+    this.subscriptions.push(
+      this.store$
+        .select('user')
+        .skip(1)
+        .do((state: UserState) => console.log("do: ",state)) // debug
+        .subscribe((state: UserState) => this.refreshInternalState(state))
+    );
   }
 
   refreshInternalState(state: UserState) {
@@ -37,16 +51,17 @@ export class UserPanelComponent implements OnInit, OnDestroy {
     this.isLoggedIn = state.user !== undefined;
   }
 
-  // TODO: Improve/change this behavior.
-  @HostListener('window:scroll', ['$event'])
-  autoHideDropDownOnMobiles(event?) {
-    /*this.showDropDown = (window.pageYOffset === 0 && window.screen.width < 768) ||
-      (window.screen.width >= 768);*/
+  refreshMobileLayout(state: DeviceState) {
+    console.log(state)
+    this.isMobile = state.isMobile;
+    this.showMenu = true;
+    const isOpened: boolean = this.dropDownMenu && this.dropDownMenu.nativeElement.classList.contains('open');
+    if (isOpened && this.isMobile) this.showMenu = state.vScrollPosition === 0;
   }
 
   // destroy
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
 }

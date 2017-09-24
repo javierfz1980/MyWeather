@@ -30,3 +30,10 @@
   padding: 10px 20px;
   border-bottom: 1px solid #ddd;
 }
+
+form {
+  border: none!important;
+  padding-right: 30px;
+  padding-left: 30px;
+  margin-bottom: 0px;
+}

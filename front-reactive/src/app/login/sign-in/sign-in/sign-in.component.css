@@ -22,3 +22,7 @@
 input.ng-invalid.ng-touched {
   border: 1px solid red;
 }
+
+form {
+  border: none!important;
+}

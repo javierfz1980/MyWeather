@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import {Store} from '@ngrx/store';
+import {ApplicationState} from '../../commons/store/application-state';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-header',
@@ -8,8 +11,13 @@ import { Component } from '@angular/core';
 export class HeaderComponent {
 
   isCollapsed = true;
-  isMobile: boolean = false;
+  isMobile$: Observable<boolean>;
 
-  constructor() { }
+  constructor(private store$: Store<ApplicationState>) {
+    this.isMobile$ = this.store$
+      .select('device')
+      .filter(deviceState => deviceState.isMobile !== undefined)
+      .map(deviceState => deviceState.isMobile);
+  }
 
 }

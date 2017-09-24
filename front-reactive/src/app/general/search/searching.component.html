@@ -9,7 +9,7 @@
              placeholder="{{ 'search.searchPlaceHolder' | translate }}"
              [ngClass]="{loading: internalState.isLoading}">
     </form>
-    <ul *ngIf="internalState.showResults" class="dropdown-menu  results row">
+    <ul *ngIf="internalState.showResults" class="dropdown-menu results row">
       <li *ngFor="let weather of internalState.results; trackBy: trackByWeatherId">
         <a class="mousePointer search-result-item">
           <app-search-result [weather]="weather"
