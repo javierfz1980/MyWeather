@@ -1,5 +1,5 @@
 <ul class="nav navbar-nav navbar-right">
-  <li class="dropdown" dropDown  #dropDownMenu>
+  <li class="dropdown" dropDown  #dropDownMenu [ngClass]="{'dropdown-mobile': isMobile}">
     <a class="dropdown-toggle" role="button" [ngClass]="{'signOutLink': isLoggedIn}">
       <ng-container *ngIf="!isLoggedIn">
         <span class="glyphicon glyphicon-user"></span>

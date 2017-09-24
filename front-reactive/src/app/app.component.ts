@@ -13,7 +13,7 @@ import {Subscription} from 'rxjs/Subscription';
 })
 export class AppComponent implements OnDestroy {
 
-  readonly maxMobRes: number = 425;
+  readonly maxMobRes: number = 768;
   private subscriptions: Subscription[] = [];
 
   constructor(private store$: Store<ApplicationState>,
