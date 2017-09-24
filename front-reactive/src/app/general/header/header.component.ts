@@ -11,13 +11,17 @@ import {Observable} from 'rxjs/Observable';
 export class HeaderComponent {
 
   isCollapsed = true;
+  isMobile: boolean;
   isMobile$: Observable<boolean>;
 
   constructor(private store$: Store<ApplicationState>) {
     this.isMobile$ = this.store$
       .select('device')
       .filter(deviceState => deviceState.isMobile !== undefined)
-      .map(deviceState => deviceState.isMobile);
+      .map(deviceState =>{
+        this.isMobile =  deviceState.isMobile;
+        return this.isMobile;
+      })
   }
 
 }
