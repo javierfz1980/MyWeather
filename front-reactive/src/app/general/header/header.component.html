@@ -2,15 +2,34 @@
 
   <div class="container-fluid">
 
-    <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <a class="navbar-brand" routerLink="" id="brandImage">MyWeather</a>
       <button type="button" class="navbar-toggle collapsed navbar-right" (click)="isCollapsed = !isCollapsed">
         <span class="glyphicon glyphicon-search"></span>
-        <!--<span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>-->
+      </button>
+    </div>
+
+    <div [ngClass]="{'collapsedIconsMobile': isMobile}" class="navbar-header navbar-right ">
+      <div class="collapsedIcons"><app-sign-in-wrapper [showLabelIcon]="false"></app-sign-in-wrapper></div>
+      <div class="collapsedIcons"><app-user-panel [showLabelIcon]="false"></app-user-panel></div>
+      <div class="collapsedIcons"><app-language></app-language></div>
+    </div>
+
+    <div class="collapse navbar-collapse" [collapse]="isCollapsed"><app-searching></app-searching></div>
+
+  </div><!-- /.container-fluid -->
+
+</nav>
+
+<!--<nav class="navbar navbar-default">
+
+  <div class="container-fluid">
+
+    &lt;!&ndash; Brand and toggle get grouped for better mobile display &ndash;&gt;
+    <div class="navbar-header">
+      <a class="navbar-brand" routerLink="" id="brandImage">MyWeather</a>
+      <button type="button" class="navbar-toggle collapsed navbar-right" (click)="isCollapsed = !isCollapsed">
+        <span class="glyphicon glyphicon-search"></span>
       </button>
       <div *xs class="collapsedIcons"><app-sign-in-wrapper [showLabelIcon]="false"></app-sign-in-wrapper></div>
       <div *xs class="collapsedIcons"><app-user-panel [showLabelIcon]="false"></app-user-panel></div>
@@ -26,6 +45,6 @@
 
     <div class="collapse navbar-collapse" [collapse]="isCollapsed"><app-searching></app-searching></div>
 
-  </div><!-- /.container-fluid -->
+  </div>&lt;!&ndash; /.container-fluid &ndash;&gt;
 
-</nav>
+</nav>-->

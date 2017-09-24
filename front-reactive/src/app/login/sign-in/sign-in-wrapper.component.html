@@ -11,7 +11,7 @@
         {{ (showLabelIcon) ? ('header.signOut' | translate) : '' }}
       </a>
     </a>
-    <ul *ngIf="!isLoggedIn && showDropDown" hideDropDown class="dropdown-menu" id="accountDropdownMenu">
+    <ul *ngIf="!isLoggedIn" [ngClass]="{'dropdown-menu-mobile': isMobile}" class="dropdown-menu" id="accountDropdownMenu">
       <li>
         <ul @FormFadeIn *ngIf="!isForgot" class="signInWrapper">
           <app-sign-in (siginEvent)="signin($event)" (switchForgotEvent)="switchForgot()" [wrongCredentials]="wrongCredentials"></app-sign-in>

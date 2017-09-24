@@ -37,7 +37,7 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
   @Input()
   showLabelIcon: boolean = true;
 
-  showDropDown: boolean = true;
+  isMobile: boolean = false;
   isForgot: boolean = false;
   isLoggedIn: boolean = false;
   wrongCredentials: boolean = false;
@@ -45,14 +45,11 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(private store$: Store<ApplicationState>,
-              private router: Router,
-              private authService: AuthService) {
+              private router: Router) {
   }
 
 
   ngOnInit() {
-    this.autoHideDropDownOnMobiles();
-    this.isLoggedIn = this.authService.isAuthorized();
     this.subscription = this.store$
       .select('signin')
       .skip(1)
@@ -87,8 +84,8 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
   // TODO: Improve/change this behavior.
   @HostListener('window:scroll', ['$event'])
   autoHideDropDownOnMobiles(event?) {
-    this.showDropDown = (window.pageYOffset === 0 && window.screen.width < 768) ||
-      (window.screen.width >= 768);
+    /*this.showDropDown = (window.pageYOffset === 0 && window.screen.width < 768) ||
+      (window.screen.width >= 768);*/
   }
 
 

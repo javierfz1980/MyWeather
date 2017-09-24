@@ -24,7 +24,17 @@
   padding-right: 20px;
 }
 
-:host /deep/ .navbar-header .dropdown-menu {
+.collapsedIconsMobile {
+  top: 0px;
+  position: absolute;
+  right: 70px;
+}
+
+:host /deep/ .collapse form {
+  border: none!important;
+}
+
+/*:host /deep/ .navbar-header .dropdown-menu {
   position: fixed;
   width: 100%;
   top: 58px;
@@ -50,5 +60,32 @@
 :host /deep/ .nav a {
   background-color: #f8f8f8!important;
 }
+*/
+/*:host /deep/ .navbar-header .dropdown-menu {
+  position: fixed;
+  width: 100%;
+  top: 58px;
+  background-color: #f8f8f8;
+  padding: 5px 20px;
+  min-height: 70px;
+}
+
+:host /deep/ .navbar-header .dropdown-menu form,
+:host /deep/ .collapse form {
+  border: none!important;
+}
+
+:host /deep/ .navbar-header .dropdown-menu {
+  border-bottom: 1px solid #e7e7e7;
+}
+
+:host /deep/ .collapse .nav {
+  padding: 0px 10px;
+  margin: 0px;
+}
+
+:host /deep/ .nav a {
+  background-color: #f8f8f8!important;
+}*/
 
 

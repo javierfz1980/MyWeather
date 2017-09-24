@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class HeaderComponent {
 
   isCollapsed = true;
+  isMobile: boolean = false;
 
   constructor() { }
 

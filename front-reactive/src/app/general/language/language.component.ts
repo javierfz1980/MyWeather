@@ -6,15 +6,12 @@ import {LanguageService} from '../../commons/services/language.service';
   templateUrl: './language.component.html',
   styleUrls: ['./language.component.css']
 })
-export class LanguageComponent implements OnInit{
+export class LanguageComponent {
 
-  showDropDown: boolean = true;
+  isMobile: boolean = false;
 
   constructor(private language:LanguageService) {}
 
-  ngOnInit() {
-    this.autoHideDropDownOnMobiles();
-  }
 
   changeLang(lang: string): void {
     this.language.translateTo(lang);
@@ -23,8 +20,8 @@ export class LanguageComponent implements OnInit{
   // TODO: Improve/change this behavior.
   @HostListener('window:scroll', ['$event'])
   autoHideDropDownOnMobiles(event?) {
-    this.showDropDown = (window.pageYOffset === 0 && window.screen.width < 768) ||
-      (window.screen.width >= 768);
+    /*this.showDropDown = (window.pageYOffset === 0 && window.screen.width < 768) ||
+      (window.screen.width >= 768);*/
   }
 
 }

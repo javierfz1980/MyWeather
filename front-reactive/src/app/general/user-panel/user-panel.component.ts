@@ -16,7 +16,7 @@ export class UserPanelComponent implements OnInit, OnDestroy {
   @Input()
   showLabelIcon: boolean = true;
 
-  showDropDown: boolean = true;
+  isMobile: boolean = false;
   isLoggedIn: boolean = false;
   user: User;
   private subscription: Subscription;
@@ -25,8 +25,6 @@ export class UserPanelComponent implements OnInit, OnDestroy {
               private authService: AuthService) { }
 
   ngOnInit() {
-    this.autoHideDropDownOnMobiles();
-    this.checkInitialState();
     this.subscription = this.store$
       .select('user')
       .skip(1)
@@ -39,16 +37,11 @@ export class UserPanelComponent implements OnInit, OnDestroy {
     this.isLoggedIn = state.user !== undefined;
   }
 
-  checkInitialState() {
-    this.isLoggedIn = this.authService.isAuthorized();
-    if(this.isLoggedIn) this.user = this.authService.getCurrentUser();
-  }
-
   // TODO: Improve/change this behavior.
   @HostListener('window:scroll', ['$event'])
   autoHideDropDownOnMobiles(event?) {
-    this.showDropDown = (window.pageYOffset === 0 && window.screen.width < 768) ||
-      (window.screen.width >= 768);
+    /*this.showDropDown = (window.pageYOffset === 0 && window.screen.width < 768) ||
+      (window.screen.width >= 768);*/
   }
 
   // destroy
