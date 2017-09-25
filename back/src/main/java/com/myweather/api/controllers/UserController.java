@@ -3,12 +3,14 @@ package com.myweather.api.controllers;
 import com.myweather.api.models.Dashboard;
 import com.myweather.api.models.User;
 import com.myweather.api.models.Weather;
+import com.myweather.api.models.helpers.SessionCredentials;
 import com.myweather.api.services.DashboardService;
 import com.myweather.api.services.UserService;
 import com.myweather.api.models.helpers.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -40,28 +42,15 @@ public class UserController {
    @Autowired
    DashboardService dashboardService;
 
+   /**
+    * Password encryption
+    */
+   private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
 
 
    // USERS /////////////////////////////////////////////////////////////////////////////
-
-   /**
-    * Creates a new User into the repository
-    *
-    * @return ResponseEntity with Status result
-    */
-   @RequestMapping(method = RequestMethod.POST)
-   public ResponseEntity<String> insertUser(@Valid @RequestBody User user) {
-      ResponseEntity response;
-      CustomResponse customResponse = userService.insert(user);
-      HttpStatus status = (customResponse.getStatus()) ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR;
-
-      response = ResponseEntity
-            .status(status)
-            .body(customResponse.getMessage());
-
-      return response;
-   }
-
 
    /**
     * Modifies an existing User
@@ -71,6 +60,8 @@ public class UserController {
    @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
    public ResponseEntity<User> updateUser(@Valid @RequestBody User user) {
       ResponseEntity response;
+      // TODO TSK15
+      //user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
       User updatedUser = userService.update(user);
       HttpStatus status = (updatedUser != null) ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -84,6 +75,25 @@ public class UserController {
 
 
    // USER DASHBOARDS ////////////////////////////////////////////////////////////////////
+
+   /**
+    * Retrieves an user
+    *
+    * @param userId
+    * @return
+    */
+   @RequestMapping(method = RequestMethod.POST, value = "/{userId}")
+   public ResponseEntity<User> authenticate(@Valid @RequestBody String userId) {
+      ResponseEntity response;
+      User user = userService.getById(userId);
+      HttpStatus status = (user != null) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
+
+      response = ResponseEntity
+              .status(status)
+              .body(user);
+
+      return response;
+   }
 
    /**
     * Retireves all dashboard for an User
