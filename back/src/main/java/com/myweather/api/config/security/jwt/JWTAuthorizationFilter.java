@@ -1,5 +1,6 @@
 package com.myweather.api.config.security.jwt;
 
+import com.myweather.api.services.SessionService;
 import com.myweather.api.services.impl.DashboardServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +23,12 @@ import java.io.IOException;
  */
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-
+    SessionService sessionService;
     private final Logger logger = LoggerFactory.getLogger(DashboardServiceImpl.class);
 
-    public JWTAuthorizationFilter(AuthenticationManager authManager) {
+    public JWTAuthorizationFilter(AuthenticationManager authManager, SessionService sessionService) {
         super(authManager);
+        this.sessionService = sessionService;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                                     FilterChain chain) throws IOException, ServletException {
 
         logger.info(String.format("filtering request by jwt Authorization header"));
-        UsernamePasswordAuthenticationToken authentication = JWTAuthenticationService.getAuthentication(req);
+        UsernamePasswordAuthenticationToken authentication = JWTAuthenticationService.getAuthentication(req, sessionService);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(req, res);
     }

@@ -1,10 +1,14 @@
 package com.myweather.api.controllers;
 
+import com.myweather.api.config.security.jwt.JWTSecurityConstants;
+import com.myweather.api.models.SessionToken;
 import com.myweather.api.models.User;
 import com.myweather.api.models.helpers.CustomResponse;
 import com.myweather.api.services.SessionService;
 import com.myweather.api.models.helpers.SessionCredentials;
 import com.myweather.api.services.UserService;
+import io.jsonwebtoken.Jwts;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +62,46 @@ public class SessionController {
       return response;
    }
 
+   /**
+    * Logout authentication (not reached because of JWTLoginAuthenticationFilter...
+    *
+    * @return
+    */
+   @RequestMapping(method = RequestMethod.POST, value = "/signout")
+   public ResponseEntity<CustomResponse> signOut(@RequestHeader(value="Authorization") String token) {
+
+      ResponseEntity response;
+      String msg = "";
+      boolean res = false;
+      try {
+         if (token != null) {
+            // parse the token.
+            String user = Jwts.parser()
+                    .setSigningKey(JWTSecurityConstants.SECRET)
+                    .parseClaimsJws(token.replace(JWTSecurityConstants.TOKEN_PREFIX, ""))
+                    .getBody()
+                    .getSubject();
+            SessionToken sessionToken = sessionService.getSessionTokenByTokenAndEmail(token, user);
+            res = sessionService.deleteToken(sessionToken);
+            msg = "Token deleted from server";
+         }
+
+      } catch (Exception ex) {
+         res = false;
+         msg = ex.getMessage();
+      }
+
+      CustomResponse cr = new CustomResponse();
+      cr.setMessage(msg);
+      cr.setStatus(res);
+      HttpStatus status = (res) ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
+      response = ResponseEntity
+              .status(status)
+              .body(cr);
+
+      return response;
+   }
+
 
    /**
     * Login authentication (not reached because of JWTLoginAuthenticationFilter...
@@ -77,18 +121,4 @@ public class SessionController {
 
       return response;
    }*/
-
-   /**
-    * Logut authentication
-    *
-    * @param sessionCredentials
-    * @return
-    * TODO TSK14....
-    */
-   /*
-   @RequestMapping(method = RequestMethod.POST)
-   public ResponseEntity<User> authenticate(@Valid @RequestBody SessionCredentials sessionCredentials) {
-
-   }
-   */
 }

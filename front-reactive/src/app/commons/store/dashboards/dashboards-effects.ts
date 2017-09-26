@@ -30,7 +30,7 @@ export class DashboardsEffects {
     .withLatestFrom(this.store$.select('user'))
     .withLatestFrom(this.store$.select('dashboards'))
     .switchMap(([[action , userState], dashboardsState]) => {
-      const url: string = HttpService.USER_PATH + "/" + userState.user.id + "/dashboards/" +
+      const url: string = HttpService.USER_PATH + userState.user.id + "/dashboards/" +
                           dashboardsState.dashboards[dashboardsState.currentDashboard].id + "/weathers";
       return this.httpService.requestApi(url, HttpService.POST, (<AddWeatherRequested>action).payload)
         .map(response => new AddWeatherSucceed(response))
@@ -44,7 +44,7 @@ export class DashboardsEffects {
     .withLatestFrom(this.store$.select('user'))
     .withLatestFrom(this.store$.select('dashboards'))
     .switchMap(([[action , userState], dashboardsState]) => {
-      const url: string = HttpService.USER_PATH + "/" + userState.user.id + "/dashboards/" +
+      const url: string = HttpService.USER_PATH + userState.user.id + "/dashboards/" +
                           dashboardsState.dashboards[dashboardsState.currentDashboard].id + "/weathers/" +
                           (<RemoveWeatherRequested>action).payload;
       return this.httpService

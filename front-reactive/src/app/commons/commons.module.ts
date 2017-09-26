@@ -11,6 +11,7 @@ import {LanguageService} from './services/language.service';
 import {HttpService} from './services/http.service';
 import {AuthService} from './services/auth.service';
 import {ResponsiveModule} from 'ng2-responsive';
+import {LocalStorageService} from './services/local-storage.service';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import {ResponsiveModule} from 'ng2-responsive';
     TranslateService,
     LanguageService,
     HttpService,
-    AuthService
+    AuthService,
+    LocalStorageService
   ]
 })
 export class CommonsModule { }

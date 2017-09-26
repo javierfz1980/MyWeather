@@ -2,9 +2,12 @@ package com.myweather.api.config.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myweather.api.models.helpers.SessionCredentials;
+import com.myweather.api.services.SessionService;
+import com.myweather.api.services.UserService;
 import com.myweather.api.services.impl.DashboardServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,14 +30,16 @@ import java.util.ArrayList;
  */
 public class JWTLoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
+    SessionService sessionService;
     private final Logger logger = LoggerFactory.getLogger(DashboardServiceImpl.class);
 
     // AuthenticationManager instance
     private AuthenticationManager authenticationManager;
 
-    public JWTLoginAuthenticationFilter(String url, AuthenticationManager authManager) {
+    public JWTLoginAuthenticationFilter(String url, AuthenticationManager authManager, SessionService sessionServiceImpl) {
         super(new AntPathRequestMatcher(url));
         authenticationManager = authManager;
+        sessionService = sessionServiceImpl;
     }
 
     /**
@@ -80,7 +85,7 @@ public class JWTLoginAuthenticationFilter extends AbstractAuthenticationProcessi
                                             Authentication auth) throws IOException, ServletException {
 
         String email = ((User) auth.getPrincipal()).getUsername();
-        JWTAuthenticationService.setAuthentication(res, email);
+        JWTAuthenticationService.setAuthentication(res, email, sessionService);
         logger.info(String.format("Authentication success for user %s", email));
         logger.info(String.format("jwt token added to the response header"));
     }

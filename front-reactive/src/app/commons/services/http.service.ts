@@ -51,7 +51,8 @@ export class HttpService {
 
   private getSource(url: string, method: string, data: any, headers?:Headers): Observable<any> {
 
-    const includeToken: boolean = url.indexOf(HttpService.SESSION_PATH) === -1;
+    const isSessionRequest: boolean = url.indexOf(HttpService.SESSION_PATH) !== -1;
+    const includeToken: boolean = (!isSessionRequest) || (isSessionRequest && method === HttpService.POST);
     const defaultHeaders: Headers = (headers != null ) ? headers : this.creatDefaultHeaders(includeToken);
     console.debug("---> httpservice request: ", {url: url, method: method, data: data, headers: defaultHeaders});
 
@@ -89,7 +90,7 @@ export class HttpService {
   private creatDefaultHeaders(includeToken: boolean): Headers {
     const headers: Headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    if (includeToken) headers.append("Authorization", "Bearer " + this.authService.getToken());
+    if (includeToken) headers.append("Authorization", this.authService.getToken());
     return headers;
   }
 

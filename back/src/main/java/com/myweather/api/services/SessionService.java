@@ -1,5 +1,6 @@
 package com.myweather.api.services;
 
+import com.myweather.api.models.SessionToken;
 import com.myweather.api.models.User;
 import com.myweather.api.models.helpers.SessionCredentials;
 import org.springframework.stereotype.Service;
@@ -10,5 +11,13 @@ import org.springframework.stereotype.Service;
 @Service
 public interface SessionService {
 
-   User authenticate(SessionCredentials sessionCredentials);
+   void saveToken(SessionToken sessionToken);
+
+   boolean deleteToken(SessionToken sessionToken);
+
+   SessionToken getSessionTokenByUserEmail(String userEmail);
+
+   SessionToken getSessionTokenByToken(String token);
+
+   SessionToken getSessionTokenByTokenAndEmail(String token, String email);
 }

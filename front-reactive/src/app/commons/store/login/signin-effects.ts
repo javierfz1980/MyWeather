@@ -12,13 +12,15 @@ import {CustomResponse} from '../../models/http/CustomResponse';
 import {DeleteUserAction, GetUserInfoAction} from '../user/user-actions';
 import {StopPollingAction} from '../polling/polling-actions';
 import {AuthService} from '../../services/auth.service';
+import {LocalStorageService} from '../../services/local-storage.service';
 
 @Injectable()
 export class SigningEffects {
 
   constructor(private actions$: Actions,
               private httpService: HttpService,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private localStorageService: LocalStorageService) {
 
   }
 
@@ -29,7 +31,8 @@ export class SigningEffects {
       .requestApi(HttpService.SESSION_PATH + 'signin', HttpService.POST, action.payload/*, this.createAuthHeaders(action.payload)*/)
       .map((response: CustomResponse) => {
         const sessionCredentials: SessionCredentials = action.payload;
-        this.authService.saveToken(response.headers.get('Authorization'), sessionCredentials.email);
+        this.authService.setToken(response.headers.get('Authorization'), sessionCredentials.email);
+        this.localStorageService.setItem('credentials', JSON.stringify(sessionCredentials));
         return new SigninSucceededAction(sessionCredentials.email);//,
       })
       .catch((error: CustomResponse) => Observable.of(new SigninFailedtAction(error)))
@@ -46,12 +49,21 @@ export class SigningEffects {
   private signoutAction$: Observable<Action> = this.actions$
     .ofType(SigninActions.SIGNOUT_REQUESTED)
     .switchMap((action: SignoutRequestedAction) => {
+      return this.httpService.requestApi(HttpService.SESSION_PATH + 'signout', HttpService.POST)
+        .map(response => new SignoutSucceededAction())
+        .catch(error => Observable.throw(error));
+    });
+
+  @Effect()
+  private signoutSucceedAction$: Observable<Action> = this.actions$
+    .ofType(SigninActions.SIGNOUT_SUCCEEDED)
+    .switchMap((action: SignoutSucceededAction) => {
       const actions: Action[] = [
-        new SignoutSucceededAction(),
         new DeleteUserAction(),
         new StopPollingAction()
       ];
       this.authService.deleteToken();
+      this.localStorageService.removeItem('credentials');
       return Observable.of(...actions);
     });
 

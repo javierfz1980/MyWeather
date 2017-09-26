@@ -13,6 +13,7 @@ import {Router} from '@angular/router';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {DeviceState} from '../../commons/store/device/device-state';
 import {AuthService} from '../../commons/services/auth.service';
+import {LocalStorageService} from '../../commons/services/local-storage.service';
 
 @Component({
   selector: 'app-sign-in-wrapper',
@@ -50,10 +51,11 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
 
   constructor(private store$: Store<ApplicationState>,
               private router: Router,
-              private authService: AuthService) {
+              private localStorage: LocalStorageService) {
 
-    if (this.authService.isAuthorized()) {
-      this.store$.dispatch(new SigninSucceededAction(this.authService.getTokenUser()));
+    const credentials: SessionCredentials = JSON.parse(this.localStorage.getItem('credentials'));
+    if (credentials) {
+      this.store$.dispatch(new SigninRequestedAction(credentials));
     }
   }
 
