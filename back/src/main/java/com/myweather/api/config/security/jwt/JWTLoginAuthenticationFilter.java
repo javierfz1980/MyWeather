@@ -3,8 +3,11 @@ package com.myweather.api.config.security.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myweather.api.config.security.SecurityConstants;
 import com.myweather.api.models.helpers.SessionCredentials;
+import com.myweather.api.services.impl.DashboardServiceImpl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,10 +25,15 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
+ * Login filter that validates the authentication and add the token to the header response
+ *
  * Created by vmware on 9/25/17.
  */
 public class JWTLoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
+    private final Logger logger = LoggerFactory.getLogger(DashboardServiceImpl.class);
+
+    // AuthenticationManager instance
     private AuthenticationManager authenticationManager;
 
     public JWTLoginAuthenticationFilter(String url, AuthenticationManager authManager) {
@@ -33,34 +41,51 @@ public class JWTLoginAuthenticationFilter extends AbstractAuthenticationProcessi
         authenticationManager = authManager;
     }
 
+    /**
+     * Filter that attempts to authenticate the user with the provided SessionCredentials on the request body
+     *
+     * @param req
+     * @param res
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req,
                                                 HttpServletResponse res) throws AuthenticationException {
         try {
             SessionCredentials creds = new ObjectMapper()
                     .readValue(req.getInputStream(), SessionCredentials.class);
+            logger.info(String.format("Authenticating user %s", creds.getEmail()));
+
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     creds.getEmail(),
                     creds.getPassword(),
                     new ArrayList<>()));
         } catch (IOException e) {
+            logger.info(String.format("Authentication failed"));
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * If the user authentication is valid it adds the jwt token to the response
+     *
+     * @param req
+     * @param res
+     * @param chain
+     * @param auth
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     protected void successfulAuthentication(HttpServletRequest req,
                                             HttpServletResponse res,
                                             FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
 
-        String token = Jwts.builder()
-                .setSubject(((User) auth.getPrincipal()).getUsername())
-                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS512, SecurityConstants.SECRET)
-                .compact();
-        res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
-        //res.getWriter().write("aasdsd");
-        //chain.doFilter(req, res);
+        String email = ((User) auth.getPrincipal()).getUsername();
+        JWTAuthenticationService.setAuthentication(res, email);
+        logger.info(String.format("Authentication success for user %s", email));
+        logger.info(String.format("jwt token added to the response header"));
     }
 }

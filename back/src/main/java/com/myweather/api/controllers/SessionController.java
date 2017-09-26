@@ -60,12 +60,12 @@ public class SessionController {
 
 
    /**
-    * Login authentication
+    * Login authentication (not reached because of JWTLoginAuthenticationFilter...
     *
     * @param sessionCredentials
     * @return
     */
-   @RequestMapping(method = RequestMethod.POST, value = "/signin")
+   /*@RequestMapping(method = RequestMethod.POST, value = "/signin")
    public ResponseEntity<User> signIn(@Valid @RequestBody SessionCredentials sessionCredentials) {
       ResponseEntity response;
       User user = sessionService.authenticate(sessionCredentials);
@@ -76,7 +76,7 @@ public class SessionController {
             .body(user);
 
       return response;
-   }
+   }*/
 
    /**
     * Logut authentication

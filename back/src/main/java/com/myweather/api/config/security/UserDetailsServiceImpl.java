@@ -27,7 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         com.myweather.api.models.User user = userService.getByEmail(email);
         if(user.getId() != null) {
-            logger.info(String.format("User %s is authenticated", email));
+            logger.info(String.format("User '%s' is authenticated", email));
             org.springframework.security.core.userdetails.User userCred = new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
                     true, true, true, true,
                     AuthorityUtils.createAuthorityList("USER"));

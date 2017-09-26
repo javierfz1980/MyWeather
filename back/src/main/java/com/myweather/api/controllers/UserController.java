@@ -53,6 +53,25 @@ public class UserController {
    // USERS /////////////////////////////////////////////////////////////////////////////
 
    /**
+    * Retrieves an user
+    *
+    * @param id
+    * @return
+    */
+   @RequestMapping(method = RequestMethod.GET, value = "/{id:.+}")
+   public ResponseEntity<User> authenticate(@PathVariable String id) {
+      ResponseEntity response;
+      User user = userService.getByEmail(id);
+      HttpStatus status = (user != null) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
+
+      response = ResponseEntity
+              .status(status)
+              .body(user);
+
+      return response;
+   }
+
+   /**
     * Modifies an existing User
     *
     * @return ResponseEntity with Status result
@@ -75,25 +94,6 @@ public class UserController {
 
 
    // USER DASHBOARDS ////////////////////////////////////////////////////////////////////
-
-   /**
-    * Retrieves an user
-    *
-    * @param userId
-    * @return
-    */
-   @RequestMapping(method = RequestMethod.POST, value = "/{userId}")
-   public ResponseEntity<User> authenticate(@Valid @RequestBody String userId) {
-      ResponseEntity response;
-      User user = userService.getById(userId);
-      HttpStatus status = (user != null) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
-
-      response = ResponseEntity
-              .status(status)
-              .body(user);
-
-      return response;
-   }
 
    /**
     * Retireves all dashboard for an User
