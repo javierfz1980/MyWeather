@@ -2,28 +2,35 @@ import {Injectable} from '@angular/core';
 import {Actions, Effect} from '@ngrx/effects';
 import {Observable} from 'rxjs/Observable';
 import {Action} from '@ngrx/store';
-import {SigninActions, SigninSucceededAction} from '../login/signin-actions';
-import {CreateUserAction, DeleteUserAction, UserActions} from './user-actions';
+import {CreateUserAction, GetUserInfoAction, UserActions} from './user-actions';
 import {User} from '../../models/data/user';
+import {HttpService} from '../../services/http.service';
+import {CustomResponse} from '../../models/http/CustomResponse';
+import {LoadDashboardsSucceed} from '../dashboards/dashboards-actions';
+import {StartPollingAction} from '../polling/polling-actions';
 
 @Injectable()
 export class UserEffects {
 
-  constructor(private actions$: Actions) {}
-
- /* @Effect()
-  private createUserAction$: Observable<Action> = this.actions$
-    .ofType(UserActions.CREATE_USER)
-    .switchMap((action: CreateUserAction) => {
-      const user:User = action.payload;
-      return Observable.of(new CreateUserAction(user));
-    })
+  constructor(private actions$: Actions,
+              private httpService: HttpService) {}
 
   @Effect()
-  private deleteUserAction$: Observable<Action> = this.actions$
-    .ofType(UserActions.DELETE_USER)
-    .switchMap(() => {
-      return Observable.of(new DeleteUserAction());
-    })*/
+  private getUserInfoAction$: Observable<Action> = this.actions$
+    .ofType(UserActions.GET_USER_INFO)
+    .switchMap((action:GetUserInfoAction) => {
+      const email: string = action.payload;
+      return this.httpService.requestApi(HttpService.USER_PATH + email, HttpService.GET)
+        .mergeMap((response: CustomResponse) => {
+          const user: User = response.data;
+          const actions: Action[] = [
+            new CreateUserAction(user),
+            new LoadDashboardsSucceed(user.dashboards),
+            new StartPollingAction()
+          ]
+          return Observable.of(...actions);
+        })
+        .catch((error: CustomResponse) => Observable.of(error))
+    })
 
 }

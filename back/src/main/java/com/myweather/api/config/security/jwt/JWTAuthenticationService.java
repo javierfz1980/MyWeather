@@ -1,6 +1,5 @@
 package com.myweather.api.config.security.jwt;
 
-import com.myweather.api.config.security.SecurityConstants;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,10 +24,11 @@ public class JWTAuthenticationService {
     static void setAuthentication (HttpServletResponse res, String email) {
         String token = Jwts.builder()
                 .setSubject(email)
-                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS512, SecurityConstants.SECRET)
+                .setExpiration(new Date(System.currentTimeMillis() + JWTSecurityConstants.EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS512, JWTSecurityConstants.SECRET)
                 .compact();
-        res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+        res.setHeader("Access-Control-Expose-Headers", "Authorization");
+        res.addHeader(JWTSecurityConstants.HEADER_STRING, JWTSecurityConstants.TOKEN_PREFIX + token);
     }
 
     /**
@@ -38,12 +38,12 @@ public class JWTAuthenticationService {
      * @return
      */
     static UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader(SecurityConstants.HEADER_STRING);
+        String token = request.getHeader(JWTSecurityConstants.HEADER_STRING);
         if (token != null) {
             // parse the token.
             String user = Jwts.parser()
-                    .setSigningKey(SecurityConstants.SECRET)
-                    .parseClaimsJws(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
+                    .setSigningKey(JWTSecurityConstants.SECRET)
+                    .parseClaimsJws(token.replace(JWTSecurityConstants.TOKEN_PREFIX, ""))
                     .getBody()
                     .getSubject();
 

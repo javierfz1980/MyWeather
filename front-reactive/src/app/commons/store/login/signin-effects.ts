@@ -9,17 +9,16 @@ import {
 } from './signin-actions';
 import {SessionCredentials} from '../../../login/models/sessionCredentials';
 import {CustomResponse} from '../../models/http/CustomResponse';
-import {Headers} from '@angular/http';
-import {CreateUserAction, DeleteUserAction} from '../user/user-actions';
-import {User} from '../../models/data/user';
-import {LoadDashboardsSucceed} from '../dashboards/dashboards-actions';
-import {StartPollingAction, StopPollingAction} from '../polling/polling-actions';
+import {DeleteUserAction, GetUserInfoAction} from '../user/user-actions';
+import {StopPollingAction} from '../polling/polling-actions';
+import {AuthService} from '../../services/auth.service';
 
 @Injectable()
 export class SigningEffects {
 
   constructor(private actions$: Actions,
-              private httpService: HttpService) {
+              private httpService: HttpService,
+              private authService: AuthService) {
 
   }
 
@@ -27,20 +26,21 @@ export class SigningEffects {
   private signinAction$: Observable<Action> = this.actions$
     .ofType(SigninActions.SIGNIN_REQUESTED)
     .switchMap((action: SigninRequestedAction) => this.httpService
-      .requestApi(HttpService.SESSION_PATH, HttpService.POST, action.payload, this.createAuthHeaders(action.payload))
-      //.map((response) => new SigninSucceededAction(response))
-      .mergeMap((response: CustomResponse) => {
-        const user: User = response.data;
-        const actions: Action[] = [
-          new SigninSucceededAction(response),
-          new CreateUserAction(user),
-          new LoadDashboardsSucceed(user.dashboards),
-          new StartPollingAction()
-        ]
-        return Observable.of(...actions);
+      .requestApi(HttpService.SESSION_PATH + 'signin', HttpService.POST, action.payload/*, this.createAuthHeaders(action.payload)*/)
+      .map((response: CustomResponse) => {
+        const sessionCredentials: SessionCredentials = action.payload;
+        this.authService.saveToken(response.headers.get('Authorization'), sessionCredentials.email);
+        return new SigninSucceededAction(sessionCredentials.email);//,
       })
       .catch((error: CustomResponse) => Observable.of(new SigninFailedtAction(error)))
     );
+
+
+  @Effect()
+  private signinSucceedAction$: Observable<Action> = this.actions$
+    .ofType(SigninActions.SIGNIN_SUCCEEDED)
+    .map(action => new GetUserInfoAction((<SigninSucceededAction>action).payload))
+
 
   @Effect()
   private signoutAction$: Observable<Action> = this.actions$
@@ -51,20 +51,8 @@ export class SigningEffects {
         new DeleteUserAction(),
         new StopPollingAction()
       ];
+      this.authService.deleteToken();
       return Observable.of(...actions);
     });
 
-
-
-  /**
-   *
-   * @param data
-   * @returns {Headers}
-   */
-  private createAuthHeaders(data: SessionCredentials): Headers{
-    const headers: Headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append("Authorization", "Basic " + btoa(data.email + ":" + data.password));
-    return headers;
-  }
 }

@@ -4,7 +4,7 @@ import {Subscription} from "rxjs/Subscription";
 import {Store} from '@ngrx/store';
 import {
   SigninForgotSwitchAction,
-  SigninRequestedAction, SignoutRequestedAction
+  SigninRequestedAction, SigninSucceededAction, SignoutRequestedAction
 } from '../../commons/store/login/signin-actions';
 import {SigninState} from '../../commons/store/login/signin-state';
 import {ApplicationState} from '../../commons/store/application-state';
@@ -12,6 +12,7 @@ import {AppRoutes} from '../../commons/models/navigation/routing/app-routes';
 import {Router} from '@angular/router';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {DeviceState} from '../../commons/store/device/device-state';
+import {AuthService} from '../../commons/services/auth.service';
 
 @Component({
   selector: 'app-sign-in-wrapper',
@@ -48,9 +49,13 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   constructor(private store$: Store<ApplicationState>,
-              private router: Router) {
-  }
+              private router: Router,
+              private authService: AuthService) {
 
+    if (this.authService.isAuthorized()) {
+      this.store$.dispatch(new SigninSucceededAction(this.authService.getTokenUser()));
+    }
+  }
 
   ngOnInit() {
     this.subscriptions.push(
@@ -63,7 +68,7 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.store$
         .select('signin')
-        .skip(1)
+        .filter(signinState => signinState.isLoggedIn !== undefined)
         .subscribe((state: SigninState) => this.refreshInternalState(state))
     )
   }
@@ -102,6 +107,7 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
 
   // destroy
   ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
 }

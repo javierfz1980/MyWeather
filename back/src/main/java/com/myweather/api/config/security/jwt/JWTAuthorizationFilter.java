@@ -1,6 +1,5 @@
 package com.myweather.api.config.security.jwt;
 
-import com.myweather.api.config.security.SecurityConstants;
 import com.myweather.api.services.impl.DashboardServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

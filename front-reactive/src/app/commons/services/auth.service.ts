@@ -2,12 +2,15 @@ import {Injectable} from "@angular/core";
 import {ApplicationState} from '../store/application-state';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs/Observable';
-import {User} from '../models/data/user';
 
 @Injectable()
 export class AuthService {
 
-  constructor(private store$: Store<ApplicationState>){}
+  private tokenKey: string = 'currentUser';
+  constructor(private store$: Store<ApplicationState>){
+    console.log('is Auth', this.isAuthorized());
+    console.log('token', this.getToken())
+  }
 
   isAuthorized$(): Observable<boolean>{
     return this.store$
@@ -16,25 +19,31 @@ export class AuthService {
   }
 
   isAuthorized(): boolean {
-    let isAuth: boolean = false;
+    /*let isAuth: boolean = false;
     this.isAuthorized$()
       .take(1)
       .subscribe(res => isAuth = res)
       .unsubscribe();
-    return isAuth;
+    return isAuth;*/
+    return this.getToken() !== null;
   }
 
-  getCurrentUser() {
-    if(this.isAuthorized()) {
-      let user: User;
-      this.store$
-        .select('user')
-        .take(1)
-        .map(state => state.user)
-        .subscribe(currentUser => user = currentUser)
-        .unsubscribe();
-      return user;
-    }
+  saveToken(token: string, userEmail: string) {
+    const email64: string = btoa(userEmail);
+    localStorage.setItem(this.tokenKey, JSON.stringify({ token: token, user: email64}));
+  }
+
+  getToken(): any {
+    return (localStorage.getItem(this.tokenKey)) ?
+      JSON.parse(localStorage.getItem(this.tokenKey)).token : null;
+  }
+
+  deleteToken() {
+    localStorage.removeItem(this.tokenKey);
+  }
+
+  getTokenUser(): any {
+    return atob(JSON.parse(localStorage.getItem(this.tokenKey)).user);
   }
 
 }

@@ -26,7 +26,7 @@ export class SigninFailedtAction implements Action {
 // login seccess
 export class SigninSucceededAction implements Action {
   readonly type = SigninActions.SIGNIN_SUCCEEDED;
-  constructor(public payload?: CustomResponse) {}
+  constructor(public payload?: string) {}
 }
 
 // login forgot switch

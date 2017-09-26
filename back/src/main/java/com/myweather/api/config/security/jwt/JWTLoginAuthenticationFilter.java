@@ -1,11 +1,8 @@
 package com.myweather.api.config.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.myweather.api.config.security.SecurityConstants;
 import com.myweather.api.models.helpers.SessionCredentials;
 import com.myweather.api.services.impl.DashboardServiceImpl;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Login filter that validates the authentication and add the token to the header response
