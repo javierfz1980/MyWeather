@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {SessionCredentials} from '../../models/sessionCredentials';
+import {SessionCredentials} from '../../../commons/models/session/sessionCredentials';
 import {NgForm} from '@angular/forms';
 
 @Component({

@@ -1,22 +1,22 @@
 <ul class="nav navbar-nav navbar-right">
-  <li class="dropdown" dropDown  #dropDownMenu [ngClass]="{'dropdown-mobile': isMobile}">
-    <a class="dropdown-toggle" role="button" [ngClass]="{'signOutLink': isLoggedIn}">
-      <ng-container *ngIf="!isLoggedIn">
+  <li class="dropdown" dropDown  #dropDownMenu [ngClass]="{'dropdown-mobile': (isMobile$ | async)}">
+    <a class="dropdown-toggle" role="button" [ngClass]="{'signOutLink': state.isLoggedIn}">
+      <ng-container *ngIf="!(isLoggedIn$ | async ) as isLoggedIn">
         <span class="glyphicon glyphicon-user"></span>
         {{ (showLabelIcon) ? ('header.account' | translate) : '' }}
         <span *ngIf="!isLoggedIn" class="caret"></span>
       </ng-container>
-      <a (click)="signout()" *ngIf="isLoggedIn">
+      <a (click)="signout()" *ngIf="state.isLoggedIn">
         <span class="glyphicon glyphicon-log-out"></span>
         {{ (showLabelIcon) ? ('header.signOut' | translate) : '' }}
       </a>
     </a>
-    <ul *ngIf="!isLoggedIn && showMenu" [ngClass]="{'dropdown-menu-mobile': isMobile}" class="dropdown-menu" id="accountDropdownMenu">
+    <ul *ngIf="!(isLoggedIn$ | async ) && showMenu" class="dropdown-menu dropdown-menu-mobile" id="accountDropdownMenu">
       <li>
-        <ul @FormFadeIn *ngIf="!isForgot" class="signInWrapper">
-          <app-sign-in (siginEvent)="signin($event)" (switchForgotEvent)="switchForgot()" [wrongCredentials]="wrongCredentials"></app-sign-in>
+        <ul @FormFadeIn *ngIf="!state.isForgot" class="signInWrapper">
+          <app-sign-in (siginEvent)="signin($event)" (switchForgotEvent)="switchForgot()" [wrongCredentials]="state.wrongCredentials"></app-sign-in>
         </ul>
-        <ul  @FormFadeIn *ngIf="isForgot" class="signInWrapper">
+        <ul  @FormFadeIn *ngIf="state.isForgot" class="signInWrapper">
           <app-forgot (switchForgotEvent)="switchForgot()"></app-forgot>
         </ul>
       </li>

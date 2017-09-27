@@ -9,6 +9,8 @@ export interface SigninState {
   isLoggedIn: boolean,
   wrongCredentials: boolean,
   isForgot: boolean
+  loginRedirect?: boolean,
+  logoutRedirect?: boolean
 }
 
 /**
@@ -19,7 +21,9 @@ export const INITIAL_SIGNIN_STATE: SigninState = {
   isBusy: false,
   isLoggedIn: false,
   wrongCredentials: false,
-  isForgot: false
+  isForgot: false,
+  loginRedirect: false,
+  logoutRedirect: false
 }
 
 
@@ -51,6 +55,8 @@ export function signinReducer(state: SigninState = INITIAL_SIGNIN_STATE,
       newState.isBusy = false;
       newState.isLoggedIn = true;
       newState.wrongCredentials = false;
+      newState.loginRedirect = true;
+      newState.logoutRedirect = false;
       return newState;
     }
     case SigninActions.SIGNIN_FORGOT_SWITCH: {
@@ -64,6 +70,8 @@ export function signinReducer(state: SigninState = INITIAL_SIGNIN_STATE,
     case SigninActions.SIGNOUT_SUCCEEDED: {
       newState.isBusy = false;
       newState.isLoggedIn = false;
+      newState.loginRedirect = false;
+      newState.logoutRedirect = true;
       return newState;
     }
     default: {

@@ -25,7 +25,6 @@ export class HttpService {
 
 
   requestApi(url: string, method: string, data?: any, headers?:Headers): Observable<CustomResponse> {
-
     const source: Observable<CustomResponse> = this.getSource(url, method, data, headers);
     let customResponse: CustomResponse = new CustomResponse();
 
@@ -50,7 +49,6 @@ export class HttpService {
   }
 
   private getSource(url: string, method: string, data: any, headers?:Headers): Observable<any> {
-
     const isSessionRequest: boolean = url.indexOf(HttpService.SESSION_PATH) !== -1;
     const includeToken: boolean = (!isSessionRequest) || (isSessionRequest && method === HttpService.POST);
     const defaultHeaders: Headers = (headers != null ) ? headers : this.creatDefaultHeaders(includeToken);

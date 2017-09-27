@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {SessionCredentials} from '../../../login/models/sessionCredentials';
+import {SessionCredentials} from '../../models/session/sessionCredentials';
 import {CustomResponse} from '../../models/http/CustomResponse';
 
 export const SigninActions = {

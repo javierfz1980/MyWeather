@@ -19,28 +19,36 @@ export class AppComponent implements OnDestroy {
   constructor(private store$: Store<ApplicationState>,
               private translate: TranslateService) {
 
-    translate.setDefaultLang('en');
-    translate.use('en');
+    this.translate.setDefaultLang('en');
+    this.translate.use('en');
 
-    Observable.fromEvent(window, 'resize')
-      //.debounceTime(150)
-      .subscribe((event) => {
-        const payload: {width: number, height: number, isMobile: boolean} = this.getResizePayload();
-        this.store$.dispatch(new ResolutionChanged(payload));
+    // resize observable
+    let resize$ = Observable.fromEvent(window, 'resize')
+      .map((event) => {
+        this.store$.dispatch(new ResolutionChanged(this.getResizePayload()));
       });
 
-    Observable.fromEvent(window, 'scroll')
-      //.debounceTime(150)
-      .subscribe((event) => {
+    // scroll observable
+    let scroll$ = Observable.fromEvent(window, 'scroll')
+      .map((event) => {
         const payload: number =  window.pageYOffset;
-        if (window.screen.width <= this.maxMobRes) this.store$.dispatch(new ScrollChanged(payload));
+        if (window.screen.width <= this.maxMobRes) {
+          return this.store$.dispatch(new ScrollChanged(payload));
+        }
       });
+
+    // subscribe to both events
+    this.subscriptions.push(
+      resize$
+        .merge(scroll$)
+        .subscribe()
+    );
 
     // initial resolution
     this.store$.dispatch(new ResolutionChanged(this.getResizePayload()));
   }
 
-  getResizePayload(): {width: number, height: number, isMobile: boolean} {
+  private getResizePayload(): {width: number, height: number, isMobile: boolean} {
     return {
       width: window.innerWidth,
       height: window.innerHeight,

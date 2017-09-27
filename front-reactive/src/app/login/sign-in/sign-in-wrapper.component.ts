@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {SessionCredentials} from "../models/sessionCredentials";
+import {SessionCredentials} from "../../commons/models/session/sessionCredentials";
 import {Subscription} from "rxjs/Subscription";
 import {Store} from '@ngrx/store';
 import {
@@ -14,6 +14,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {DeviceState} from '../../commons/store/device/device-state';
 import {AuthService} from '../../commons/services/auth.service';
 import {LocalStorageService} from '../../commons/services/local-storage.service';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-sign-in-wrapper',
@@ -33,7 +34,7 @@ import {LocalStorageService} from '../../commons/services/local-storage.service'
     ])
   ]
 })
-export class SignInWrapperComponent implements OnInit, OnDestroy {
+export class SignInWrapperComponent implements OnInit {
 
   @Input()
   showLabelIcon: boolean = true;
@@ -41,13 +42,15 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
   @ViewChild('dropDownMenu')
   dropDownMenu: ElementRef;
 
+  isMobile$: Observable<boolean>;
+  isLoggedIn$: Observable<boolean>;
   showMenu: boolean = true;
-  isMobile: boolean;
-  isForgot: boolean = false;
-  isLoggedIn: boolean = false;
-  wrongCredentials: boolean = false;
-  isLoading: boolean = false;
-  private subscriptions: Subscription[] = [];
+  state: SigninState = {
+    isBusy: false,
+    isLoggedIn: false,
+    wrongCredentials: false,
+    isForgot: false
+  }
 
   constructor(private store$: Store<ApplicationState>,
               private router: Router,
@@ -60,39 +63,27 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.store$
-        .select('device')
-        .filter(deviceState => deviceState.isMobile !== undefined)
-        .subscribe(deviceState => this.refreshMobileLayout(deviceState))
-    );
+    this.isMobile$ = this.store$
+      .select('device')
+      .filter(deviceState => deviceState.isMobile !== undefined)
+      .map(deviceState => {
+        const isOpened: boolean = this.dropDownMenu && this.dropDownMenu.nativeElement.classList.contains('open');
+        if (isOpened && deviceState.isMobile) this.showMenu = deviceState.vScrollPosition === 0;
+        return deviceState.isMobile;
+      });
 
-    this.subscriptions.push(
-      this.store$
-        .select('signin')
-        .filter(signinState => signinState.isLoggedIn !== undefined)
-        .subscribe((state: SigninState) => this.refreshInternalState(state))
-    )
+    this.isLoggedIn$ = this.store$
+      .select('signin')
+      .filter(signinState => signinState.isLoggedIn !== undefined)
+      .map(signinState => {
+        this.state = signinState;
+        if(signinState.loginRedirect) this.router.navigate([AppRoutes.boards]);
+        if(signinState.logoutRedirect) this.router.navigate([AppRoutes.home]);
+        return signinState.isLoggedIn;
+      });
   }
 
-  refreshInternalState(state: SigninState) {
-    console.log('signin state:',state);
-    let signinSucceed: boolean = !this.isLoggedIn && state.isLoggedIn;
-    let signoutSucced: boolean = this.isLoggedIn && !state.isLoggedIn;
-    this.wrongCredentials = state.wrongCredentials;
-    this.isForgot = state.isForgot;
-    this.isLoggedIn = state.isLoggedIn;
-    this.isLoading = state.isBusy;
-    if(signinSucceed) this.router.navigate([AppRoutes.boards]);
-    if(signoutSucced) this.router.navigate([AppRoutes.home]);
-  }
 
-  refreshMobileLayout(state: DeviceState) {
-    this.isMobile = state.isMobile;
-    this.showMenu = true;
-    const isOpened: boolean = this.dropDownMenu && this.dropDownMenu.nativeElement.classList.contains('open');
-    if (isOpened && this.isMobile) this.showMenu = state.vScrollPosition === 0;
-  }
 
   // actions
   signin(data: SessionCredentials): void {
@@ -107,9 +98,5 @@ export class SignInWrapperComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new SigninForgotSwitchAction());
   }
 
-  // destroy
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
 
 }

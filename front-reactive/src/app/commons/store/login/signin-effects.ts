@@ -7,7 +7,7 @@ import {
   SigninActions, SigninRequestedAction, SigninFailedtAction,
   SignoutSucceededAction, SigninSucceededAction, SignoutRequestedAction
 } from './signin-actions';
-import {SessionCredentials} from '../../../login/models/sessionCredentials';
+import {SessionCredentials} from '../../models/session/sessionCredentials';
 import {CustomResponse} from '../../models/http/CustomResponse';
 import {DeleteUserAction, GetUserInfoAction} from '../user/user-actions';
 import {StopPollingAction} from '../polling/polling-actions';
