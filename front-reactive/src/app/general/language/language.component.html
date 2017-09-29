@@ -1,7 +1,7 @@
-<ul class="nav navbar-nav navbar-right">
-  <li class="dropdown" dropDown #dropDownMenu [ngClass]="{'dropdown-mobile': isMobile}">
+<ul class="nav navbar-nav navbar-right" [ngClass]="{'isMobile': isMobile$ | async}">
+  <li class="dropdown dropdown-mobile" dropDown #dropDownMenu>
     <a class="dropdown-toggle" role="button"><span class="glyphicon glyphicon-flag"></span></a>
-    <ul *ngIf="showMenu" [ngClass]="{'dropdown-menu-mobile': isMobile}" class="dropdown-menu">
+    <ul *ngIf="showMenu" class="dropdown-menu dropdown-menu-mobile">
       <li ><a class="mousePointer" (click)="changeLang('en')">English</a></li>
       <li ><a class="mousePointer"  (click)="changeLang('es')">Español</a></li>
     </ul>

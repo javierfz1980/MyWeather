@@ -7,14 +7,14 @@ export interface DeviceState {
   isMobile: boolean
 }
 
-export const DEVICE_INITIAL_STATE: DeviceState = {
+export const INITIAL_DEVICE_STATE: DeviceState = {
   width: undefined,
   height: undefined,
   vScrollPosition: 0,
   isMobile: undefined
 }
 
-export function deviceStateReducer (state: DeviceState = DEVICE_INITIAL_STATE,
+export function deviceStateReducer (state: DeviceState = INITIAL_DEVICE_STATE,
                                     action: Action): DeviceState {
 
   const newState: DeviceState = Object.assign({}, state);

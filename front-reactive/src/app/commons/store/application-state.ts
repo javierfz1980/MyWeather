@@ -1,12 +1,15 @@
 import {ActionReducer, StoreModule} from '@ngrx/store';
-import {signinReducer, SigninState} from './login/signin-state';
+import {INITIAL_SIGNIN_STATE, signinReducer, SigninState} from './login/signin-state';
 import {ModuleWithProviders} from '@angular/core';
-import {userReducer, UserState} from './user/user-state';
-import {dashboardsReducer, DashboardsState} from './dashboards/dashboards-state';
-import {SignupState, signupReducer} from './signup/signup-state';
-import {pollingReducer, PollingState} from './polling/polling-state';
-import {searchReducer, SearchState} from './search/search-state';
-import {DeviceState, deviceStateReducer} from './device/device-state';
+import {INITIAL_USER_STATE, userReducer, UserState} from './user/user-state';
+import {
+  dashboardsReducer, DashboardsState,
+  INITIAL_DASHBOARDS_STATE
+} from './dashboards/dashboards-state';
+import {SignupState, signupReducer, INITIAL_SIGNUP_STATE} from './signup/signup-state';
+import {INITIAL_POLLING_STATE, pollingReducer, PollingState} from './polling/polling-state';
+import {INITIAL_SEARCH_STATE, searchReducer, SearchState} from './search/search-state';
+import {DeviceState, deviceStateReducer, INITIAL_DEVICE_STATE} from './device/device-state';
 
 /*
 export interface ApplicationState {
@@ -39,6 +42,16 @@ export interface ApplicationState {
   pollingState: PollingState,
   search: SearchState,
   device: DeviceState
+}
+
+export const INITIAL_APPLICATION_STATE: ApplicationState = {
+  signin: INITIAL_SIGNIN_STATE,
+  user: INITIAL_USER_STATE,
+  dashboards: INITIAL_DASHBOARDS_STATE,
+  signup: INITIAL_SIGNUP_STATE,
+  pollingState: INITIAL_POLLING_STATE,
+  search: INITIAL_SEARCH_STATE,
+  device: INITIAL_DEVICE_STATE
 }
 
 export const ApplicationStatesReducers: {[key: string]: ActionReducer<any>} = {

@@ -6,13 +6,14 @@ import {User} from '../../commons/models/data/user';
 import {Subscription} from 'rxjs/Subscription';
 import {AuthService} from '../../commons/services/auth.service';
 import {DeviceState} from '../../commons/store/device/device-state';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-user-panel',
   templateUrl: './user-panel.component.html',
   styleUrls: ['./user-panel.component.css']
 })
-export class UserPanelComponent implements OnInit, OnDestroy {
+export class UserPanelComponent implements OnInit {
 
   @Input()
   showLabelIcon: boolean = true;
@@ -20,48 +21,33 @@ export class UserPanelComponent implements OnInit, OnDestroy {
   @ViewChild('dropDownMenu')
   dropDownMenu: ElementRef;
 
+  userState$: Observable<UserState>;
+  isMobile$: Observable<boolean>;
+  isLoggedIn$: Observable<boolean>;
   showMenu: boolean = true;
-  isMobile: boolean;
-  isLoggedIn: boolean = false;
-  user: User;
-  private subscriptions: Subscription[] = [];
 
   constructor(private store$: Store<ApplicationState>) {
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.store$
-        .select('device')
-        .filter(deviceState => deviceState.isMobile !== undefined)
-        .subscribe(deviceState => this.refreshMobileLayout(deviceState))
-    );
+    this.isMobile$ = this.store$
+      .select('device')
+      .filter(deviceState => deviceState.isMobile !== undefined)
+      .map(deviceState => {
+        const isOpened: boolean = this.dropDownMenu && this.dropDownMenu.nativeElement.classList.contains('open');
+        this.showMenu = (isOpened && deviceState.isMobile) ? deviceState.vScrollPosition === 0 : true;
+        return deviceState.isMobile;
+      });
 
-    this.subscriptions.push(
-      this.store$
-        .select('user')
-        .skip(1)
-        .do((state: UserState) => console.log("do: ",state)) // debug
-        .subscribe((state: UserState) => this.refreshInternalState(state))
-    );
+    this.userState$ = this.store$
+      .select('user')
+      .filter(userState => userState.user !== undefined)
+
+    this.isLoggedIn$ = this.store$
+      .select('signin')
+      .filter(signinState => signinState.isLoggedIn !== undefined)
+      .map(signinState => signinState.isLoggedIn);
   }
 
-  refreshInternalState(state: UserState) {
-    this.user = state.user;
-    this.isLoggedIn = state.user !== undefined;
-  }
-
-  refreshMobileLayout(state: DeviceState) {
-    console.log(state)
-    this.isMobile = state.isMobile;
-    this.showMenu = true;
-    const isOpened: boolean = this.dropDownMenu && this.dropDownMenu.nativeElement.classList.contains('open');
-    if (isOpened && this.isMobile) this.showMenu = state.vScrollPosition === 0;
-  }
-
-  // destroy
-  ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
 
 }

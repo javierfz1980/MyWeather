@@ -42,15 +42,9 @@ export class SignInWrapperComponent implements OnInit {
   @ViewChild('dropDownMenu')
   dropDownMenu: ElementRef;
 
+  state$: Observable<SigninState>;
   isMobile$: Observable<boolean>;
-  isLoggedIn$: Observable<boolean>;
   showMenu: boolean = true;
-  state: SigninState = {
-    isBusy: false,
-    isLoggedIn: false,
-    wrongCredentials: false,
-    isForgot: false
-  }
 
   constructor(private store$: Store<ApplicationState>,
               private router: Router,
@@ -68,18 +62,16 @@ export class SignInWrapperComponent implements OnInit {
       .filter(deviceState => deviceState.isMobile !== undefined)
       .map(deviceState => {
         const isOpened: boolean = this.dropDownMenu && this.dropDownMenu.nativeElement.classList.contains('open');
-        if (isOpened && deviceState.isMobile) this.showMenu = deviceState.vScrollPosition === 0;
+        this.showMenu = (isOpened && deviceState.isMobile) ? deviceState.vScrollPosition === 0 : true;
         return deviceState.isMobile;
       });
 
-    this.isLoggedIn$ = this.store$
+    this.state$ = this.store$
       .select('signin')
       .filter(signinState => signinState.isLoggedIn !== undefined)
-      .map(signinState => {
-        this.state = signinState;
+      .do(signinState => {
         if(signinState.loginRedirect) this.router.navigate([AppRoutes.boards]);
         if(signinState.logoutRedirect) this.router.navigate([AppRoutes.home]);
-        return signinState.isLoggedIn;
       });
   }
 

@@ -1,17 +1,17 @@
-<ul class="nav navbar-nav navbar-right">
+<ul class="nav navbar-nav navbar-right" *ngIf="state$ | async as state">
   <li class="dropdown" dropDown  #dropDownMenu [ngClass]="{'dropdown-mobile': (isMobile$ | async)}">
     <a class="dropdown-toggle" role="button" [ngClass]="{'signOutLink': state.isLoggedIn}">
-      <ng-container *ngIf="!(isLoggedIn$ | async ) as isLoggedIn">
+      <ng-container *ngIf="!state.isLoggedIn">
         <span class="glyphicon glyphicon-user"></span>
         {{ (showLabelIcon) ? ('header.account' | translate) : '' }}
-        <span *ngIf="!isLoggedIn" class="caret"></span>
+        <span *ngIf="!state.isLoggedIn" class="caret"></span>
       </ng-container>
       <a (click)="signout()" *ngIf="state.isLoggedIn">
         <span class="glyphicon glyphicon-log-out"></span>
         {{ (showLabelIcon) ? ('header.signOut' | translate) : '' }}
       </a>
     </a>
-    <ul *ngIf="!(isLoggedIn$ | async ) && showMenu" class="dropdown-menu dropdown-menu-mobile" id="accountDropdownMenu">
+    <ul *ngIf="!state.isLoggedIn && showMenu" class="dropdown-menu dropdown-menu-mobile" id="accountDropdownMenu">
       <li>
         <ul @FormFadeIn *ngIf="!state.isForgot" class="signInWrapper">
           <app-sign-in (siginEvent)="signin($event)" (switchForgotEvent)="switchForgot()" [wrongCredentials]="state.wrongCredentials"></app-sign-in>

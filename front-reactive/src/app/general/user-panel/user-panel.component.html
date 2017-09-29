@@ -1,11 +1,11 @@
-<ul *ngIf="isLoggedIn" class="nav navbar-nav navbar-right">
-  <li class="dropdown" dropDown #dropDownMenu [ngClass]="{'dropdown-mobile': isMobile}">
-    <a class="dropdown-toggle" role="button">
+<ul *ngIf="isLoggedIn$ | async" class="nav navbar-nav navbar-right" [ngClass]="{'isMobile': isMobile$ | async}">
+  <li class="dropdown dropdown-mobile" dropDown #dropDownMenu>
+    <a class="dropdown-toggle" role="button" *ngIf="userState$ | async as userState">
       <span class="glyphicon glyphicon-user"></span>
-      {{ (showLabelIcon) ? (user.name) : '' }}
+      {{ (showLabelIcon) ? userState.user.name : '' }}
       <span class="caret"></span>
     </a>
-    <ul *ngIf="showMenu" [ngClass]="{'dropdown-menu-mobile': isMobile}" class="dropdown-menu" id="accountDropdownMenu">
+    <ul *ngIf="showMenu" class="dropdown-menu dropdown-menu-mobile" id="accountDropdownMenu">
       <li><a class="mousePointer" routerLink="account">{{ 'header.editAccount' | translate }}  <span class="glyphicon glyphicon-edit"></span></a></li>
     </ul>
   </li>

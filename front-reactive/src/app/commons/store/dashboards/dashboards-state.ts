@@ -12,13 +12,13 @@ export interface DashboardsState {
   isLoading: boolean
 }
 
-export const INITIAL_DASHBOARDS: DashboardsState = {
+export const INITIAL_DASHBOARDS_STATE: DashboardsState = {
   dashboards: undefined,
   currentDashboard: 0,
   isLoading: false
 }
 
-export function dashboardsReducer (state: DashboardsState = INITIAL_DASHBOARDS,
+export function dashboardsReducer (state: DashboardsState = INITIAL_DASHBOARDS_STATE,
                                    action: Action): DashboardsState {
   const newState: DashboardsState = Object.assign({}, state);
 

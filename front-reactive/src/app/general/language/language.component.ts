@@ -4,46 +4,36 @@ import {ApplicationState} from '../../commons/store/application-state';
 import {Store} from '@ngrx/store';
 import {Subscription} from 'rxjs/Subscription';
 import {DeviceState} from '../../commons/store/device/device-state';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-language',
   templateUrl: './language.component.html',
   styleUrls: ['./language.component.css']
 })
-export class LanguageComponent implements OnDestroy{
+export class LanguageComponent {
 
   @ViewChild('dropDownMenu')
   dropDownMenu: ElementRef;
 
+  isMobile$: Observable<boolean>;
   showMenu: boolean = true;
-  isMobile: boolean;
-  private subscriptions: Subscription[] = [];
 
   constructor(private store$: Store<ApplicationState>,
               private language:LanguageService) {
 
-    this.subscriptions.push(
-      this.store$
-        .select('device')
-        .filter(deviceState => deviceState.isMobile !== undefined)
-        .subscribe(deviceState => this.refreshMobileLayout(deviceState))
-    );
+    this.isMobile$ = this.store$
+      .select('device')
+      .filter(deviceState => deviceState.isMobile !== undefined)
+      .map(deviceState => {
+        const isOpened: boolean = this.dropDownMenu && this.dropDownMenu.nativeElement.classList.contains('open');
+        this.showMenu = (isOpened && deviceState.isMobile) ? deviceState.vScrollPosition === 0 : true;
+        return deviceState.isMobile;
+      });
   }
-
-  refreshMobileLayout(state: DeviceState) {
-    this.isMobile = state.isMobile;
-    this.showMenu = true;
-    const isOpened: boolean = this.dropDownMenu && this.dropDownMenu.nativeElement.classList.contains('open');
-    if (isOpened && this.isMobile) this.showMenu = state.vScrollPosition === 0;
-  }
-
 
   changeLang(lang: string): void {
     this.language.translateTo(lang);
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
 

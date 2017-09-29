@@ -1,12 +1,12 @@
 <a [@weatherContainer]="stateOver" id="location_row" class="list-group-item list-group-item-action" (mouseover)="onMouseOver()" (mouseout)="onMouseOut()"><!-- active -->
 
-  <div class="row">
+  <div class="row" *ngIf="deviceState$ | async as deviceState">
 
     <div class="col-sm-12">
 
       <div class="row">
 
-        <div *xs class="col-sm-1 removeXs">
+        <div *ngIf="deviceState.isMobile" class="col-sm-1 removeXs">
           <button class="btn btn-danger btn-xs" style="float: right" (click)="removeWeather()">x</button>
         </div>
 
@@ -16,7 +16,7 @@
           <div class="list-group-item-text">{{ weather.description }}</div>
         </div>
 
-        <div *hideItBootstrap="['xs']" class="col-sm-1">
+        <div *ngIf="!deviceState.isMobile" class="col-sm-1">
           <button class="btn btn-danger btn-xs" style="float: right" (click)="removeWeather()">x</button>
         </div>
 
@@ -30,13 +30,13 @@
           <span class="temperature">{{ weather.condition.temp | tempConverter : unitTo}}</span><span class="tempIcon">&deg;</span>
         </div>
 
-        <div *hideItBootstrap="['xs']">
+        <div *ngIf="!deviceState.isMobile">
           <div class="col-sm-1 forecast-container" *ngFor="let forecast of weather.forecast">
             <app-forecast [forecast]="forecast"></app-forecast>
           </div>
         </div>
 
-        <div *xs class=" forecast-container col-xs-6">
+        <div *ngIf="deviceState.isMobile" class=" forecast-container col-xs-6">
           <app-forecast [forecast]="weather.forecast[1]"></app-forecast>
         </div>
 

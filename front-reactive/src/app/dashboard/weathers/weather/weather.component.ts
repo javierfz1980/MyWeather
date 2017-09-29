@@ -2,6 +2,10 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Weather} from "../../../commons/models/data/weather";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {units} from '../../../commons/pipes/temperature-converter.pipe';
+import {Observable} from 'rxjs/Observable';
+import {ApplicationState} from '../../../commons/store/application-state';
+import {Store} from '@ngrx/store';
+import {DeviceState} from '../../../commons/store/device/device-state';
 
 @Component({
   selector: 'app-weather',
@@ -36,17 +40,20 @@ export class WeatherComponent implements OnInit {
   @Output()
   removeWeatherEvent: EventEmitter<string> = new EventEmitter<string>();
 
+  deviceState$: Observable<DeviceState>;
   private unitTo: string = units.celsius;
   private stateOver: string = 'mouseOut';
 
-  constructor() { }
+  constructor(private store$: Store<ApplicationState>) { }
 
   removeWeather(): void{
-    //this.dashboardService.removeWeather(this.weather);
     this.removeWeatherEvent.emit(this.weather.id);
   }
 
   ngOnInit() {
+    this.deviceState$ = this.store$
+      .select('device')
+      .filter(deviceState => deviceState.isMobile !== undefined)
   }
 
   onMouseOver() {
