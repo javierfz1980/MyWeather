@@ -94,7 +94,15 @@ public class DashboardServiceImpl implements DashboardService {
       String message;
       try {
          User user = userRepository.getById(userId);
-         user.getDashboards().remove(dashboard);
+         //user.getDashboards().remove(dashboard);
+         Iterator<Dashboard> it = user.getDashboards().iterator();
+         while (it.hasNext()) {
+            Dashboard dbIt = it.next();
+            if (dbIt.getId().equals(dashboardId)) {
+               it.remove();
+            }
+         }
+
          dashboardRepository.delete(dashboard);
          userRepository.save(user);
          status = true;
