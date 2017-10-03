@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
-import {Headers, Http, Response} from "@angular/http";
+import {Headers, Http} from "@angular/http";
 import {CustomResponse} from "../models/http/CustomResponse";
 import {AuthService} from "./auth.service";
 import {ApplicationState} from '../store/application-state';

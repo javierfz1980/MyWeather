@@ -1,18 +1,14 @@
-import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {SessionCredentials} from "../../commons/models/session/sessionCredentials";
-import {Subscription} from "rxjs/Subscription";
 import {Store} from '@ngrx/store';
 import {
   SigninForgotSwitchAction,
-  SigninRequestedAction, SigninSucceededAction, SignoutRequestedAction
+  SigninRequestedAction, SignoutRequestedAction
 } from '../../commons/store/login/signin-actions';
 import {SigninState} from '../../commons/store/login/signin-state';
 import {ApplicationState} from '../../commons/store/application-state';
-import {AppRoutes} from '../../commons/models/navigation/routing/app-routes';
 import {Router} from '@angular/router';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {DeviceState} from '../../commons/store/device/device-state';
-import {AuthService} from '../../commons/services/auth.service';
 import {LocalStorageService} from '../../commons/services/local-storage.service';
 import {Observable} from 'rxjs/Observable';
 
@@ -68,11 +64,7 @@ export class SignInWrapperComponent implements OnInit {
 
     this.state$ = this.store$
       .select('signin')
-      .filter(signinState => signinState.isLoggedIn !== undefined)
-      .do(signinState => {
-        if(signinState.loginRedirect) this.router.navigate([AppRoutes.boards]);
-        if(signinState.logoutRedirect) this.router.navigate([AppRoutes.home]);
-      });
+      .filter(signinState => signinState.isLoggedIn !== undefined);
   }
 
 
