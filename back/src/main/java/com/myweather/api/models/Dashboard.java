@@ -55,7 +55,7 @@ public class Dashboard {
       return "Dashboard{" +
             ", id='" + id + '\'' +
             ", name='" + name + '\'' +
-            ", cities='" + weathers + '\'' +
+            ", weathers='" + weathers + '\'' +
             '}';
    }
 }

@@ -21,7 +21,7 @@ export class SignupEffects {
   private signupAction$: Observable<Action> = this.actions$
     .ofType(SignupActions.SIGNUP_REQUEST)
     .switchMap((action: SignupRequest) => {
-      return this.httpService.requestApi(HttpService.USER_PATH, HttpService.POST, (<SignupRequest>action).payload)
+      return this.httpService.requestApi(HttpService.SESSION_PATH + "signup", HttpService.POST, (<SignupRequest>action).payload)
         .map(response => new SignupSucceed(response.data))
         .catch(error => Observable.of(new SignupFailed(error)))
     })

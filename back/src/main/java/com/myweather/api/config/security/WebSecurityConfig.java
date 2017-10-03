@@ -53,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
+                .antMatchers(this.sessionPath + "/signup")
                 .antMatchers(this.weathersPath + "/**");
     }
 

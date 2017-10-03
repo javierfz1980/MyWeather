@@ -72,6 +72,7 @@ public class DashboardServiceImpl implements DashboardService {
          dashboardRepository.insert(dashboard);
          User user = userRepository.getById(userId);
          user.getDashboards().add(dashboard);
+         userRepository.save(user);
          logger.info(String.format("Dashboard %s inserted for user %s", dashboard, userId));
       } catch (Exception ex) {
          logger.error(String.format("Dashboard %s could not be inserted for user %s. %s", dashboard, userId, ex.getMessage()));
@@ -95,6 +96,7 @@ public class DashboardServiceImpl implements DashboardService {
          User user = userRepository.getById(userId);
          user.getDashboards().remove(dashboard);
          dashboardRepository.delete(dashboard);
+         userRepository.save(user);
          status = true;
          message = String.format("Dashboard %s deleted for user %s", dashboard, userId);
       } catch (Exception ex) {
