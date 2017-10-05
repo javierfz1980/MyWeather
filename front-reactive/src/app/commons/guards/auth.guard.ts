@@ -8,7 +8,7 @@ export class AuthGuard implements CanActivate {
 
   constructor(private authService: AuthService) {}
 
-  canActivate(): Observable<boolean> {
-    return this.authService.isAuthorized$();
+  canActivate(): Observable<boolean> | boolean {
+    return this.authService.isAuthorized();
   }
 }

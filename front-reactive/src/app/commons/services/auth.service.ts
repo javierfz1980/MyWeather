@@ -11,14 +11,14 @@ export class AuthService {
 
   constructor(private store$: Store<ApplicationState>,
               private localStorageService: LocalStorageService){
-    // console.log('is Auth', this.isAuthorized());
-    // console.log('token', this.getToken())
   }
 
   isAuthorized$(): Observable<boolean>{
     return this.store$
       .select('signin')
-      .map(signin => signin.isLoggedIn);
+      .filter(signinState => signinState.isLoggedIn !== undefined)
+      .map(signin => signin.isLoggedIn)
+      .do(res => console.log('is auth: ', res));
   }
 
   isAuthorized(): boolean {

@@ -7,7 +7,6 @@ import {
 } from '../../commons/store/login/signin-actions';
 import {SigninState} from '../../commons/store/login/signin-state';
 import {ApplicationState} from '../../commons/store/application-state';
-import {Router} from '@angular/router';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {LocalStorageService} from '../../commons/services/local-storage.service';
 import {Observable} from 'rxjs/Observable';
@@ -43,7 +42,6 @@ export class SignInWrapperComponent implements OnInit {
   showMenu: boolean = true;
 
   constructor(private store$: Store<ApplicationState>,
-              private router: Router,
               private localStorage: LocalStorageService) {
 
     const credentials: SessionCredentials = JSON.parse(this.localStorage.getItem('credentials'));

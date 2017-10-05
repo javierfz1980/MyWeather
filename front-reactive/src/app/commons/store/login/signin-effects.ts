@@ -13,7 +13,7 @@ import {DeleteUserAction, GetUserInfoAction} from '../user/user-actions';
 import {StopPollingAction} from '../polling/polling-actions';
 import {AuthService} from '../../services/auth.service';
 import {LocalStorageService} from '../../services/local-storage.service';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AppRoutes} from "../../models/navigation/routing/app-routes";
 
 @Injectable()
@@ -45,7 +45,6 @@ export class SigningEffects {
   @Effect()
   private signinSucceedAction$: Observable<Action> = this.actions$
     .ofType(SigninActions.SIGNIN_SUCCEEDED)
-    .do(()=> this.router.navigate([AppRoutes.boards]))
     .map(action => new GetUserInfoAction((<SigninSucceededAction>action).payload))
 
 
