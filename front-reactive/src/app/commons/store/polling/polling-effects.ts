@@ -31,7 +31,7 @@ export class PollingEffect {
     .ofType(PollingActions.POLLING_REQUEST)
     .withLatestFrom(this.store$.select('user'))
     .switchMap(([action, userState]) => {
-      console.log("polling dashboards");
+      // console.log("polling dashboards");
       const url: string = HttpService.USER_PATH + "/" + userState.user.id + "/dashboards";
       return this.httpService.requestApi(url, HttpService.GET)
         .mergeMap((response: CustomResponse) => {
@@ -39,7 +39,7 @@ export class PollingEffect {
             new PollingSuccedAction(),
             new RefreshDashboards(response.data)
           ];
-          console.log("dashboards retrieved");
+          // console.log("dashboards retrieved");
           return Observable.of(...actions);
         })
         .catch((error: CustomResponse) => Observable.of(new PollingFailedAction()))

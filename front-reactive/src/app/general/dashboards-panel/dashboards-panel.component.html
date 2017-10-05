@@ -1,0 +1,12 @@
+<ul  *ngIf="isLoggedIn$ | async" class="nav navbar-nav navbar-right" [ngClass]="{'isMobile': isMobile$ | async}">
+  <li class="dropdown dropdown-mobile" dropDown #dropDownMenu>
+    <a class="dropdown-toggle" role="button">
+      <span class="glyphicon glyphicon-list-alt"></span>
+      {{ (showLabelIcon) ? 'Dashboards' : '' }}
+      <span class="caret"></span>
+    </a>
+    <ul *ngIf="showMenu" class="dropdown-menu dropdown-menu-mobile" id="accountDropdownMenu">
+      <li><a class="mousePointer" routerLink="account">{{ 'header.editAccount' | translate }}  <span class="glyphicon glyphicon-edit"></span></a></li>
+    </ul>
+  </li>
+</ul>

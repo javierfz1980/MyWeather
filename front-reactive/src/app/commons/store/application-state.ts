@@ -24,8 +24,8 @@ export const INITIAL_APPLICATION_STATE: ApplicationState = {
 export function ApplicationReducer (state: ApplicationState = INITIAL_APPLICATION_STATE,
                                     action: Action): ApplicationState {
 
-  console.log("app reducer: ", action.type);
-  console.log("payload: ", action['payload']);
+  // console.log("app reducer: ", action.type);
+  // console.log("payload: ", action['payload']);
 
   switch (action.type) {
     default:

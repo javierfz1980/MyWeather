@@ -49,7 +49,7 @@ export class SearchEffects {
         })
         .toArray()
     })
-    .do((data) => console.log("1 **************", data))
+    .do((data) => // console.log("1 **************", data))
     .map((data:WeatherSearchResult[]) => new SearchSucceed(data))*/
 
   // 1st attempt
@@ -68,7 +68,7 @@ export class SearchEffects {
         })
         .toArray()
     })
-    .do((data) => console.log("1 **************", data))
+    .do((data) => // console.log("1 **************", data))
     .map((data:WeatherSearchResult[]) => new SearchSucceed(data))*/
 
 }

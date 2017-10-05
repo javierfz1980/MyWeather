@@ -28,13 +28,11 @@ export class SearchResult implements OnInit{
 
   ngOnInit() {
     this.isInCurrentStore$ = this.weathersOnCurrentDashboard
-      .do(data => console.log('weathers on db: ',data))
       .switchMap((weathers: Weather[]) => {
           const weathersId: string[] = weathers.map(weather => weather.id);
           const res: boolean = weathersId.indexOf(this.weather.id) >= 0;
           return Observable.of(res);
       })
-      .do(data => console.log("******************", this.weather.id, data))
   }
 
   addToDashboard(weather: Weather) {

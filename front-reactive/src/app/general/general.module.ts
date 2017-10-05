@@ -10,6 +10,7 @@ import {UserPanelComponent} from './user-panel/user-panel.component';
 import {SearchingComponent} from './search/searching.component';
 import {SearchResult} from './search/search-result/search-result.component';
 import {LanguageComponent} from './language/language.component';
+import {DashboardsPanel} from "./dashboards-panel/dashboards-panel.component";
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import {LanguageComponent} from './language/language.component';
     SearchingComponent,
     SearchResult,
     UserPanelComponent,
-    LanguageComponent
+    LanguageComponent,
+    DashboardsPanel
   ],
   exports: [
     HeaderComponent,

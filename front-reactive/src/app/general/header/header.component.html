@@ -12,6 +12,7 @@
     <div [ngClass]="{'collapsedIconsMobile': (isMobile$ | async)}" class="navbar-header navbar-right">
       <div class="collapsedIcons"><app-sign-in-wrapper [showLabelIcon]="!isMobile"></app-sign-in-wrapper></div>
       <div class="collapsedIcons"><app-user-panel [showLabelIcon]="!isMobile"></app-user-panel></div>
+      <div class="collapsedIcons"><app-dashboards-panel [showLabelIcon]="!isMobile"></app-dashboards-panel></div>
       <div class="collapsedIcons"><app-language></app-language></div>
     </div>
 

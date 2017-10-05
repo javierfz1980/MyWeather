@@ -11,8 +11,8 @@ export class AuthService {
 
   constructor(private store$: Store<ApplicationState>,
               private localStorageService: LocalStorageService){
-    console.log('is Auth', this.isAuthorized());
-    console.log('token', this.getToken())
+    // console.log('is Auth', this.isAuthorized());
+    // console.log('token', this.getToken())
   }
 
   isAuthorized$(): Observable<boolean>{

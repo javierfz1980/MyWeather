@@ -47,7 +47,7 @@ export function dashboardsReducer (state: DashboardsState = INITIAL_DASHBOARDS_S
     }
     case DashboardActions.REMOVE_WEATHER_FAILED: {
       newState.isLoading = false;
-      console.log('REMOVE_WEATHER_FAILED: ', action.type, action, state);
+      // console.log('REMOVE_WEATHER_FAILED: ', action.type, action, state);
       return newState;
     }
     case DashboardActions.REMOVE_WEATHER_SUCCEED: {
@@ -65,7 +65,7 @@ export function dashboardsReducer (state: DashboardsState = INITIAL_DASHBOARDS_S
     }
     case DashboardActions.ADD_WEATHER_FAILED: {
       newState.isLoading = false;
-      console.log('ADD_WEATHER_FAILED: ', action.type, action, state);
+      // console.log('ADD_WEATHER_FAILED: ', action.type, action, state);
       return newState;
     }
     case DashboardActions.ADD_WEATHER_SUCCEED: {
@@ -79,7 +79,7 @@ export function dashboardsReducer (state: DashboardsState = INITIAL_DASHBOARDS_S
       return newState;
     }
     case DashboardActions.REFRESH_DASHBOARDS: {
-      console.log("dashboards refreshed", (<RefreshDashboards>action).payload);
+      // console.log("dashboards refreshed", (<RefreshDashboards>action).payload);
       newState.dashboards = (<RefreshDashboards>action).payload;
       return newState;
     }

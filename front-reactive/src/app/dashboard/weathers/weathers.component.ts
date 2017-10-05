@@ -21,7 +21,7 @@ export class WeathersComponent implements OnInit, OnDestroy {
   constructor(private store$: Store<ApplicationState>) { }
 
   ngOnInit() {
-    console.log("ACACACAC: , state")
+    // console.log("ACACACAC: , state")
     this.subscription = this.store$
       .select('dashboards')
       //.skip(1)
@@ -30,7 +30,7 @@ export class WeathersComponent implements OnInit, OnDestroy {
   }
 
   private refreshInternalState(state: DashboardsState) {
-    console.log("dashboards received on weather component");
+    // console.log("dashboards received on weather component");
     this.currentDashboard = state.dashboards[state.currentDashboard];
   }
 
