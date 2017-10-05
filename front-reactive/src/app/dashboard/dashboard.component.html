@@ -1,6 +1,6 @@
-<div class="row">
+<div *ngIf="currentDashboard$ | async as currentDashboard" class="row">
   <div class="col-md-12">
-    <h3>{{ getCurrentTitle() }}</h3>
+    <h3>{{ currentDashboard.name }}</h3>
     <hr>
     <app-weathers></app-weathers>
   </div>

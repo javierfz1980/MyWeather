@@ -1,40 +1,26 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ApplicationState} from '../commons/store/application-state';
 import {Store} from '@ngrx/store';
-import {Subscription} from 'rxjs/Subscription';
 import {DashboardsState} from '../commons/store/dashboards/dashboards-state';
+import {Observable} from "rxjs/Observable";
+import {Dashboard} from "../commons/models/data/dashboard";
 
 @Component({
   selector: 'app-boards',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit {
 
-  private title: string;
-  private loadedState: string = 'loadedState';
-  private subscription: Subscription;
+  currentDashboard$: Observable<Dashboard>;
 
   constructor(private store$: Store<ApplicationState>) { }
 
   ngOnInit() {
-    this.subscription = this.store$
+    this.currentDashboard$ = this.store$
       .select('dashboards')
-      //.skip(1)
       .filter(dashboardsState => dashboardsState.dashboards != undefined)
-      .subscribe((state: DashboardsState) => this.refreshInternalState(state));
-  }
-
-  private refreshInternalState(state: DashboardsState) {
-    this.title = state.dashboards[state.currentDashboard].name;
-  }
-
-  getCurrentTitle(): string{
-    return this.title;
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+      .map((state: DashboardsState) => state.dashboards[state.currentDashboard])
   }
 
 }
