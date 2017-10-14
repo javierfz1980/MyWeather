@@ -35,7 +35,7 @@ export class LoadDashboardsSucceed implements Action {
 
 export class CurrentDashboardChanged implements Action {
   type: string = DashboardActions.CURRENT_DASHBOARD_CHANGED;
-  constructor(public payload?: Dashboard){}
+  constructor(public payload?: number){}
 }
 
 export class RemoveWeatherRequested implements Action {

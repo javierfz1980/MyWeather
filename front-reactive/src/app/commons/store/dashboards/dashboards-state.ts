@@ -1,9 +1,9 @@
 import {Dashboard} from '../../models/data/dashboard';
 import {Action} from '@ngrx/store';
 import {
-  AddWeatherSucceed, DashboardActions, RefreshDashboards,
+  AddWeatherSucceed, CurrentDashboardChanged, DashboardActions, RefreshDashboards,
   RemoveWeatherSucceed
-} from './dashboards-actions';
+} from "./dashboards-actions";
 import {Weather} from '../../models/data/weather';
 
 export interface DashboardsState {
@@ -82,6 +82,9 @@ export function dashboardsReducer (state: DashboardsState = INITIAL_DASHBOARDS_S
       // console.log("dashboards refreshed", (<RefreshDashboards>action).payload);
       newState.dashboards = (<RefreshDashboards>action).payload;
       return newState;
+    }
+    case DashboardActions.CURRENT_DASHBOARD_CHANGED: {
+      newState.currentDashboard = (<CurrentDashboardChanged>action).payload;
     }
     default: {
       return state;

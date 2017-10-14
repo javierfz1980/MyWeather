@@ -2,11 +2,23 @@
   <li class="dropdown dropdown-mobile" dropDown #dropDownMenu>
     <a class="dropdown-toggle" role="button">
       <span class="glyphicon glyphicon-list-alt"></span>
-      {{ (showLabelIcon) ? 'Dashboards' : '' }}
+      {{ (showLabelIcon) ? (currentDashboardName$ | async) : '' }}
       <span class="caret"></span>
     </a>
     <ul *ngIf="showMenu" class="dropdown-menu dropdown-menu-mobile" id="accountDropdownMenu">
-      <li><a class="mousePointer" routerLink="account">{{ 'header.editAccount' | translate }}  <span class="glyphicon glyphicon-edit"></span></a></li>
+      <li>
+        <form>
+          <div class="inputWraper">
+            <input type="text" class="form-control dbInput"><button class="btn btn-xs btn-primary dbAddButton">Add
+          </button>
+          </div>
+        </form>
+      </li>
+      <li class="nav-divider"></li>
+      <li *ngFor="let dashboard of dashboards$ | async">
+        <a class="mousePointer" (click)="onDbSelected(dashboard)">{{ dashboard.name }}
+            <span class="removeDb">X</span></a>
+      </li>
     </ul>
   </li>
 </ul>

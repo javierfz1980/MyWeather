@@ -12,3 +12,25 @@
   height: 50px;
 }
 
+.inputWraper {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+}
+
+.dbAddButton {
+  margin-top: 5px;
+  width: 100%;
+}
+.dbInput {
+  max-height:25px;
+}
+
+.mousePointer {
+  cursor: pointer;
+}
+
+.removeDb {
+  float: right;
+  color: red;
+}

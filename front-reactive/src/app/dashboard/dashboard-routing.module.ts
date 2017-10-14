@@ -4,10 +4,10 @@ import { DashboardComponent} from "./dahsboard.component";
 import {AuthGuard} from '../commons/guards/auth.guard';
 
 const boardsRoutes: Routes = [
-  {path: 'dashboards', component: DashboardComponent, canActivate: [AuthGuard], children: [
+  {path: 'dashboards/:id', component: DashboardComponent, canActivate: [AuthGuard]/*, children: [
     {path: ':id', component: DashboardComponent, canActivateChild: [AuthGuard]},
-    {path: '', redirectTo: '/dashboards', pathMatch: 'full'}
-  ]}
+    {path: '', redirectTo: '/', pathMatch: 'full'}
+  ]*/}
 ]
 
 @NgModule({
