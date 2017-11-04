@@ -1,5 +1,7 @@
 # Add any directories, files, or patterns you don't want to be tracked by version control
-front-reactive/.idea/front-reactive.iml
-front-reactive/.idea/modules.xml
-front-reactive/.idea/workspace.xml
-front-reactive/.idea/inspectionProfiles/Project_Default.xml
+
+front-reactive/.idea
+
+
+back/.idea
+back/target
