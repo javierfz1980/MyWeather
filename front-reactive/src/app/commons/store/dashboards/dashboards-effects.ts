@@ -3,14 +3,17 @@ import {Actions, Effect} from '@ngrx/effects';
 import {Observable} from 'rxjs/Observable';
 import {Action, Store} from '@ngrx/store';
 import {
+  AddDashboardFailed,
+  AddDashboardRequested, AddDashboardSucceed,
   AddWeatherFailed,
   AddWeatherRequested, AddWeatherSucceed,
   DashboardActions, RemoveWeatherFailed,
   RemoveWeatherRequested, RemoveWeatherSucceed
-} from './dashboards-actions';
+} from "./dashboards-actions";
 import {HttpService} from '../../services/http.service';
 import {CustomResponse} from '../../models/http/CustomResponse';
 import {ApplicationState} from '../application-state';
+import {Dashboard} from "../../models/data/dashboard";
 
 @Injectable()
 export class DashboardsEffects {
@@ -51,6 +54,19 @@ export class DashboardsEffects {
         .requestApi(url, HttpService.DELETE)
         .map((response: CustomResponse) => new RemoveWeatherSucceed(response))
         .catch((error: CustomResponse) => Observable.of(new RemoveWeatherFailed(error)))
+    })
+
+  @Effect()
+  private addDashboardAction$: Observable<Action> = this.actions$
+    .ofType(DashboardActions.ADD_DASHBOARD_REQUEST)
+      .withLatestFrom(this.store$.select('user'))
+      .switchMap(([action , userState]) => {
+        const url: string = HttpService.USER_PATH + userState.user.id + "/dashboards/";
+        const payload: Dashboard = (<AddDashboardRequested>action).payload;
+        return this.httpService
+          .requestApi(url, HttpService.POST, payload)
+          .map((response: CustomResponse) => new AddDashboardSucceed(response))
+          .catch(error => Observable.of(new AddDashboardFailed(error)))
     })
 
 

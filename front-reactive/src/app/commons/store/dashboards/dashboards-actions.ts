@@ -15,6 +15,9 @@ export const DashboardActions = {
   ADD_WEATHER_REQUEST: 'Add Weather Request',
   ADD_WEATHER_SUCCEED: 'Add Weather Succeed',
   ADD_WEATHER_FAILED: 'Add Weather Failed',
+  ADD_DASHBOARD_REQUEST: 'Add Dashboard Request',
+  ADD_DASHBOARD_SUCCEED: 'Add Dashboard Succeed',
+  ADD_DASHBOARD_FAILED: 'Add Dashboard Failed',
   REFRESH_DASHBOARDS: 'Refresh Dashboards'
 }
 
@@ -65,6 +68,21 @@ export class AddWeatherSucceed implements Action {
 
 export class AddWeatherFailed implements Action {
   type: string = DashboardActions.ADD_WEATHER_FAILED;
+  constructor(public payload?: CustomResponse) {}
+}
+
+export class AddDashboardRequested implements Action {
+  type: string = DashboardActions.ADD_DASHBOARD_REQUEST;
+  constructor(public payload?: Dashboard){}
+}
+
+export class AddDashboardSucceed implements Action {
+  type: string = DashboardActions.ADD_DASHBOARD_SUCCEED;
+  constructor(public payload?: CustomResponse){}
+}
+
+export class AddDashboardFailed implements Action {
+  type: string = DashboardActions.ADD_DASHBOARD_FAILED;
   constructor(public payload?: CustomResponse) {}
 }
 

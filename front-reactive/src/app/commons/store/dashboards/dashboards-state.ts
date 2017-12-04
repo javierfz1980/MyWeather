@@ -1,6 +1,8 @@
 import {Dashboard} from '../../models/data/dashboard';
 import {Action} from '@ngrx/store';
 import {
+  AddDashboardRequested,
+  AddDashboardSucceed,
   AddWeatherSucceed, CurrentDashboardChanged, DashboardActions, RefreshDashboards,
   RemoveWeatherSucceed
 } from "./dashboards-actions";
@@ -65,7 +67,6 @@ export function dashboardsReducer (state: DashboardsState = INITIAL_DASHBOARDS_S
     }
     case DashboardActions.ADD_WEATHER_FAILED: {
       newState.isLoading = false;
-      // console.log('ADD_WEATHER_FAILED: ', action.type, action, state);
       return newState;
     }
     case DashboardActions.ADD_WEATHER_SUCCEED: {
@@ -75,16 +76,31 @@ export function dashboardsReducer (state: DashboardsState = INITIAL_DASHBOARDS_S
       weathers.push((<AddWeatherSucceed>action).payload.data);
       dashboards[newState.currentDashboard].weathers = weathers;
       newState.dashboards = dashboards;
-      //newState.dashboards[newState.currentDashboard].weathers.push((<AddWeatherSucceed>action).payload.data)
       return newState;
     }
     case DashboardActions.REFRESH_DASHBOARDS: {
-      // console.log("dashboards refreshed", (<RefreshDashboards>action).payload);
       newState.dashboards = (<RefreshDashboards>action).payload;
       return newState;
     }
     case DashboardActions.CURRENT_DASHBOARD_CHANGED: {
       newState.currentDashboard = (<CurrentDashboardChanged>action).payload;
+      return newState;
+    }
+    case DashboardActions.ADD_DASHBOARD_REQUEST: {
+      newState.isLoading = true;
+      return newState;
+    }
+    case DashboardActions.ADD_DASHBOARD_FAILED: {
+      newState.isLoading = false;
+      return newState;
+    }
+    case DashboardActions.ADD_DASHBOARD_SUCCEED: {
+      newState.isLoading = false;
+      const dashboards: Dashboard[] = newState.dashboards.map(dashboard => Object.assign({},dashboard));
+      const dashboard: Dashboard = ((<AddDashboardSucceed>action).payload.data);
+      dashboards.push(dashboard);
+      newState.dashboards = dashboards;
+      return newState;
     }
     default: {
       return state;

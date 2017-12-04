@@ -7,10 +7,13 @@
     </a>
     <ul *ngIf="showMenu" class="dropdown-menu dropdown-menu-mobile" id="accountDropdownMenu">
       <li>
-        <form>
+        <form [formGroup]="dbForm"  (submit)="createDb()">
           <div class="inputWraper">
-            <input type="text" class="form-control dbInput"><button class="btn btn-xs btn-primary dbAddButton">Add
-          </button>
+            <input type="text"
+                   class="form-control dbInput"
+                   formControlName="name">
+            <button class="btn btn-xs btn-primary dbAddButton"
+                    [disabled]="!dbForm.valid">Add</button>
           </div>
         </form>
       </li>

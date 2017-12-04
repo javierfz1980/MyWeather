@@ -6,6 +6,8 @@ import {Dashboard} from "../../commons/models/data/dashboard";
 import {DashboardsState} from "../../commons/store/dashboards/dashboards-state";
 import {Router} from "@angular/router";
 import {AppRoutes} from "../../commons/models/navigation/routing/app-routes";
+import {FormControl, FormGroup, Validator, Validators} from "@angular/forms";
+import {AddDashboardRequested} from "../../commons/store/dashboards/dashboards-actions";
 
 @Component({
   selector: 'app-dashboards-panel',
@@ -26,6 +28,7 @@ export class DashboardsPanel implements OnInit {
   isLoggedIn$: Observable<boolean>;
   isMobile$: Observable<boolean>;
   showMenu: boolean = false;
+  dbForm: FormGroup;
 
   constructor(private store$: Store<ApplicationState>,
               private router: Router) {}
@@ -55,10 +58,24 @@ export class DashboardsPanel implements OnInit {
     this.currentDashboardName$ = this.state$
       .map((dbState: DashboardsState) => dbState.dashboards[dbState.currentDashboard].name);
 
+    this.initNewDbForm();
+
   }
 
   onDbSelected(db: Dashboard) {
     this.router.navigate([AppRoutes.boards + db.id]);
+  }
+
+  createDb() {
+    const newDb: Dashboard = this.dbForm.value;
+    this.store$.dispatch(new AddDashboardRequested(newDb));
+    //console.log('newDb: ', newDb);
+  }
+
+  private initNewDbForm() {
+    this.dbForm = new FormGroup({
+      name: new FormControl('', Validators.required)
+    });
   }
 
 }
